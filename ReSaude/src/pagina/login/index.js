@@ -1,11 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, TextInput, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from './style';
 import { useState } from 'react';
-
-
-
+import styles from './style';
 
 
 export default function App() {
