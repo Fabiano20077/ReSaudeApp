@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, TextInput, Pressable } from 'react-native';
+import { View, Text, TextInput, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import styles from './style';
@@ -16,7 +16,7 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.containerLogin}>
         <View style={styles.logo}>
-
+        <Image source={require("../../../img/Logo_ReSaude-removebg-preview.png")} style={styles.img}/>
         </View>
         <View style={styles.login}>
           <View style={styles.containerTitulo}>

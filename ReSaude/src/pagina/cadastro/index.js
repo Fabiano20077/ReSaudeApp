@@ -42,33 +42,33 @@ export default function App() {
   }
 
   return (
-    <View style={styles.inputs}>
+    <View style={styles.container}>
       <Text style={styles.espaco}>Nome:</Text>
       <TextInput style={styles.inputEmail}
         value={nome}
-        placeholder='Preencha seu Nome'
+        placeholder='Ex:Fabiano'
         onChangeText={setNome}
       />
       <Text style={styles.espaco}>Email:</Text>
       <TextInput style={styles.inputEmail}
         value={email}
-        placeholder='Preencha seu Email'
+        placeholder='Ex:fabiano@gmail.com'
         onChangeText={setEmail}
       />
       <Text style={styles.espaco}>Data de Nascimento:</Text>
       <TextInput style={styles.inputEmail}
         value={nasci}
-        placeholder='Preencha sua Data de Nascimento'
+        placeholder='Ex:aaaa/mm/dd'
         onChangeText={setNasci}
       />
       <Text style={styles.espaco}>Senha:</Text>
       <TextInput style={styles.inputEmail}
         value={senha}
-        placeholder='Preencha a Senha'
+        placeholder='Mínimo 3 carácteres'
         onChangeText={setSenha}
       />
       <Pressable style={styles.botao} onPress={() => { insert() }}>
-        aperte
+        <Text style={styles.letraBotao}>aperte</Text>
       </Pressable>
       <StatusBar style="auto" />
     </View>
