@@ -39,33 +39,35 @@ export default function App() {
         console.log('erro cadastra', erro.response?.data || erro.message);
       })
 
-
   }
 
   return (
-    <View style={styles.container}>
-      <TextInput
+    <View style={styles.inputs}>
+      <Text style={styles.espaco}>Nome:</Text>
+      <TextInput style={styles.inputEmail}
         value={nome}
-        placeholder='prenchar o campo'
+        placeholder='Preencha seu Nome'
         onChangeText={setNome}
       />
-      <TextInput
+      <Text style={styles.espaco}>Email:</Text>
+      <TextInput style={styles.inputEmail}
         value={email}
-        placeholder='prenchar o campo'
+        placeholder='Preencha seu Email'
         onChangeText={setEmail}
       />
-      <TextInput
+      <Text style={styles.espaco}>Data de Nascimento:</Text>
+      <TextInput style={styles.inputEmail}
         value={nasci}
-        placeholder='prenchar o campo'
+        placeholder='Preencha sua Data de Nascimento'
         onChangeText={setNasci}
       />
-      <TextInput
+      <Text style={styles.espaco}>Senha:</Text>
+      <TextInput style={styles.inputEmail}
         value={senha}
-        placeholder='prenchar o campo'
+        placeholder='Preencha a Senha'
         onChangeText={setSenha}
       />
-
-      <Pressable onPress={() => { insert() }}>
+      <Pressable style={styles.botao} onPress={() => { insert() }}>
         aperte
       </Pressable>
       <StatusBar style="auto" />

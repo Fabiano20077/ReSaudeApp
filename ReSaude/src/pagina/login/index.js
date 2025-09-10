@@ -27,13 +27,13 @@ export default function App() {
             <Text style={styles.texto}>Email</Text>
             <TextInput
               style={styles.inputEmail}
-              placeholder='escrevar seu emal'
+              placeholder='Digite seu email'
               onChangeText={setEmail}
             />
             <Text style={styles.texto}>Senha</Text>
             <TextInput
               style={styles.inputEmail}
-              placeholder='escrevar seu emal'
+              placeholder='Digite sua senha'
               onChangeText={setSenha}
             />
 
@@ -42,7 +42,7 @@ export default function App() {
             </Pressable>
 
             <Text style={styles.texto}> não tem conta?
-              <Pressable style={styles.link} onPress={() => navigation.navigate('Cadastro')}>click aqui</Pressable>
+              <Pressable style={styles.link} onPress={() => navigation.navigate('Cadastro')}>clique aqui</Pressable>
             </Text>
 
           </View>
