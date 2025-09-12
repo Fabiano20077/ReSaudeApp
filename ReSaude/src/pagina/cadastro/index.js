@@ -76,13 +76,18 @@ export default function App() {
   const insert = () => {
 
     var usuario = new FormData();
-
-    usuario.append()
-
-    api.post('/cadastra', {
-
-        
-
+    usuario.append('nome', nome);
+    usuario.append('email', email);
+    usuario.append('imagens', {
+      uri: imagem,
+      type: 'image/png',
+      name: 'imagens.png'
+    });
+    usuario.append('nesci', nasci);
+    usuario.append('senha', senha);
+   
+    api.post('/cadastra', usuario, {
+    
     })
       .then(response => {
         console.log('cadastrado', response.data)
@@ -98,13 +103,11 @@ export default function App() {
       <View style={styles.containerCadastra}>
       <View style={styles.imagem}>
         <Pressable onPress={() => enviarImagem()}>
-          {imagem == null? 
+          {imagem == ''? 
            <Image style={styles.img} source={require('../../../assets/perfilPng.png')}></Image>
            :
-           <Image style={styles.img} source={require('../../../assets/', imagem)}></Image>
-
-        }
-       
+           <Image style={styles.img} source={imagem}></Image>
+        }   
         </Pressable>
       </View>
       <Text style={styles.espaco}>Nome:</Text>

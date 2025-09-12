@@ -22,7 +22,8 @@ export default StyleSheet.create({
 
   img: {
     width: 200,
-    height: 200
+    height: 200,
+    borderRadius: 100
   },
 
   espaco:{
