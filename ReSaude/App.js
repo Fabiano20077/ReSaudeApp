@@ -15,9 +15,9 @@ export default function App() {
         <NavigationContainer>
             <Stack.Navigator>
 
+                <Stack.Screen name='Cadastro' component={Cadastro} />
                 <Stack.Screen name='Login' component={Login}
                     options={{ headerShown: false }} />
-                <Stack.Screen name='Cadastro' component={Cadastro} />
                 <Stack.Screen name='Dashboard' component={Dashboard} />
 
             </Stack.Navigator>

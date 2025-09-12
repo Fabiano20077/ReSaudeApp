@@ -33,8 +33,20 @@ class usuarioController extends Controller
 
         $usuario->nome = $request->nomeInput;
         $usuario->email = $request->emailInput;
+
+        $image = $request->file('foto');
+
+        if($image == null ) {
+            $path = "";
+        } else {
+            $path = $image->store('imagens', 'public ');
+        }
+
+        $usuario->img = $path;
+
         $usuario->nascimento = $request->nascimentoInput;
         $usuario->senha = bcrypt($request->senhaInput);
+        
         $usuario->save();
 
         return response()->json([

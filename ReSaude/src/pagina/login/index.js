@@ -16,7 +16,7 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.containerLogin}>
         <View style={styles.logo}>
-        <Image source={require("../../../img/Logo_ReSaude-removebg-preview.png")} style={styles.img}/>
+       {/*  <Image source={require("../../../img/Logo_ReSaude-removebg-preview.png")} style={styles.img}/> */}
         </View>
         <View style={styles.login}>
           <View style={styles.containerTitulo}>

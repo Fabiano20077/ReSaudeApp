@@ -2,8 +2,7 @@ import { StyleSheet } from 'react-native';
 
 
 
-export default StyleSheet.create(
-  {
+export default StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
@@ -11,11 +10,21 @@ export default StyleSheet.create(
       height:200
   },
 
-  containerLogin: {
-      flex: 1,
-      borderWidth: 1,
+  containerCadastra: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
- 
+
+   imagem: {
+
+   },
+
+  img: {
+    width: 200,
+    height: 200
+  },
+
   espaco:{
     height:20,
     fontFamily:'Arial',
@@ -24,24 +33,6 @@ export default StyleSheet.create(
 
   logo: {
       flex: 1,
-  },
-
-  login: {
-      flex: 1,
-      borderTopLeftRadius: 50,
-      borderTopRightRadius: 50,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      borderWidth: 1
-  },
-
-  containerTitulo: {
-      flex: .2,
-  },
-
-  titulo:{
-      fontSize: 20,
-      fontWeight: 500
   },
 
     inputs: {
@@ -73,12 +64,6 @@ export default StyleSheet.create(
 letraBotao: {
     color: '#fff',
     fontSize:20,
-},
-
-container:{
-  justifyContent:'center',
-  alignItems:'center',
-  marginTop:100
 },
 
 botao:{
