@@ -24,3 +24,5 @@ Route::get('/teste', function () {
 });
 
 Route::post('/cadastra', [usuarioController::class, 'store']);
+
+Route::post('/login', [usuarioController::class, 'show']);

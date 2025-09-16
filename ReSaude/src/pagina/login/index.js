@@ -3,6 +3,8 @@ import { View, Text, TextInput, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import styles from './style';
+import api from '../api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function App() {
@@ -12,11 +14,27 @@ export default function App() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState();
 
+  const login = () => {
+
+    api.post('login', {
+      loginEmail: email,
+      LoginSenha: senha
+    })
+      .then(res => {
+        console.log('logado', res.data)
+        AsyncStorage.setItem('token', res.data.token);
+        navigation.navigate('Dashboard')
+      })
+      .catch(err => {
+        console.log('nao foi possivel fzee login', err.response?.data || err.data);
+      })
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.containerLogin}>
         <View style={styles.logo}>
-       {/*  <Image source={require("../../../img/Logo_ReSaude-removebg-preview.png")} style={styles.img}/> */}
+          {/*  <Image source={require("../../../img/Logo_ReSaude-removebg-preview.png")} style={styles.img}/> */}
         </View>
         <View style={styles.login}>
           <View style={styles.containerTitulo}>
@@ -37,12 +55,14 @@ export default function App() {
               onChangeText={setSenha}
             />
 
-            <Pressable style={styles.botao}>
+            <Pressable style={styles.botao} onPress={() => login()}>
               <Text style={styles.letraBotao}>Aperte</Text>
             </Pressable>
 
             <Text style={styles.texto}> não tem conta?
-              <Pressable style={styles.link} onPress={() => navigation.navigate('Cadastro')}>clique aqui</Pressable>
+              <Pressable style={styles.link} onPress={() => { navigation.navigate('Cadastro') }}>
+                <Text>clique aqui</Text>
+              </Pressable>
             </Text>
 
           </View>
