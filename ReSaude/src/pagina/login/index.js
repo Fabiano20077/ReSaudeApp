@@ -13,20 +13,21 @@ export default function App() {
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState();
+  const [usuario,setUsuario] = useState('');
 
   const login = () => {
 
-    api.post('login', {
+    api.post('/login', {
       loginEmail: email,
       LoginSenha: senha
     })
       .then(res => {
-        console.log('logado', res.data)
-        AsyncStorage.setItem('token', res.data.token);
-        navigation.navigate('Dashboard')
+          console.log('logado', res.data) 
+          AsyncStorage.setItem('usuario',JSON.stringify(res.data));
+          navigation.navigate('Dashboard')
       })
-      .catch(err => {
-        console.log('nao foi possivel fzee login', err.response?.data || err.data);
+      .catch(error => {
+        console.log('nao foi possivel fzee login', error.response?.data || error.data);
       })
   }
 

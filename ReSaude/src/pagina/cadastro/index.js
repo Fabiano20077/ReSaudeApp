@@ -20,7 +20,7 @@ export default function App() {
 
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [imagem, setImagem] = useState('');
+  const [imagem, setImagem] = useState();
   const [nasci, setNasci] = useState('');
   const [senha, setSenha] = useState('');
 
@@ -92,7 +92,7 @@ export default function App() {
         'Content-Type': 'multipart/form-data',
       },
     })
-      .then(response => {
+      .then(response => { 
         console.log('cadastrado', response.data)
         Navigation.navigate('Login');
       })
@@ -107,7 +107,7 @@ export default function App() {
       <View style={styles.containerCadastra}>
         <View style={styles.imagem}>
           <Pressable onPress={() => enviarImagem()}>
-            {imagem == '' ?
+            {imagem == null ?
               <Image style={styles.img} source={require('../../../assets/perfilPng.png')}></Image>
               :
               <Image style={styles.img} source={{ uri: imagem }}></Image>

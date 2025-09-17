@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Psy\Readline\Hoa\Console;
+
+use function Laravel\Prompts\error;
 
 class usuarioController extends Controller
 {
@@ -38,9 +41,6 @@ class usuarioController extends Controller
 
         if ($image == null) {
             $path = "";
-            return response()->json((
-                ['erro imagem vazia']
-            ));
         } else {
             $path = $image->store('imagens', 'public');
         }
@@ -49,7 +49,6 @@ class usuarioController extends Controller
 
         $usuario->nascimento = $request->nascimentoInput;
         $usuario->senha = bcrypt($request->senhaInput);
-
         $usuario->save();
 
         return response()->json([
@@ -65,14 +64,16 @@ class usuarioController extends Controller
     {
         $usuario = User::where('email', $request->loginEmail)->first();
 
-        if (!$usuario || !Hash::check($request->LoginSenha, $usuario->senha)) {
-            return response()->json(([
-                'login invalido'
-            ]));
+
+        if (!$usuario || !Hash::check($request->LoginSenha,$usuario->senha)) {
+
+          return response()->json((
+            ['email ou senha incorretos']
+          ), 404);
+
         } else {
 
             $token = $usuario->createToken('auth_token')->plainTextToken;
-
             return response()->json((
                 [
                     'mensage' => 'login feito',
