@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, TextInput, Pressable, Image } from 'react-native';
+import { View, Text, TextInput, Pressable, Image, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import styles from './style';
@@ -15,7 +15,11 @@ export default function App() {
   const [senha, setSenha] = useState();
   const [usuario,setUsuario] = useState('');
 
+  const [loading,setLoading] = useState(false);
+
   const login = () => {
+
+    setLoading(true)
 
     api.post('/login', {
       loginEmail: email,
@@ -23,12 +27,24 @@ export default function App() {
     })
       .then(res => {
           console.log('logado', res.data) 
+          setLoading(false)
           AsyncStorage.setItem('usuario',JSON.stringify(res.data));
           navigation.navigate('Dashboard')
       })
       .catch(error => {
+        setLoading(false)
         console.log('nao foi possivel fzee login', error.response?.data || error.data);
       })
+  }
+
+  if(loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size='large' color='#ccc'>
+          <Text>carregando</Text>
+        </ActivityIndicator>
+      </View>
+    )
   }
 
   return (

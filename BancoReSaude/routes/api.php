@@ -23,6 +23,10 @@ Route::get('/teste', function () {
     return response()->json(['status' => 'API rodando']);
 });
 
+Route::get('/chamar-usuario/{id}', [usuarioController::class, 'index']);
+
 Route::post('/cadastra', [usuarioController::class, 'store']);
 
 Route::post('/login', [usuarioController::class, 'show']);
+
+Route::post('/update-dados/{id}', [usuarioController::class, 'update']);

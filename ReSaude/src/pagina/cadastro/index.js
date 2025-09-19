@@ -62,6 +62,8 @@ export default function App() {
       quality: 1
     })
 
+    console.log("Resultado da imagem:", resultado.assets[0].uri);
+
     if (!resultado.canceled) {
       setImagem(resultado.assets[0].uri)
     }
@@ -77,8 +79,9 @@ export default function App() {
 
     var usuario = new FormData();
 
+    const imagemUri = imagem.startsWith('file://') ? imagem.replace('file://', '') : imagem;
     usuario.append('foto', {
-      uri: imagem,
+      uri: imagemUri,
       type: 'image/jpeg',
       name: 'image.jpg'
     });

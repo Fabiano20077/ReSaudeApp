@@ -14,9 +14,20 @@ class usuarioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(string $id)
     {
-        //
+        $usuario = user::find($id);
+
+        if(!$usuario) {
+            return response()->json(['erro' => 'usuario nao encontardo'],404);
+        }
+
+        return response()->json(
+            [
+                'mensagem' => 'usuario encontrado',
+                'user' => $usuario
+            ]
+        );
     }
 
     /**
@@ -65,12 +76,11 @@ class usuarioController extends Controller
         $usuario = User::where('email', $request->loginEmail)->first();
 
 
-        if (!$usuario || !Hash::check($request->LoginSenha,$usuario->senha)) {
+        if (!$usuario || !Hash::check($request->LoginSenha, $usuario->senha)) {
 
-          return response()->json((
-            ['email ou senha incorretos']
-          ), 404);
-
+            return response()->json((
+                ['email ou senha incorretos']
+            ), 404);
         } else {
 
             $token = $usuario->createToken('auth_token')->plainTextToken;
@@ -97,7 +107,26 @@ class usuarioController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $validarDados = $request->validate([
+            "nome" => 'min:3',
+            "email" => 'min:10',
+            "nascimento" => 'min:3',
+        ]);
+
+        $usuario = user::find($id);
+
+        $usuario->update($validarDados);
+
+
+
+        return response()->json(
+            [
+                'mensagem' => 'update feito',
+                'user' => $usuario
+            ],
+            200
+        );
     }
 
     /**
