@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Pressable, Image, TextInput } from 'react-native';
+import { View, Text, Pressable, Image, TextInput, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import api from '../api';
@@ -20,9 +20,10 @@ export default function App() {
 
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [imagem, setImagem] = useState();
+  const [imagem, setImagem] = useState('');
   const [nasci, setNasci] = useState('');
   const [senha, setSenha] = useState('');
+  const [loading,setLoading] = useState(false);
 
   const solicitarPermissao = async () => {
     const camera = await ImagePicker.requestCameraPermissionsAsync();
@@ -59,7 +60,8 @@ export default function App() {
     const resultado = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1
+      aspect: [1, 1],
+      quality: 0.8
     })
 
     console.log("Resultado da imagem:", resultado.assets[0].uri);
@@ -69,21 +71,17 @@ export default function App() {
     }
   }
 
+  const insert = async () => {
 
-  const enviarImagem = () => {
-    escolherGaleria();
-  }
-
-
-  const insert = () => {
+    setLoading(true)
 
     var usuario = new FormData();
 
-    const imagemUri = imagem.startsWith('file://') ? imagem.replace('file://', '') : imagem;
+
     usuario.append('foto', {
-      uri: imagemUri,
+      uri: imagem,
       type: 'image/jpeg',
-      name: 'image.jpg'
+      name: 'image.jpg',
     });
     usuario.append('nomeInput', nome);
     usuario.append('emailInput', email);
@@ -95,22 +93,31 @@ export default function App() {
         'Content-Type': 'multipart/form-data',
       },
     })
-      .then(response => { 
+      .then(response => {
         console.log('cadastrado', response.data)
         Navigation.navigate('Login');
       })
       .catch(erro => {
         console.log('erro cadastra', erro.response?.data || erro.message);
+        setLoading(false)
       })
+  }
 
+  if(loading) {
+    return (
+      <View>
+        <ActivityIndicator size='large' color='blue'></ActivityIndicator>
+        <Text>carregando</Text>
+      </View>
+    )
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.containerCadastra}>
         <View style={styles.imagem}>
-          <Pressable onPress={() => enviarImagem()}>
-            {imagem == null ?
+          <Pressable onPress={() => escolherGaleria()}>
+            {imagem == '' ?
               <Image style={styles.img} source={require('../../../assets/perfilPng.png')}></Image>
               :
               <Image style={styles.img} source={{ uri: imagem }}></Image>

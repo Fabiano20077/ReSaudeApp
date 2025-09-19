@@ -12,10 +12,10 @@ export default function App() {
   const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState();
-  const [usuario,setUsuario] = useState('');
+  const [senha, setSenha] = useState('');
+  const [usuario, setUsuario] = useState('');
 
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const login = () => {
 
@@ -26,10 +26,10 @@ export default function App() {
       LoginSenha: senha
     })
       .then(res => {
-          console.log('logado', res.data) 
-          setLoading(false)
-          AsyncStorage.setItem('usuario',JSON.stringify(res.data));
-          navigation.navigate('Dashboard')
+        console.log('logado', res.data)
+        setLoading(false)
+        AsyncStorage.setItem('usuario', JSON.stringify(res.data));
+        navigation.navigate('Dashboard')
       })
       .catch(error => {
         setLoading(false)
@@ -37,12 +37,11 @@ export default function App() {
       })
   }
 
-  if(loading) {
+  if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size='large' color='#ccc'>
-          <Text>carregando</Text>
-        </ActivityIndicator>
+        <ActivityIndicator size='large' color='#ccc'></ActivityIndicator>
+        <Text>carregando</Text>
       </View>
     )
   }
@@ -51,7 +50,6 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.containerLogin}>
         <View style={styles.logo}>
-          {/*  <Image source={require("../../../img/Logo_ReSaude-removebg-preview.png")} style={styles.img}/> */}
         </View>
         <View style={styles.login}>
           <View style={styles.containerTitulo}>
@@ -62,12 +60,14 @@ export default function App() {
             <Text style={styles.texto}>Email</Text>
             <TextInput
               style={styles.inputEmail}
+              value={email}
               placeholder='Digite seu email'
               onChangeText={setEmail}
             />
             <Text style={styles.texto}>Senha</Text>
             <TextInput
               style={styles.inputEmail}
+              value={senha}
               placeholder='Digite sua senha'
               onChangeText={setSenha}
             />
@@ -76,11 +76,13 @@ export default function App() {
               <Text style={styles.letraBotao}>Aperte</Text>
             </Pressable>
 
-            <Text style={styles.texto}> não tem conta?
+            <View style={styles.ir}>
+
+              <Text style={styles.texto}> não tem conta?</Text>
               <Pressable style={styles.link} onPress={() => { navigation.navigate('Cadastro') }}>
-                <Text>clique aqui</Text>
+                <Text style={styles.texteLink}>clique aqui</Text>
               </Pressable>
-            </Text>
+            </View>
 
           </View>
         </View>

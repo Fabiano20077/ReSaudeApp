@@ -10,11 +10,16 @@ export default StyleSheet.create({
     flex: 1
   },
 
+  corpo: {
+    flex: .9
+  },
+
   nav: {
+    flex: .1,
     flexDirection: 'row',
     width: '100%',
     height: 70,
-    borderWidth: 1,
+    borderTopWidth: 1,
     alignItems: 'center'
   },
 

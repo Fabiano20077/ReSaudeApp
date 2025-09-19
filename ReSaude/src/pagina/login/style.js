@@ -32,17 +32,17 @@ export default StyleSheet.create({
 
     titulo:{
         fontSize: 20,
-        fontWeight: 500
+        fontWeight: '500'
     },
 
     inputs: {
-        flex: 1,
-        width: '70'
+        flex: .8,
+        width: '70%'
     },
 
     texto: {
         fontSize:15,
-        fontWeight: 400,
+        fontWeight: '400',
         padding: 10, 
         marginLeft:20
     },
@@ -53,9 +53,13 @@ export default StyleSheet.create({
         borderWidth: 1
     },
 
+    ir:{
+        flexDirection: 'row',
+    },
+
     botao: {
         marginTop: 10,
-        width: '100',
+        width: '100%',
         borderWidth: 1,
         padding: 10,
         backgroundColor:'#164773',
@@ -69,12 +73,15 @@ export default StyleSheet.create({
     },
 
     link:{
-        color: '#2d1efdff'
-        
+        color: '#2d1efdff',
+        justifyContent: 'center'
+    },
+
+    texteLink: {
+        color: 'blue'
     },
 
     img: {
-    flex:1,
     width:350,
     height:350,
     justifyContent:'center',

@@ -13,15 +13,17 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.containerDashboard}>
-        <View style={styles.nav}>
-            <Pressable onPress={() => navigation.navigate('Login')}>
-                <Text>volta</Text>
-            </Pressable>
-            <Pressable onPress={() => navigation.navigate('Perfil')}>
-                <Image style={styles.img} source={require('../../../assets/perfilPng.png')}></Image>
-            </Pressable>
+        <View style={styles.corpo}>
+        <Text>ola mundo</Text>
         </View>
-      <Text>ola mundo</Text>
+        <View style={styles.nav}>
+          <Pressable onPress={() => navigation.navigate('Login')}>
+            <Text>volta</Text>
+          </Pressable>
+          <Pressable onPress={() => navigation.navigate('Perfil')}>
+            <Image style={styles.img} source={require('../../../assets/perfilPng.png')}></Image>
+          </Pressable>
+        </View>
       </View>
       <StatusBar style="auto" />
     </View>
