@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Pressable, Image, TextInput, ActivityIndicator } from 'react-native';
+import { View, Text, Pressable, Image, TextInput, ActivityIndicator, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import api from '../api';
 import styles from './style';
 import * as ImagePicker from 'expo-image-picker';
+import { FileSystem } from 'expo-file-system';
 
 export default function App() {
 
@@ -23,7 +24,7 @@ export default function App() {
   const [imagem, setImagem] = useState('');
   const [nasci, setNasci] = useState('');
   const [senha, setSenha] = useState('');
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const solicitarPermissao = async () => {
     const camera = await ImagePicker.requestCameraPermissionsAsync();
@@ -71,18 +72,25 @@ export default function App() {
     }
   }
 
+
   const insert = async () => {
 
     setLoading(true)
 
+    // Adicionar imagem se existir
+
+
+
     var usuario = new FormData();
 
-
-    usuario.append('foto', {
-      uri: imagem,
-      type: 'image/jpeg',
-      name: 'image.jpg',
-    });
+    // Adicionar imagem se existir
+    if (imagem) {
+      usuario.append('foto', {
+        uri: imagem,
+        name: 'image.jpg',
+        type: 'image/jpeg'
+      });
+    }
     usuario.append('nomeInput', nome);
     usuario.append('emailInput', email);
     usuario.append('nascimentoInput', nasci);
@@ -103,7 +111,7 @@ export default function App() {
       })
   }
 
-  if(loading) {
+  if (loading) {
     return (
       <View>
         <ActivityIndicator size='large' color='blue'></ActivityIndicator>

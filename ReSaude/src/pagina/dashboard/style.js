@@ -11,7 +11,19 @@ export default StyleSheet.create({
   },
 
   corpo: {
-    flex: .9
+    flex: .9,
+    padding: 20,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 10
+  },
+
+  card: {
+    width: '45%',
+    height: 150,
+    borderWidth: 1,
+    borderRadius: 10
   },
 
   nav: {

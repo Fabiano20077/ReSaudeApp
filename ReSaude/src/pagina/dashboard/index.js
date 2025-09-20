@@ -14,7 +14,26 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.containerDashboard}>
         <View style={styles.corpo}>
-        <Text>ola mundo</Text>
+          <View style={styles.card}>
+            <Pressable onPress={() => navigation.navigate('Calorias')}>
+              <Text>calorias</Text>
+            </Pressable>
+          </View>
+          <View style={styles.card}>
+            <Pressable onPress={() => navigation.navigate('Mmc')}>
+              <Text> imc</Text>
+            </Pressable>
+          </View>
+          <View style={styles.card}>
+            <Pressable onPress={() => navigation.navigate('agua')}>
+              <Text>agua</Text>
+            </Pressable>
+          </View>
+          <View style={styles.card}>
+            <Pressable>
+
+            </Pressable>
+          </View>
         </View>
         <View style={styles.nav}>
           <Pressable onPress={() => navigation.navigate('Login')}>

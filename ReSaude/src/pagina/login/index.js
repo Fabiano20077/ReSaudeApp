@@ -33,7 +33,7 @@ export default function App() {
       })
       .catch(error => {
         setLoading(false)
-        console.log('nao foi possivel fzee login', error.response?.data || error.data);
+        console.log('nao foi possivel fzee login', error.response?.data || error.message);
       })
   }
 
