@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import api from '../api';
 import styles from './style';
 import * as ImagePicker from 'expo-image-picker';
-import { FileSystem } from 'expo-file-system';
+import { Picker } from '@react-native-picker/picker';
 
 export default function App() {
 
@@ -23,6 +23,7 @@ export default function App() {
   const [email, setEmail] = useState('');
   const [imagem, setImagem] = useState('');
   const [nasci, setNasci] = useState('');
+  const [selectTipo, setSelect] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -94,6 +95,7 @@ export default function App() {
     usuario.append('nomeInput', nome);
     usuario.append('emailInput', email);
     usuario.append('nascimentoInput', nasci);
+    usuario.append('sangueInput',selectTipo);
     usuario.append('senhaInput', senha);
 
     api.post('/cadastra', usuario, {
@@ -150,6 +152,21 @@ export default function App() {
           placeholder='Ex:aaaa/mm/dd'
           onChangeText={setNasci}
         />
+
+        <Text>tipo sanguineo</Text>
+        <Picker
+          selectedValue={selectTipo}
+          onValueChange={(itemSelect) => setSelect(itemSelect)}
+        >
+          <Picker.Item label='A+' value='A+'/>
+          <Picker.Item label='A-' value='A-'/>
+          <Picker.Item label='B+' value='B+'/>
+          <Picker.Item label='B-' value='B-'/>
+          <Picker.Item label='AB+' value='AB+'/>
+          <Picker.Item label='AB-' value='AB-'/>
+          <Picker.Item label='O+' value='O+'/>
+          <Picker.Item label='O-' value='O-'/>
+        </Picker>
         <Text style={styles.espaco}>Senha:</Text>
         <TextInput style={styles.inputEmail}
           value={senha}

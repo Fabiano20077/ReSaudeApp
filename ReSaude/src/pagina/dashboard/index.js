@@ -10,6 +10,7 @@ export default function App() {
 
   const navigation = useNavigation();
 
+
   return (
     <View style={styles.container}>
       <View style={styles.containerDashboard}>
@@ -30,8 +31,18 @@ export default function App() {
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Pressable>
-
+            <Pressable onPress={() => navigation.navigate('Sangue')}>
+              <Text>sangue</Text>
+            </Pressable>
+          </View>
+          <View style={styles.card}>
+            <Pressable onPress={() => navigation.navigate('agua')}>
+              <Text></Text>
+            </Pressable>
+          </View>
+          <View style={styles.card}>
+            <Pressable onPress={() => navigation.navigate('Sangue')}>
+              <Text></Text>
             </Pressable>
           </View>
         </View>

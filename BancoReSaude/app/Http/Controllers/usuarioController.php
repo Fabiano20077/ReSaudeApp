@@ -59,6 +59,7 @@ class usuarioController extends Controller
         $usuario->img = $path;
 
         $usuario->nascimento = $request->nascimentoInput;
+        $usuario->sangue = $request->sangueInput;
         $usuario->senha = bcrypt($request->senhaInput);
         $usuario->save();
 
