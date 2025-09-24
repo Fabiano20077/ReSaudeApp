@@ -57,6 +57,7 @@ export default function App() {
     usuario.append('nome', nome);
     usuario.append('email', email);
     usuario.append('nascimento', nasci);
+    usuario.append('senha',senha)
 
     api.post(`/update-dados/${id}`, usuario, {
       headers: {
@@ -73,6 +74,23 @@ export default function App() {
         setLoading(false)
       })
   }
+
+   const deleta = async () => {
+  
+        const usuario = await AsyncStorage.getItem('usuario');
+  
+        const array = JSON.parse(usuario);
+  
+        api.delete(`/deleta-usuario/${array.user['id']}`)
+        .then(res =>{
+          console.log('deletado', res.data)
+          navigation.navigate('Login')
+        })
+        .catch(erro => {
+  console.log('erro', erro.response?.data || erro.message)
+        });
+        
+      }
 
 
   if (loading) {
@@ -106,6 +124,11 @@ export default function App() {
           <View>
             <Pressable onPress={() => setModal(true)}>
               <Text>editar</Text>
+            </Pressable>
+          </View>
+          <View>
+            <Pressable onPress={() => deleta()}>
+              <Text>apagr</Text>
             </Pressable>
           </View>
         </View>
@@ -158,6 +181,9 @@ export default function App() {
 
                   <Pressable style={styles.botao} onPress={() => update()}>
                     <Text style={styles.letraBotao}>aperte</Text>
+                  </Pressable>
+                  <Pressable style={styles.botao} onPress={() => setModal(false)}>
+                    <Text style={styles.letraBotao}>fecha</Text>
                   </Pressable>
                 </>)
                 :

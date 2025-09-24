@@ -78,13 +78,8 @@ export default function App() {
 
     setLoading(true)
 
-    // Adicionar imagem se existir
-
-
-
     var usuario = new FormData();
-
-    // Adicionar imagem se existir
+   
     if (imagem) {
       usuario.append('foto', {
         uri: imagem,

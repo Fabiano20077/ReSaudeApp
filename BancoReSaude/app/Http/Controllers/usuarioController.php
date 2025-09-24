@@ -47,15 +47,11 @@ class usuarioController extends Controller
 
         $usuario->nome = $request->nomeInput;
         $usuario->email = $request->emailInput;
-
-        $image = $request->file('foto');
-
-        if ($image == null) {
-            $path = "";
-        } else {
-            $path = $image->store('imagens', 'public');
+        $path = "";
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            $path = $request->file('foto')->store('imagens', 'public');
         }
-
+    
         $usuario->img = $path;
 
         $usuario->nascimento = $request->nascimentoInput;
@@ -109,13 +105,24 @@ class usuarioController extends Controller
     public function update(Request $request, string $id)
     {
 
+        
+
         $validarDados = $request->validate([
             "nome" => 'min:3',
             "email" => 'min:10',
             "nascimento" => 'min:3',
+            "senha" => 'min:3'
         ]);
 
+       
+
         $usuario = user::find($id);
+
+        if (isset($validarDados['senha'])) {
+            $validarDados['senha'] = Hash::make($validarDados['senha']);
+        }
+     
+
 
         $usuario->update($validarDados);
 
@@ -135,6 +142,12 @@ class usuarioController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $usuario = user::find($id)->delete();
+
+        return response()->json(
+            ['message' => 'apagado'],200
+        );
+
+
     }
 }

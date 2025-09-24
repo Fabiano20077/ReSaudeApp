@@ -30,3 +30,5 @@ Route::post('/cadastra', [usuarioController::class, 'store']);
 Route::post('/login', [usuarioController::class, 'show']);
 
 Route::post('/update-dados/{id}', [usuarioController::class, 'update']);
+
+Route::delete('/deleta-usuario/{id}', [usuarioController::class, 'destroy']);

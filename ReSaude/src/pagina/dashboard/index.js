@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../api';
 import styles from './style';
 
 
@@ -10,6 +11,17 @@ export default function App() {
 
   const navigation = useNavigation();
 
+  
+   const apagarLocal =async () => {
+    try {
+      await AsyncStorage.removeItem('usuario');
+      console.log('apagado no local')
+      navigation.navigate('Login')
+    }
+    catch(erro){
+      console.log('erro')
+    }
+   }
 
   return (
     <View style={styles.container}>
@@ -47,7 +59,7 @@ export default function App() {
           </View>
         </View>
         <View style={styles.nav}>
-          <Pressable onPress={() => navigation.navigate('Login')}>
+          <Pressable onPress={() =>apagarLocal()}>
             <Text>volta</Text>
           </Pressable>
           <Pressable onPress={() => navigation.navigate('Perfil')}>
