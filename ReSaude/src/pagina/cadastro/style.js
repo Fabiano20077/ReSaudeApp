@@ -52,6 +52,15 @@ export default StyleSheet.create({
   botao: {
     backgroundColor: '#002efdff',
     padding: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 10
+  },
+  botaoRed: {
+    backgroundColor: 'red',
+    padding: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
     borderRadius: 10
   },
 
@@ -86,8 +95,14 @@ export default StyleSheet.create({
   escolha2:{
     flex: .3,
     flexDirection: 'row',
-       alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  botoes2:{
+    flexDirection: 'row',
+    width: '50%',
+    justifyContent: 'space-evenly'
   }
 
 

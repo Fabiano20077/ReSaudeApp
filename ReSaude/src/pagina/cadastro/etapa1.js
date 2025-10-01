@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import api from '../api';
 import styles from './style';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function etapa1({ data, onChange, onNext }) {
@@ -14,7 +15,7 @@ export default function etapa1({ data, onChange, onNext }) {
      const [nasci, setNasci] = useState(''); */
     const [loading, setLoading] = useState(false);
 
-    const insert = () => {
+    const insert = async () => {
         setLoading(true)
 
         var usuario = new FormData();
@@ -27,7 +28,8 @@ export default function etapa1({ data, onChange, onNext }) {
 
         api.post('/cadastra-etapa1', usuario)
             .then(res => {
-                console.log('etapa1 feita', res.data)
+                console.log('etapa1 feita', res.data);
+                 AsyncStorage.setItem('usuario',JSON.stringify(res.data));
                 onNext();
                 setLoading(false)
             })

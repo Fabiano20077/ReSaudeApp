@@ -137,11 +137,13 @@ export default function App() {
 
       <Modal transparent={true} visible={modal}>
         <View style={styles.containerModal}>
-          <View>
+          <View style={styles.containerEdita}>
+            <View style={styles.containerDados}>
+
             {
               textoLogin == false ? (
                 <>
-                  <Text>edite seu dados</Text>
+             
 
                   <Pressable onPress={() => { }}>
                     {imagem == null ?
@@ -178,19 +180,22 @@ export default function App() {
                     value={senha}
                     onChangeText={setSenha}
                   />
+<View style={styles.botoes}>
 
-                  <Pressable style={styles.botao} onPress={() => update()}>
-                    <Text style={styles.letraBotao}>aperte</Text>
-                  </Pressable>
                   <Pressable style={styles.botao} onPress={() => setModal(false)}>
                     <Text style={styles.letraBotao}>fecha</Text>
                   </Pressable>
+                  <Pressable style={styles.botao} onPress={() => update()}>
+                    <Text style={styles.letraBotao}>salva</Text>
+                  </Pressable>
+</View>
                 </>)
                 :
                 <ActivityIndicator size='large' color='blue'>
                   <Text>carregando...</Text>
                 </ActivityIndicator>
             }
+            </View>
           </View>
         </View>
       </Modal>

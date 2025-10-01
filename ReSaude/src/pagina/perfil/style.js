@@ -26,9 +26,22 @@ export default StyleSheet.create({
 
   containerModal: {
     flex: 1,
-    backgroundColor: '#ccc',
+    backgroundColor: 'rgba(0,0,0,.5)',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+
+  containerEdita: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  containerDados:{
+
   },
 
   img: {
@@ -44,11 +57,17 @@ export default StyleSheet.create({
     width: 200
   },
 
+  botoes:{
+    flexDirection: 'row',
+    marginTop: 10,
+    justifyContent: 'space-evenly'
+  },
+
   botao: {
     justifyContent: 'center',
     alignItems: 'center',
     height: 40,
-    width: 100,
+    width: 90,
     borderWidth: 1,
     padding: 4,
     backgroundColor: '#164773',

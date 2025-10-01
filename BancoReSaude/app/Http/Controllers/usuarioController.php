@@ -79,9 +79,10 @@ class usuarioController extends Controller
         );
     }
 
-    public function etapa3(Request $request)
+    public function etapa3(string $id,Request $request)
     {
      
+        $usuario = User::find($id);
 
         $usuario->bairro = $request->inputBairro;
         $usuario->uf = $request->inputUf;
@@ -98,16 +99,16 @@ class usuarioController extends Controller
         );
     }
 
-    public function etapa4(Request $request)
+    public function etapa4(string $id,Request $request)
     {
-        
+        $usuario = User::find($id);
 
         $imagem = $request->file('foto');
 
-        if (!$imagem) {
-            $path = "";
-        } else {
+        if ($imagem) {
             $path = $imagem->store('imagens', 'public');
+        } else {
+            $path = "";
         }
 
         $usuario->img = $path;
@@ -122,9 +123,9 @@ class usuarioController extends Controller
             200
         );
     }
-    public function etapa5(Request $request)
+    public function etapa5(string $id,Request $request)
     {
-     
+        $usuario = User::find($id);
 
         $usuario->senha = Hash::make($request->inputSenha);
 

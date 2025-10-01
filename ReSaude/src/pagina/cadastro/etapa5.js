@@ -4,8 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import api from '../api';
 import styles from './style';
-import * as ImagePicker from 'expo-image-picker';
-import { Picker } from '@react-native-picker/picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function etapa5({ data, onChange, onFinish, onBack }) {
 
@@ -19,7 +18,11 @@ export default function etapa5({ data, onChange, onFinish, onBack }) {
 
    usuario.append('inputSenha',  data.senha)
 
-    api.post('/cadastra-etapa5', usuario, {
+   var array = await AsyncStorage.getItem('usuario')
+
+    var user = JSON.parse(array)
+
+    api.post(`/cadastra-etapa5/${user.usuario['id']}`, usuario, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

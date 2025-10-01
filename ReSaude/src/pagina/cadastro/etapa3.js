@@ -4,28 +4,26 @@ import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import api from '../api';
 import styles from './style';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function etapa1({ data, onChange, onNext, onBack }) {
 
-
-  /*  const [nome, setNome] = useState('');
-   const [email, setEmail] = useState('');
-   const [nasci, setNasci] = useState(''); */
   const [loading, setLoading] = useState(false);
 
-  const insert = () => {
+  const insert = async() => {
     setLoading(true)
 
     var usuario = new FormData();
 
-    usuario.append('inputNome', data.bairro)
-    usuario.append('inputEmail', data.uf)
-    usuario.append('inputNasci', data.cidade)
+    usuario.append('inputBairro', data.bairro)
+    usuario.append('inputUf', data.uf)
+    usuario.append('inputEstado', data.cidade)
 
+    var array = await AsyncStorage.getItem('usuario')
 
+    var user = JSON.parse(array)
 
-    api.post('/cadastra-etapa3', usuario)
+    api.post(`/cadastra-etapa3/${user.usuario['id']}`, usuario)
       .then(res => {
         console.log('etapa1 feita', res.data)
         onNext();
@@ -64,7 +62,6 @@ export default function etapa1({ data, onChange, onNext, onBack }) {
             placeholder='digite seu bairo'
             value={data.bairro}
             onChangeText={(text) => onChange('bairro', text)}
-            onBlur={() => buscaCep(data.cep)}
           />
 
           <TextInput
@@ -81,7 +78,7 @@ export default function etapa1({ data, onChange, onNext, onBack }) {
           />
 
           <View style={styles.botoes}>
-            <Pressable style={styles.botao} onPress={() => onBack()}>
+            <Pressable style={styles.botaoRed} onPress={() => onBack()}>
               <Text style={styles.texto}>volta</Text>
             </Pressable>
             <Pressable style={styles.botao} onPress={() => insert()}>

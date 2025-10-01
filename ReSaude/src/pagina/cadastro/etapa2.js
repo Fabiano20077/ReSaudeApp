@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import api from '../api';
 import styles from './style';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function etapa2({ data, onChange, onNext, onBack }) {
@@ -12,40 +13,48 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
 
   const [loading, setLoading] = useState(false);
 
-  const buscaCep = (cep) => {
+
+  const buscaCep = async (cep) => {
 
     setLoading(true)
 
-    axios.get(`https://viacep.com.br/ws/${cep}/json/`, {
-      headers: {'Accept': "aplication/json"}
-    })
-      .then(res => {
-        onChange('bairro', res.data.bairro || "");
-        onChange('logradouro', res.data.logradouro || "");
-        onChange('cidade', res.data.localidade || "");
-        onChange('uf', res.data.uf || "");
-        console.log('feito cep', res.data);
+    try {
+      const response = await axios.get(`'https://viacep.com.br/ws/${cep}/json/'`);
+      
+      if (response.data.erro) {
+        console.log('CEP não encontrado');
+        return;
+      }
 
-      })
-      .catch(err => {
-        console.log('nao busquei', err.response?.data || err.message)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+      onChange('bairro', response.data.bairro || "");
+      onChange('logradouro', response.data.logradouro || "");
+      onChange('cidade', response.data.localidade || "");
+      onChange('uf', response.data.uf || "");
+      console.log('CEP encontrado:', response.data);
+
+    } catch (err) {
+      console.log('Erro ao buscar CEP:', err.response?.data || err.message);
+      // Aqui você pode adicionar um alerta ou mensagem para o usuário
+    } finally {
+      setLoading(false)
+    }
 
   }
 
-  const insert = () => {
+  const insert = async () => {
     setLoading(true)
 
     var usuario = new FormData();
 
     usuario.append('inputCep', data.cep);
-    usuario.append('inputLogra', data.logra);
+    usuario.append('inputLogra', data.logradouro);
     usuario.append('inputNum', data.num);
 
-    api.post('/cadastra-etapa2', usuario)
+    var array = await AsyncStorage.getItem('usuario')
+
+    var user = JSON.parse(array)
+
+    api.post(`/cadastra-etapa2/${user.usuario['id']}`, usuario)
       .then(res => {
         console.log('etapa2 feita', res.data)
         onNext();
@@ -103,7 +112,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
 
           <View style={styles.botoes}>
 
-            <Pressable style={styles.botao} onPress={() => onBack()}>
+            <Pressable style={styles.botaoRed} onPress={() => onBack()}>
               <Text style={styles.texto}>volta</Text>
             </Pressable>
             <Pressable style={styles.botao} onPress={() => insert()}>

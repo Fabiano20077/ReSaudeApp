@@ -26,10 +26,10 @@ Route::get('/teste', function () {
 Route::get('/chamar-usuario/{id}', [usuarioController::class, 'index']);
 
 Route::post('/cadastra-etapa1', [usuarioController::class, 'etapa1']);
-Route::post('/cadastra-etapa2', [usuarioController::class, 'etapa2']);
-Route::post('/cadastra-etapa3', [usuarioController::class, 'etapa3']);
-Route::post('/cadastra-etapa4', [usuarioController::class, 'etapa4']);
-Route::post('/cadastra-etapa5', [usuarioController::class, 'etapa5']);
+Route::post('/cadastra-etapa2/{id}', [usuarioController::class, 'etapa2']);
+Route::post('/cadastra-etapa3/{id}', [usuarioController::class, 'etapa3']);
+Route::post('/cadastra-etapa4/{id}', [usuarioController::class, 'etapa4']);
+Route::post('/cadastra-etapa5/{id}', [usuarioController::class, 'etapa5']);
 
 Route::post('/login', [usuarioController::class, 'show']);
 

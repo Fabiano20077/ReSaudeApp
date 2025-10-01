@@ -28,7 +28,8 @@ export default function App() {
                 <Stack.Screen name='Calorias' component={Calorias} />
                 <Stack.Screen name='Perfil' component={Perfil}
                     options={{ headerShown: true }} />
-                <Stack.Screen name='Cadastro' component={Cadastro} />
+                <Stack.Screen name='Cadastro' component={Cadastro}
+                options={{ headerShown: false }}  />
                 <Stack.Screen name='Dashboard' component={Dashboard}
                     options={{ headerShown: false }} />
                 <Stack.Screen name='Sangue' component={Sangue} />

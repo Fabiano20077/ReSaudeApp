@@ -6,6 +6,7 @@ import api from '../api';
 import styles from './style';
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function etapa4({ data, onChange, onNext, onBack }) {
 
@@ -73,12 +74,16 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
     if (imagem) {
       usuario.append('foto', {
         uri: data.foto,
-        name: 'image.jpg',
-        type: 'image/jpeg'
+        name: 'image.png',
+        type: 'image/png'
       });
     }
 
-    api.post('/cadastra-etapa3', usuario, {
+    var array = await AsyncStorage.getItem('usuario')
+
+    var user = JSON.parse(array)
+
+    api.post(`/cadastra-etapa4/${user.usuario['id']}`, usuario, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -124,12 +129,15 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
 
         <View style={styles.escolha2}>
 
-          <Pressable style={styles.botao} onPress={() => onBack()}>
+<View style={styles.botoes2}>
+
+          <Pressable style={styles.botaoRed} onPress={() => onBack()}>
             <Text style={styles.texto}>volta</Text>
           </Pressable>
           <Pressable style={styles.botao} onPress={() => insert()}>
             <Text style={styles.texto}>aperte</Text>
           </Pressable>
+</View>
         </View>
 
       </View>
