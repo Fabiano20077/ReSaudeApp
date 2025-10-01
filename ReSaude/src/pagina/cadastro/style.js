@@ -5,77 +5,90 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#0396039d',
     width: 375,
     height: 200
   },
 
-  containerCadastra: {
-    flex: 1,
+  containeretapa: {
+    flex: 1
+  },
+
+  titulo: {
+    flex: .1,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
 
-  imagem: {
+  textoTitulo: {
+    color: 'white',
+    fontSize: 50
 
   },
 
-  img: {
-    width: 200,
-    height: 200,
-    borderRadius: 100
-  },
-
-  espaco: {
-    height: 20,
-    fontFamily: 'Arial',
-    padding: 5
-  },
-
-  logo: {
-    flex: 1,
-  },
-
-  inputs: {
-    flex: 1,
-    width: '70',
+  campoInputs: {
+    flex: .9,
+    borderWidth: 1,
+    alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    gap: 10
+  },
+
+  input: {
+    width: '80%',
+    padding: 15,
+    fontSize: 25,
+    backgroundColor: '#0000007c',
+    color: '#fff',
+    borderRadius: 10,
+  },
+
+  botoes: {
+    flexDirection: 'row',
+    gap: 20
+  },
+
+  botao: {
+    backgroundColor: '#002efdff',
+    padding: 10,
+    borderRadius: 10
   },
 
   texto: {
-    fontSize: 13,
-    fontWeight: 350,
-    padding: 10
-  },
-
-  inputEmail: {
-    padding: 10,
-    fontSize: 15,
-    borderWidth: 1,
-    width: 200
-  },
-
-  botao: {
-    marginTop: 5,
-    marginRight: 5,
-    marginLeft: 140,
-  },
-
-  letraBotao: {
-    color: '#fff',
     fontSize: 20,
+    color: 'white'
   },
 
-  botao: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 40,
-    width: 100,
+  imagem: {
+    flex: .5,
     borderWidth: 1,
-    padding: 4,
-    backgroundColor: '#164773',
-    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent:'center'
+  },
+
+  img: {
+    width: '70%',
+    height: '78%',
+    borderRadius: 150
+  
+ 
+  },
+
+  escolher:{
+    flex: .2,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  escolha2:{
+    flex: .3,
+    flexDirection: 'row',
+       alignItems: 'center',
+    justifyContent: 'center'
   }
+
 
 });

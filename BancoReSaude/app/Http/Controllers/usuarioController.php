@@ -18,8 +18,8 @@ class usuarioController extends Controller
     {
         $usuario = user::find($id);
 
-        if(!$usuario) {
-            return response()->json(['erro' => 'usuario nao encontardo'],404);
+        if (!$usuario) {
+            return response()->json(['erro' => 'usuario nao encontardo'], 404);
         }
 
         return response()->json(
@@ -41,28 +41,102 @@ class usuarioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function etapa1(Request $request)
     {
-        $usuario = new user();
+        $usuario = new User();
 
-        $usuario->nome = $request->nomeInput;
-        $usuario->email = $request->emailInput;
-        $path = "";
-        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-            $path = $request->file('foto')->store('imagens', 'public');
-        }
-    
-        $usuario->img = $path;
+        $usuario->nome = $request->inputNome;
+        $usuario->email = $request->inputEmail;
+        $usuario->nascimento = $request->inputNasci;
 
-        $usuario->nascimento = $request->nascimentoInput;
-        $usuario->sangue = $request->sangueInput;
-        $usuario->senha = bcrypt($request->senhaInput);
         $usuario->save();
 
-        return response()->json([
-            'message' => 'Usuário cadastrado com sucesso',
-            'user' => $usuario
-        ]);
+        return response()->json(
+            [
+                'messagme' => 'etapa1 salvo com sucesso',
+                'usuario' => $usuario
+            ],
+            200
+        );
+    }
+
+    public function etapa2(string $id,Request $request)
+    {
+       $usuario = User::find($id);
+
+        $usuario->cep = $request->inputCep;
+        $usuario->logra = $request->inputLogra;
+        $usuario->numero = $request->inputNum;
+
+        $usuario->save();
+
+        return response()->json(
+            [
+                'messagme' => 'etapa2 salvo com sucesso',
+                'usuario' => $usuario
+            ],
+            200
+        );
+    }
+
+    public function etapa3(Request $request)
+    {
+     
+
+        $usuario->bairro = $request->inputBairro;
+        $usuario->uf = $request->inputUf;
+        $usuario->estado = $request->inputEstado;
+
+        $usuario->save();
+
+        return response()->json(
+            [
+                'messagme' => 'etapa3 salvo com sucesso',
+                'usuario' => $usuario
+            ],
+            200
+        );
+    }
+
+    public function etapa4(Request $request)
+    {
+        
+
+        $imagem = $request->file('foto');
+
+        if (!$imagem) {
+            $path = "";
+        } else {
+            $path = $imagem->store('imagens', 'public');
+        }
+
+        $usuario->img = $path;
+
+        $usuario->save();
+
+        return response()->json(
+            [
+                'messagme' => 'etapa4 salvo com sucesso',
+                'usuario' => $usuario
+            ],
+            200
+        );
+    }
+    public function etapa5(Request $request)
+    {
+     
+
+        $usuario->senha = Hash::make($request->inputSenha);
+
+        $usuario->save();
+
+        return response()->json(
+            [
+                'messagme' => 'etapa4 salvo com sucesso',
+                'usuario' => $usuario
+            ],
+            200
+        );
     }
 
     /**
@@ -80,12 +154,11 @@ class usuarioController extends Controller
             ), 404);
         } else {
 
-            $token = $usuario->createToken('auth_token')->plainTextToken;
             return response()->json((
                 [
                     'mensage' => 'login feito',
                     'user' => $usuario,
-                    'token' => $token
+            
                 ]
             ));
         }
@@ -105,7 +178,7 @@ class usuarioController extends Controller
     public function update(Request $request, string $id)
     {
 
-        
+
 
         $validarDados = $request->validate([
             "nome" => 'min:3',
@@ -114,14 +187,14 @@ class usuarioController extends Controller
             "senha" => 'min:3'
         ]);
 
-       
+
 
         $usuario = user::find($id);
 
         if (isset($validarDados['senha'])) {
             $validarDados['senha'] = Hash::make($validarDados['senha']);
         }
-     
+
 
 
         $usuario->update($validarDados);
@@ -145,9 +218,8 @@ class usuarioController extends Controller
         $usuario = user::find($id)->delete();
 
         return response()->json(
-            ['message' => 'apagado'],200
+            ['message' => 'apagado'],
+            200
         );
-
-
     }
 }

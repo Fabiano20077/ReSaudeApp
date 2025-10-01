@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->text('img')->nullable();
             $table->date('nascimento')->nullable();
+            $table->string('cep')->nullable();
+            $table->string('logra')->nullable();
+            $table->string('numero')->nullable();
+            $table->string('bairro')->nullable();
+            $table->string('uf')->nullable();
+            $table->string('estado')->nullable();
             $table->string('sangue')->nullable();
             $table->string('senha')->nullable();
             $table->rememberToken();

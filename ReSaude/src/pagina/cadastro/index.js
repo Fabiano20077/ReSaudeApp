@@ -4,174 +4,85 @@ import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import api from '../api';
 import styles from './style';
-import * as ImagePicker from 'expo-image-picker';
-import { Picker } from '@react-native-picker/picker';
+
+import Etapa1 from './etapa1';
+import Etapa2 from './etapa2';
+import Etapa3 from './etapa3';
+import Etapa4 from './etapa4';
+import Etapa5 from './etapa5';
 
 export default function App() {
 
   const Navigation = useNavigation();
 
-  useEffect(() => {
-    api.get("/teste")
-      .then(res => console.log(res.data))
-      .catch(err => console.log("Erro:", err.message));
-  }, []);
+  const [step, setStep] = useState(1);
 
+  const [formData, setFormData] = useState({
+    nome: "",
+    email: "",
+    nasci: "",
+    cep: "",
+    logradouro: "",
+    num: "",
+    bairro: "",
+    uf: "",
+    cidade: "",
+    foto: "",
+    senha: "",
+  });
 
-
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [imagem, setImagem] = useState('');
-  const [nasci, setNasci] = useState('');
-  const [selectTipo, setSelect] = useState('');
-  const [senha, setSenha] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const solicitarPermissao = async () => {
-    const camera = await ImagePicker.requestCameraPermissionsAsync();
-    const galeria = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (camera.status != 'granted' && galeria.status != 'granted') {
-      alert('permissão negeda', 'é necessario pedir permissao para acessa a camera ou a galeria');
-      return false;
-    }
-
-    return true;
-  }
-
-  const tirarFoto = async () => {
-    const permissao = await solicitarPermissao();
-    if (!permissao) return;
-
-    const resultado = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1
-    })
-
-    if (!resultado.canceled) {
-      setImagem(resultado.assets[0].uri)
-    }
-  }
-
-  const escolherGaleria = async () => {
-    const permissao = await solicitarPermissao();
-
-    if (!permissao) return;
-
-    const resultado = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8
-    })
-
-    console.log("Resultado da imagem:", resultado.assets[0].uri);
-
-    if (!resultado.canceled) {
-      setImagem(resultado.assets[0].uri)
-    }
-  }
-
-
-  const insert = async () => {
-
-    setLoading(true)
-
-    var usuario = new FormData();
-   
-    if (imagem) {
-      usuario.append('foto', {
-        uri: imagem,
-        name: 'image.jpg',
-        type: 'image/jpeg'
-      });
-    }
-    usuario.append('nomeInput', nome);
-    usuario.append('emailInput', email);
-    usuario.append('nascimentoInput', nasci);
-    usuario.append('sangueInput',selectTipo);
-    usuario.append('senhaInput', senha);
-
-    api.post('/cadastra', usuario, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then(response => {
-        console.log('cadastrado', response.data)
-        Navigation.navigate('Login');
-      })
-      .catch(erro => {
-        console.log('erro cadastra', erro.response?.data || erro.message);
-        setLoading(false)
-      })
-  }
-
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size='large' color='blue'></ActivityIndicator>
-        <Text>carregando</Text>
-      </View>
-    )
-  }
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerCadastra}>
-        <View style={styles.imagem}>
-          <Pressable onPress={() => escolherGaleria()}>
-            {imagem == '' ?
-              <Image style={styles.img} source={require('../../../assets/perfilPng.png')}></Image>
-              :
-              <Image style={styles.img} source={{ uri: imagem }}></Image>
-            }
-          </Pressable>
-        </View>
-        <Text style={styles.espaco}>Nome:</Text>
-        <TextInput style={styles.inputEmail}
-          value={nome}
-          placeholder='Ex:Fabiano'
-          onChangeText={setNome}
-        />
-        <Text style={styles.espaco}>Email:</Text>
-        <TextInput style={styles.inputEmail}
-          value={email}
-          placeholder='Ex:fabiano@gmail.com'
-          onChangeText={setEmail}
-        />
-        <Text style={styles.espaco}>Data de Nascimento:</Text>
-        <TextInput style={styles.inputEmail}
-          value={nasci}
-          placeholder='Ex:aaaa/mm/dd'
-          onChangeText={setNasci}
-        />
 
-        <Text>tipo sanguineo</Text>
-        <Picker
-          selectedValue={selectTipo}
-          onValueChange={(itemSelect) => setSelect(itemSelect)}
-        >
-          <Picker.Item label='A+' value='A+'/>
-          <Picker.Item label='A-' value='A-'/>
-          <Picker.Item label='B+' value='B+'/>
-          <Picker.Item label='B-' value='B-'/>
-          <Picker.Item label='AB+' value='AB+'/>
-          <Picker.Item label='AB-' value='AB-'/>
-          <Picker.Item label='O+' value='O+'/>
-          <Picker.Item label='O-' value='O-'/>
-        </Picker>
-        <Text style={styles.espaco}>Senha:</Text>
-        <TextInput style={styles.inputEmail}
-          value={senha}
-          placeholder='Mínimo 3 carácteres'
-          onChangeText={setSenha}
+
+      {step == 1 && (
+        <Etapa1
+          data={formData}
+          onChange={handleChange}
+          onNext={() => setStep(2)}
         />
-        <Pressable style={styles.botao} onPress={() => { insert() }}>
-          <Text style={styles.letraBotao}>aperte</Text>
-        </Pressable>
-      </View>
+      )}
+
+      {step == 2 && (
+        <Etapa2
+          data={formData}
+          onChange={handleChange}
+          onBack={() => setStep(1)}
+          onNext={() => setStep(3)}
+        />
+      )}
+
+      {step == 3 && (
+        <Etapa3
+          data={formData}
+          onChange={handleChange}
+          onBack={() => setStep(2)}
+          onNext={() => setStep(4)}
+        />
+      )}
+      {step == 4 && (
+        <Etapa4
+          data={formData}
+          onChange={handleChange}
+          onBack={() => setStep(3)}
+          onNext={() => setStep(5)}
+        />
+      )}
+      {step == 5 && (
+        <Etapa5
+          data={formData}
+          onChange={handleChange}
+          onBack={() => setStep(4)}
+          onFinish={() => Navigation.navigate('Login')}
+        />
+      )}
+
+
+
       <StatusBar style="auto" />
     </View>
   );
