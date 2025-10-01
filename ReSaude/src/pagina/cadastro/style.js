@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0396039d',
+    backgroundColor: '#89D99D',
     width: 375,
     height: 200
   },
@@ -38,9 +38,9 @@ export default StyleSheet.create({
   input: {
     width: '80%',
     padding: 15,
-    fontSize: 25,
-    backgroundColor: '#0000007c',
-    color: '#fff',
+    fontSize: 15,
+    backgroundColor: '#fff',
+    color: '#ccc',
     borderRadius: 10,
   },
 
@@ -50,12 +50,21 @@ export default StyleSheet.create({
   },
 
   botao: {
-    backgroundColor: '#002efdff',
+    backgroundColor: '#164773',
     padding: 10,
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 10
   },
+
+  botao2:{
+ backgroundColor: '#a91f1fff',
+    padding: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 10
+  },
+
   botaoRed: {
     backgroundColor: 'red',
     padding: 10,

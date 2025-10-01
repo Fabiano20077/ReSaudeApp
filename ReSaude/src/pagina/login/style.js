@@ -12,7 +12,7 @@ export default StyleSheet.create({
     },
 
     logo: {
-        flex: 1,
+        flex:1,
         justifyContent:'center',
         alignItems:'center'
     },
@@ -82,10 +82,11 @@ export default StyleSheet.create({
     },
 
     img: {
-    width:350,
-    height:350,
+    width:300,
+    height:300,
     justifyContent:'center',
-    resizeMode: "contain", 
+    alignItems:'center',
+    alignContent:'center'
     },
 
 

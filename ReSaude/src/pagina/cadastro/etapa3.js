@@ -6,9 +6,9 @@ import api from '../api';
 import styles from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function etapa1({ data, onChange, onNext, onBack }) {
-
+export default function etapa3({ data, onChange, onNext, onBack }) {
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
   const insert = async() => {
     setLoading(true)
@@ -78,11 +78,11 @@ export default function etapa1({ data, onChange, onNext, onBack }) {
           />
 
           <View style={styles.botoes}>
-            <Pressable style={styles.botaoRed} onPress={() => onBack()}>
-              <Text style={styles.texto}>volta</Text>
-            </Pressable>
+          <Pressable style={styles.botao2}  onPress={() => onBack()}>
+           <Text style={styles.texto}>Voltar</Text>
+           </Pressable>
             <Pressable style={styles.botao} onPress={() => insert()}>
-              <Text style={styles.texto}>aperte</Text>
+              <Text style={styles.texto}>Prosseguir</Text>
             </Pressable>
           </View>
         </View>

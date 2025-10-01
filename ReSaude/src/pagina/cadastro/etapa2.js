@@ -9,9 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function etapa2({ data, onChange, onNext, onBack }) {
-
-
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
 
   const buscaCep = async (cep) => {
@@ -112,11 +111,13 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
 
           <View style={styles.botoes}>
 
-            <Pressable style={styles.botaoRed} onPress={() => onBack()}>
-              <Text style={styles.texto}>volta</Text>
-            </Pressable>
+             
+                      <Pressable style={styles.botao2} onPress={() =>onBack()}>
+                        <Text style={styles.texto}>Voltar</Text>
+                      </Pressable>
+
             <Pressable style={styles.botao} onPress={() => insert()}>
-              <Text style={styles.texto}>aperte</Text>
+              <Text style={styles.texto}>Prosseguir</Text>
             </Pressable>
           </View>
         </View>

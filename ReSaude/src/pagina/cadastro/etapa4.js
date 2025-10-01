@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function etapa4({ data, onChange, onNext, onBack }) {
 
 
-
+  const navigation=useNavigation();
 
   const [imagem, setImagem] = useState('');
 
@@ -73,7 +73,7 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
 
     if (imagem) {
       usuario.append('foto', {
-        uri: data.foto,
+        uri: imagem,
         name: 'image.png',
         type: 'image/png'
       });
@@ -131,11 +131,11 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
 
 <View style={styles.botoes2}>
 
-          <Pressable style={styles.botaoRed} onPress={() => onBack()}>
-            <Text style={styles.texto}>volta</Text>
+         <Pressable style={styles.botao2}   onPress={() => onBack()}  >
+           <Text style={styles.texto}>Voltar</Text>
           </Pressable>
           <Pressable style={styles.botao} onPress={() => insert()}>
-            <Text style={styles.texto}>aperte</Text>
+            <Text style={styles.texto}>Prosseguir</Text>
           </Pressable>
 </View>
         </View>

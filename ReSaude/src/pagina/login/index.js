@@ -49,7 +49,8 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.containerLogin}>
-        <View style={styles.logo}>
+          <View style={styles.logo}>
+        <Image source={require('../../../assets/Logo2.png')} style={styles.img}></Image>
         </View>
         <View style={styles.login}>
           <View style={styles.containerTitulo}>
