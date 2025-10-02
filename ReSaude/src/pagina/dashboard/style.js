@@ -22,7 +22,7 @@ export default StyleSheet.create({
   card: {
     width: '45%',
     height: 150,
-    borderWidth: 1,
+    borderWidth:1,
     borderRadius: 10
   },
 
@@ -37,9 +37,24 @@ export default StyleSheet.create({
     padding: 5
   },
 
+  imgPerfil: {
+   width:50,
+   height:50
+  },
+
   img: {
-    width: 50,
-    height: 50
+    width:'100%',
+    height:100
+  },
+
+  txt: {
+    fontSize:15,
+    justifyContent:'center',
+    alignContent:'center',
+    alignItems:'center',
+    paddingLeft:45,
+    paddingTop:5
+
   }
 
 });

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
 import styles from './style';
+import style from './style';
 
 
 
@@ -28,23 +29,27 @@ export default function App() {
       <View style={styles.containerDashboard}>
         <View style={styles.corpo}>
           <View style={styles.card}>
+          <Image source={require('../../../assets/Calo.png')} style={styles.img}></Image>
             <Pressable onPress={() => navigation.navigate('Calorias')}>
-              <Text>calorias</Text>
+              <Text style={styles.txt}>Calorias</Text>
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Pressable onPress={() => navigation.navigate('Mmc')}>
-              <Text> imc</Text>
+            <Image source={require('../../../assets/IMC.png')} style={styles.img}></Image>
+            <Pressable onPress={() => navigation.navigate('Imc')}>
+              <Text style={styles.txt}>IMC</Text>
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Pressable onPress={() => navigation.navigate('agua')}>
-              <Text>agua</Text>
+            <Image source={require('../../../assets/Agua.png')} style={styles.img}></Image>
+            <Pressable onPress={() => navigation.navigate('Água')}>
+              <Text style={styles.txt}>Água</Text>
             </Pressable>
           </View>
           <View style={styles.card}>
+            <Image source={require('../../../assets/Sangue.png')} style={styles.img}></Image>
             <Pressable onPress={() => navigation.navigate('Sangue')}>
-              <Text>sangue</Text>
+              <Text style={styles.txt}>Sangue</Text>
             </Pressable>
           </View>
           <View style={styles.card}>
@@ -53,7 +58,7 @@ export default function App() {
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Pressable onPress={() => navigation.navigate('Sangue')}>
+            <Pressable onPress={() => navigation.navigate('sangue')}>
               <Text></Text>
             </Pressable>
           </View>
@@ -63,7 +68,7 @@ export default function App() {
             <Text>volta</Text>
           </Pressable>
           <Pressable onPress={() => navigation.navigate('Perfil')}>
-            <Image style={styles.img} source={require('../../../assets/perfilPng.png')}></Image>
+            <Image style={styles.imgPerfil} source={require('../../../assets/perfilPng.png')}></Image>
           </Pressable>
         </View>
       </View>
