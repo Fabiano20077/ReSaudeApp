@@ -6,7 +6,7 @@ import api from '../api';
 import styles from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function etapa1({ data, onChange, onNext, onBack }) {
+export default function etapa1({ data, onChange, onNext }) {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
@@ -44,7 +44,7 @@ export default function etapa1({ data, onChange, onNext, onBack }) {
     <View style={styles.container}>
       <View style={styles.containeretapa}>
         <View style={styles.titulo} >
-          <Text style={styles.textoTitulo}>ETAPA 1</Text>
+          <Text style={styles.textoTitulo}>Etapa 1</Text>
         </View>
 
         <View style={styles.campoInputs}>
@@ -73,7 +73,7 @@ export default function etapa1({ data, onChange, onNext, onBack }) {
             <Text style={styles.texto}>Voltar</Text>
           </Pressable>
 
-          <Pressable style={styles.botao} onPress={insert}>
+          <Pressable style={styles.bbotao} onPress={insert}>
             <Text style={styles.texto}>Prosseguir</Text>
           </Pressable>
           </View>

@@ -2,17 +2,20 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     container: {
+        primary:'#2E8B57',
+        second:'#89D99D',
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#F7F9F8',
     },
 
     containerLogin: {
         flex: 1,
         borderWidth: 1,
+        elevation:4
     },
 
     logo: {
-        flex:1,
+        flex:0.8,
         justifyContent:'center',
         alignItems:'center'
     },
@@ -41,31 +44,37 @@ export default StyleSheet.create({
     },
 
     texto: {
+        color: '#333',
         fontSize:15,
         fontWeight: '400',
         padding: 10, 
         marginLeft:20
     },
 
-    inputEmail: {
-        padding: 10,
-        fontSize: 20,
-        borderWidth: 1
+   inputEmail: {
+    padding: 12,
+     fontSize: 16,
+     borderWidth: 1,
+     borderRadius: 10,
+    borderColor: '#ccc',
+    backgroundColor: '#fff',
+    marginVertical: 8
     },
 
     ir:{
         flexDirection: 'row',
     },
 
-    botao: {
-        marginTop: 10,
-        width: '100%',
-        borderWidth: 1,
-        padding: 10,
-        backgroundColor:'#164773',
-        alignItems: 'center',
-        borderRadius: 10
+   botao: {
+    marginTop: 20,
+    width: '100%',
+    backgroundColor: '#2E8B57',
+    padding: 6,
+    borderRadius: 12,
+    alignItems: 'center',
+    elevation: 3
     },
+
 
     letraBotao: {
         color: '#fff',

@@ -19,12 +19,15 @@ export default StyleSheet.create({
     gap: 10
   },
 
-  card: {
-    width: '45%',
-    height: 150,
-    borderWidth:1,
-    borderRadius: 10
-  },
+ card: {
+  width: '45%',
+  height: 150,
+  backgroundColor: '#E8F5E9',
+  borderRadius: 12,
+  justifyContent: 'center',
+  alignItems: 'center',
+  elevation: 3
+},
 
   nav: {
     flex: .1,
@@ -34,12 +37,13 @@ export default StyleSheet.create({
     borderTopWidth: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 5
+    padding: 5,
+    backgroundColor:'#F7F9F8'
   },
 
   imgPerfil: {
-   width:50,
-   height:50
+   width:30,
+   height:30
   },
 
   img: {
@@ -48,13 +52,9 @@ export default StyleSheet.create({
   },
 
   txt: {
-    fontSize:15,
-    justifyContent:'center',
-    alignContent:'center',
-    alignItems:'center',
-    paddingLeft:45,
-    paddingTop:5
-
+  fontSize: 16,
+  fontWeight: '500',
+  marginTop: 8,
+  color: '#333'
   }
-
 });

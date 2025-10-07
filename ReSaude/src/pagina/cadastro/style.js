@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-
+import { radius, colors, spacing } from './themes';
 
 
 export default StyleSheet.create({
@@ -22,10 +22,10 @@ export default StyleSheet.create({
   },
 
   textoTitulo: {
-    color: 'white',
-    fontSize: 50
-
-  },
+  color: colors.textLight,
+  fontSize: 32,
+  fontWeight: 'bold'
+},
 
   campoInputs: {
     flex: .9,
@@ -36,37 +36,41 @@ export default StyleSheet.create({
   },
 
   input: {
-    width: '80%',
-    padding: 15,
-    fontSize: 15,
-    backgroundColor: '#fff',
-    color: '#ccc',
-    borderRadius: 10,
-  },
+  width: '85%',
+  padding: 14,
+  fontSize: 16,
+  backgroundColor: colors.light,
+  borderRadius: radius.md,
+  borderWidth: 1,
+  borderColor: '#ddd',
+  color: colors.textDark,
+  elevation: 2
+},
 
   botoes: {
     flexDirection: 'row',
     gap: 20
   },
 
-  botao: {
-    backgroundColor: '#164773',
-    padding: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 10
-  },
-
-  botao2:{
- backgroundColor: '#a91f1fff',
-    padding: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 10
-  },
+  bbotao: {
+  backgroundColor: colors.secondary,
+  paddingVertical: 12,
+  paddingHorizontal: 20,
+  borderRadius: radius.md,
+  alignItems: 'center',
+  elevation: 3
+},
+botao2: {
+  backgroundColor: colors.accent,
+  paddingVertical: 12,
+  paddingHorizontal: 20,
+  borderRadius: radius.md,
+  alignItems: 'center',
+  elevation: 3
+},
 
   botaoRed: {
-    backgroundColor: 'red',
+    backgroundColor: colors.accent,
     padding: 10,
     paddingLeft: 15,
     paddingRight: 15,
@@ -75,7 +79,7 @@ export default StyleSheet.create({
 
   texto: {
     fontSize: 20,
-    color: 'white'
+    color:colors.textDark
   },
 
   imagem: {

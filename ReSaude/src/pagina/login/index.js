@@ -54,7 +54,7 @@ export default function App() {
         </View>
         <View style={styles.login}>
           <View style={styles.containerTitulo}>
-            <Text style={styles.titulo}>Faça o login</Text>
+            <Text style={styles.titulo}>Bem-vindo de volta</Text>
           </View>
           <View style={styles.inputs}>
 

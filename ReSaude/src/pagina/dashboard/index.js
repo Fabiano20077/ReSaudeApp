@@ -29,25 +29,25 @@ export default function App() {
       <View style={styles.containerDashboard}>
         <View style={styles.corpo}>
           <View style={styles.card}>
-          <Image source={require('../../../assets/Calo.png')} style={styles.img}></Image>
+           
             <Pressable onPress={() => navigation.navigate('Calorias')}>
               <Text style={styles.txt}>Calorias</Text>
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Image source={require('../../../assets/IMC.png')} style={styles.img}></Image>
+          
             <Pressable onPress={() => navigation.navigate('Imc')}>
               <Text style={styles.txt}>IMC</Text>
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Image source={require('../../../assets/Agua.png')} style={styles.img}></Image>
+            
             <Pressable onPress={() => navigation.navigate('Água')}>
               <Text style={styles.txt}>Água</Text>
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Image source={require('../../../assets/Sangue.png')} style={styles.img}></Image>
+            
             <Pressable onPress={() => navigation.navigate('Sangue')}>
               <Text style={styles.txt}>Sangue</Text>
             </Pressable>
