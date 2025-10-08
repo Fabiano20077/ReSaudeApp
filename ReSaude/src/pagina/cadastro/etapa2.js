@@ -33,7 +33,6 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
 
     } catch (err) {
       console.log('Erro ao buscar CEP:', err.response?.data || err.message);
-      // Aqui você pode adicionar um alerta ou mensagem para o usuário
     } finally {
       setLoading(false)
     }
@@ -116,7 +115,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
                         <Text style={styles.texto}>Voltar</Text>
                       </Pressable>
 
-            <Pressable style={styles.botao} onPress={() => insert()}>
+            <Pressable style={styles.bbotao} onPress={() => insert()}>
               <Text style={styles.texto}>Prosseguir</Text>
             </Pressable>
           </View>

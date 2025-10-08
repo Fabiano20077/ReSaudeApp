@@ -86,16 +86,16 @@ export default function App() {
 
           {
             arrey == '' ?
-              <Text> escreva algum alimento</Text>
+              <Text style={styles.txt}> escreva algum alimento</Text>
               :
               (
                 !loading ? (
                   <>
-                    <Text>🍎 {arrey.food_name}</Text>
-                    <Text>Calorias: {arrey.nf_calories} kcal</Text>
-                    <Text>Proteínas: {arrey.nf_protein} g</Text>
-                    <Text>Carboidratos: {arrey.nf_total_carbohydrate} g</Text>
-                    <Text>Gorduras: {arrey.nf_total_fat} g</Text>
+                    <Text style={styles.txt}>🍎 {arrey.food_name}</Text>
+                    <Text style={styles.txt}>Calorias: {arrey.nf_calories} kcal</Text>
+                    <Text style={styles.txt}>Proteínas: {arrey.nf_protein} g</Text>
+                    <Text style={styles.txt}>Carboidratos: {arrey.nf_total_carbohydrate} g</Text>
+                    <Text style={styles.txt}>Gorduras: {arrey.nf_total_fat} g</Text>
                   </>
                 )
                   :

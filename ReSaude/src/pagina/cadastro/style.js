@@ -6,8 +6,8 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#89D99D',
-    width: 375,
-    height: 200
+    width: '100%',
+    height: '100%'
   },
 
   containeretapa: {

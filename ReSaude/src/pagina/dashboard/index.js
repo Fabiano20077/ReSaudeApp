@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
 import styles from './style';
-import style from './style';
+
 
 
 
@@ -27,9 +27,11 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.containerDashboard}>
+      <Pressable style={styles.imgPerfil} onPress={() => navigation.navigate('geolocalizacao')}>
+              <Text style={styles.txt}>Mapa</Text>
+            </Pressable>
         <View style={styles.corpo}>
           <View style={styles.card}>
-           
             <Pressable onPress={() => navigation.navigate('Calorias')}>
               <Text style={styles.txt}>Calorias</Text>
             </Pressable>
@@ -53,12 +55,12 @@ export default function App() {
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Pressable onPress={() => navigation.navigate('agua')}>
+            <Pressable onPress={() => navigation.navigate('')}>
               <Text></Text>
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Pressable onPress={() => navigation.navigate('sangue')}>
+            <Pressable onPress={() => navigation.navigate('')}>
               <Text></Text>
             </Pressable>
           </View>

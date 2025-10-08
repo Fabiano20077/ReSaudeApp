@@ -6,12 +6,11 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
     },
 
-    containerPrincipal: {
-        flex: 1,
-        
+    containerAgua: {
+        flex: 1
     },
 
-    containerBuscar: {
+    containerCalcular: {
         flexDirection: 'row',
         padding: 20,
         gap: 10,
@@ -27,25 +26,20 @@ export default StyleSheet.create({
         borderRadius: 5
     },
 
+    containerMostra: {
+        flex: .7,
+    },
+
+    txt:{
+        fontSize:20
+    },
+
     botao: {
         width: 100,
         height: '100%',
         backgroundColor: 'blue',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 5
-    },
-
-    containerAlimentos: {
-        justifyContent: 'center',
+        alignItems:'center',
         alignContent:'center',
-        alignItems:'center'
+        borderRadius: 5,
     },
-
-    txt: {
-        fontSize:20,
-        color:'#333'
-    },
-
-
 });

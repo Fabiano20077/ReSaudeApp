@@ -4,6 +4,8 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent:'center',
+    alignItems:'center'
   },
 
   containerPerfil: {
@@ -12,7 +14,6 @@ export default StyleSheet.create({
 
   containerImage: {
     height: '30%',
-    borderWidth: 1
   },
 
   nomee: {
@@ -78,5 +79,15 @@ export default StyleSheet.create({
     color: '#fff',
     fontSize: 20,
   },
+
+  txt:{
+    fontSize:20,
+    color:'#333'
+  },
+
+  txtA:{
+    color:'#ff3333',
+    fontSize:20
+  }
 
 });

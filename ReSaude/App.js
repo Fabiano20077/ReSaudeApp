@@ -7,10 +7,10 @@ import Cadastro from './src/pagina/cadastro';
 import Dashboard from './src/pagina/dashboard';
 import Perfil from './src/pagina/perfil';
 import Calorias from './src/pagina/funcoes/calorias';
-import Mmc from './src/pagina/funcoes/mmc';
-import agua from './src/pagina/funcoes/agua';
-import Sangue from './src/pagina/funcoes/sangue';
-
+import Mmc from './src/pagina/funcoes/Imc';
+import agua from './src/pagina/funcoes/Água';
+import Sangue from './src/pagina/funcoes/Sangue';
+import geolocalizacao from './src/pagina/geolocalizacao/index'
 
 
 export default function App() {
@@ -23,8 +23,9 @@ export default function App() {
 
                 <Stack.Screen name='Login' component={Login}
                     options={{ headerShown: false }} />
-                <Stack.Screen name='agua' component={agua} />
-                <Stack.Screen name='Mmc' component={Mmc} />
+                <Stack.Screen name='geolocalizacao' component={geolocalizacao}></Stack.Screen>
+                <Stack.Screen name='Água' component={agua} />
+                <Stack.Screen name='Imc' component={Mmc} />
                 <Stack.Screen name='Calorias' component={Calorias} />
                 <Stack.Screen name='Perfil' component={Perfil}
                     options={{ headerShown: true }} />
@@ -33,6 +34,8 @@ export default function App() {
                 <Stack.Screen name='Dashboard' component={Dashboard}
                     options={{ headerShown: false }} />
                 <Stack.Screen name='Sangue' component={Sangue} />
+
+
 
             </Stack.Navigator>
 

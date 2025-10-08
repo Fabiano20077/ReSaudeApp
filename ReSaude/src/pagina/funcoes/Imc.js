@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { View, Text, TextInput, Pressable, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import styles from './styleMmc';
+import styles from './styleImc';
 import axios from 'axios';
 
 
@@ -18,12 +18,12 @@ export default function App() {
   const calcularImc = () => {
 
     if (!peso) {
-      alert('digt o peso')
+      alert('Digite o peso')
       return false
     }
 
     if (!altura) {
-      alert('digite o peso')
+      alert('Digite a altura')
       return false
     }
 
@@ -32,20 +32,20 @@ export default function App() {
     if (ImcPrepa < 18.5) {
       setPeso('')
       setAltura('')
-      setMessage('seu peso estar abaixo');
+      setMessage('Você está abaixo do peso');
       setImc(ImcPrepa.toFixed(2))
     } else if (ImcPrepa >= 18.5 && ImcPrepa < 25) {
       setPeso('')
       setAltura('')
-      setMessage('seu peso estar normal');
+      setMessage('seu peso está normal');
       setImc(ImcPrepa.toFixed(2));
     } else if (ImcPrepa >= 25 && ImcPrepa < 30) {
       setPeso('')
       setAltura('')
-      setMessage('seu peso estar sobrepeso');
+      setMessage('Você está sobrepeso');
       setImc(ImcPrepa.toFixed(2));
     } else {
-      setMessage('seu peso estar obesidsde');
+      setMessage('Você está com obesidsde');
       setImc(ImcPrepa.toFixed(2));
     }
   }
@@ -55,13 +55,13 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.containerImc}>
         <View style={styles.containerCalcular}>
-          <Text>qual seu peso</Text>
+          <Text style={styles.txt}>Qual seu peso?</Text>
           <TextInput
             style={styles.input}
             value={peso}
             onChangeText={setPeso}
           />
-          <Text>qua sua altura</Text>
+          <Text style={styles.txt}>Qual sua altura?</Text>
           <TextInput
             style={styles.input}
             value={altura}
@@ -69,11 +69,11 @@ export default function App() {
           />
 
           <Pressable style={styles.botao} onPress={() => calcularImc()}>
-            <Text>calcular</Text>
+            <Text style={styles.txt}>Calcular</Text>
           </Pressable>
         </View>
         <View style={styles.containerMostrarImc}>
-          <Text>{imc} {message}</Text>
+          <Text style={styles.txt}>{imc} {message}</Text>
         </View>
       </View>
       <StatusBar style="auto" />

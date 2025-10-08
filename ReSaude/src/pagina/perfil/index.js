@@ -112,7 +112,7 @@ export default function App() {
           <Image style={styles.foto} source={require('../../../assets/perfilPng.png')}></Image>
           {
             textoLogin == false ?
-              <Text>{nome}</Text>
+              <Text style={styles.txt}>{nome}</Text>
               :
               <ActivityIndicator size='large' color='#ccc'>
                 <Text>carregando...</Text>
@@ -123,12 +123,12 @@ export default function App() {
         <View style={styles.opcoes}>
           <View>
             <Pressable onPress={() => setModal(true)}>
-              <Text>editar</Text>
+              <Text style={styles.txt}>Editar</Text>
             </Pressable>
           </View>
           <View>
             <Pressable onPress={() => deleta()}>
-              <Text>apagr</Text>
+              <Text style={styles.txtA}>Apagar</Text>
             </Pressable>
           </View>
         </View>
@@ -152,7 +152,7 @@ export default function App() {
                       <Image style={styles.img} source={{ uri: imagem }}></Image>
                     }
                   </Pressable>
-                  <Text>nome</Text>
+                  <Text style={styles.txt}>Nome</Text>
 
                   <TextInput
                     style={styles.input}
@@ -160,21 +160,21 @@ export default function App() {
                     onChangeText={setnome}
 
                   />
-                  <Text>email</Text>
+                  <Text style={styles.txt}>Email</Text>
                   <TextInput
                     style={styles.input}
                     value={email}
                     onChangeText={setEmail}
 
                   />
-                  <Text>nascimento</Text>
+                  <Text style={styles.txt}>Nascimento</Text>
                   <TextInput
                     style={styles.input}
                     value={nasci}
                     onChangeText={setNasci}
 
                   />
-                  <Text>senha</Text>
+                  <Text style={styles.txt}>Senha</Text>
                   <TextInput
                     style={styles.input}
                     value={senha}

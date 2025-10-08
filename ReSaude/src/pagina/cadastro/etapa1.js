@@ -73,7 +73,7 @@ export default function etapa1({ data, onChange, onNext }) {
             <Text style={styles.texto}>Voltar</Text>
           </Pressable>
 
-          <Pressable style={styles.bbotao} onPress={insert}>
+          <Pressable style={styles.bbotao} onPress={() =>insert()}>
             <Text style={styles.texto}>Prosseguir</Text>
           </Pressable>
           </View>

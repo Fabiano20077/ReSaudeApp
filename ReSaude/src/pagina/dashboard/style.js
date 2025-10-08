@@ -42,13 +42,15 @@ export default StyleSheet.create({
   },
 
   imgPerfil: {
-   width:30,
-   height:30
+   width:50,
+   height:50
   },
 
   img: {
     width:'100%',
-    height:100
+    height:'100%',
+    borderRadius:15,
+    marginTop:8
   },
 
   txt: {
