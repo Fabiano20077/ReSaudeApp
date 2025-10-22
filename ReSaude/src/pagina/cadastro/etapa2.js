@@ -18,7 +18,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
     setLoading(true)
 
     try {
-      const response = await axios.get(`'https://viacep.com.br/ws/${cep}/json/'`);
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       
       if (response.data.erro) {
         console.log('CEP não encontrado');
@@ -52,7 +52,29 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
 
     var user = JSON.parse(array)
 
-    api.post(`/cadastra-etapa2/${user.usuario['id']}`, usuario)
+    try {
+
+      const response = await fetch(`http://10.0.2.2:8000/api/cadastra-etapa2/${user.usuario['id']}`, {
+        method: 'POST',
+        body: usuario
+      });
+
+      if(!response.ok) {
+        const errorData = await response.json();
+        throw new Error(JSON.stringify(errorData));
+      }
+
+      const resData = await response.json();
+      console.log('etapa1 feita', resData);
+      await AsyncStorage.setItem('usuario', JSON.stringify(resData));
+      onNext();
+    } catch (error) {
+      console.log('erro etapa2', error.message)
+    } finally {
+      setLoading(false)
+    }
+
+   /*  api.post(`/cadastra-etapa2/${user.usuario['id']}`, usuario)
       .then(res => {
         console.log('etapa2 feita', res.data)
         onNext();
@@ -60,7 +82,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
       })
       .catch(err => {
         console.log('erro na etapa2', err.response?.data || err.message)
-      })
+      }) */
 
   }
 

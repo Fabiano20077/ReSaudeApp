@@ -22,19 +22,29 @@ export default function etapa5({ data, onChange, onFinish, onBack }) {
 
     var user = JSON.parse(array)
 
-    api.post(`/cadastra-etapa5/${user.usuario['id']}`, usuario, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then(response => {
-        console.log('cadastrado', response.data)
-        onFinish();
-      })
-      .catch(erro => {
-        console.log('erro cadastra', erro.response?.data || erro.message);
-        setLoading(false)
-      })
+    try{
+
+      const response = await fetch(`http://10.0.2.2:8000/api/cadastra-etapa5/${user.usuario['id']}`, {
+        method: 'POST',
+        body: usuario
+      });
+
+      if(!response.ok) {
+        const resError = await response.json();
+        console.log('erro', resError )
+        throw Error(JSON.stringify(resError))
+      }
+
+      const resData = await response.json();
+      console.log('funfo', resData)
+      await AsyncStorage.setItem('usuario', JSON.stringify(resData))
+      onFinish()
+      
+    } catch (error) {
+      console.log('erro', error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (loading) {

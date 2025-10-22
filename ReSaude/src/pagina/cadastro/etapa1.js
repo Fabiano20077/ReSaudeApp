@@ -12,24 +12,37 @@ export default function etapa1({ data, onChange, onNext }) {
 
   const insert = async () => {
     setLoading(true);
-
-    var usuario = new FormData();
+  
+    const usuario = new FormData();
     usuario.append('inputNome', data.nome);
     usuario.append('inputEmail', data.email);
     usuario.append('inputNasci', data.nasci);
-
-    api.post('/cadastra-etapa1', usuario)
-      .then(res => {
-        console.log('etapa1 feita', res.data);
-        AsyncStorage.setItem('usuario', JSON.stringify(res.data));
-        onNext();
-        setLoading(false);
-      })
-      .catch(err => {
-        console.log('erro na etapa1', err.response?.data || err.message);
-        setLoading(false);
+  
+    try {
+      const response = await fetch('http://10.0.2.2:8000/api/cadastra-etapa1', {
+        method: 'POST',
+        body: usuario,
+        // Importante: NÃO definir o header 'Content-Type' para FormData,
+        // o fetch define automaticamente o boundary.
       });
+  
+      if (!response.ok) {
+        // Se a resposta não for 2xx, lança erro para ser tratado no catch
+        const errorData = await response.json();
+        throw new Error(JSON.stringify(errorData));
+      }
+  
+      const resData = await response.json();
+      console.log('etapa1 feita', resData);
+      await AsyncStorage.setItem('usuario', JSON.stringify(resData));
+      onNext();
+    } catch (error) {
+      console.log('erro na etapa1', error.message);
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   if (loading) {
     return (

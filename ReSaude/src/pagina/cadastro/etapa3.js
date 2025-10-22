@@ -23,7 +23,29 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
 
     var user = JSON.parse(array)
 
-    api.post(`/cadastra-etapa3/${user.usuario['id']}`, usuario)
+    try{
+
+      const response = await fetch(`http://10.0.2.2:8000/api/cadastra-etapa3/${user.usuario['id']}`, {
+        method: 'POST',
+        body: usuario
+      });
+
+      if(!response.ok) {
+        const erroData = await response.json()
+        throw new error(JSON.stringify(erroData))
+      }
+
+      const resData = await response.json()
+      console.log('funfo', resData)
+      await AsyncStorage.setItem('usuario', JSON.stringify(resData))
+      onNext();
+    } catch (error) {
+       console.log('erro', error.message)
+    } finally {
+      setLoading(false)
+    }
+
+   /*  api.post(`/cadastra-etapa3/${user.usuario['id']}`, usuario)
       .then(res => {
         console.log('etapa1 feita', res.data)
         onNext();
@@ -31,7 +53,7 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
       })
       .catch(err => {
         console.log('erro na etapa1', err.response?.data || err.message)
-      })
+      }) */
 
   }
 

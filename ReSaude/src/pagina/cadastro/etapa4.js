@@ -83,6 +83,30 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
 
     var user = JSON.parse(array)
 
+    try{
+
+      const response = await fetch(`http://10.0.2.2:8000/api/cadastra-etapa4/${user.usuario['id']}`, {
+        method: 'POST',
+        body: usuario
+      });
+
+      if(!response.ok) {
+        const resError = await response.json();
+        console.log('erro', resError )
+        throw Error(JSON.stringify(resError))
+      }
+
+      const resData = await response.json();
+      console.log('funfo', resData)
+      await AsyncStorage.setItem('usuario', JSON.stringify(resData))
+      onNext()
+      
+    } catch (error) {
+      console.log('erro', error.message)
+    } finally {
+      setLoading(false)
+    }
+/* 
     api.post(`/cadastra-etapa4/${user.usuario['id']}`, usuario, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -95,7 +119,7 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
       .catch(erro => {
         console.log('erro cadastra', erro.response?.data || erro.message);
         setLoading(false)
-      })
+      }) */
   }
 
   if (loading) {

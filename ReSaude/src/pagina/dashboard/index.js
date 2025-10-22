@@ -27,9 +27,8 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.containerDashboard}>
-      <Pressable style={styles.imgPerfil} onPress={() => navigation.navigate('geolocalizacao')}>
-              <Text style={styles.txt}>Mapa</Text>
-            </Pressable>
+
+  
         <View style={styles.corpo}>
           <View style={styles.card}>
             <Pressable onPress={() => navigation.navigate('Calorias')}>
@@ -42,6 +41,10 @@ export default function App() {
               <Text style={styles.txt}>IMC</Text>
             </Pressable>
           </View>
+
+          <Pressable style={styles.imgPerfil} onPress={() => navigation.navigate('geolocalizacao')}>
+              <Text style={styles.txt}>Mapa</Text>
+            </Pressable>
           <View style={styles.card}>
             
             <Pressable onPress={() => navigation.navigate('Água')}>
