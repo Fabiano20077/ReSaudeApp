@@ -10,8 +10,6 @@ import { useEffect, useState } from 'react';
 
 export default function App() {
 
-
-
   const navigation = useNavigation();
 
   const [modal, setModal] = useState(false);
@@ -33,23 +31,34 @@ export default function App() {
       const array = JSON.parse(valor)
       setId(array.user['id'])
       const userId = array.user['id']
-      api.get(`/chamar-usuario/${userId}`)
-        .then(res => {
-          console.log('funfo', res.data)
-          setnome(res.data.user.nome)
-          setEmail(res.data.user.email)
-          setNasci(res.data.user.nascimento)
-          setTextLogin(false)
-        })
-        .catch(erro => {
-          console.log('erro', erro.response?.data || erro.message)
-        })
+
+      try{
+        const res = await fetch(`http://10.0.2.2:8000/api/chamar-usuario/${userId}`);
+
+        if (!res.ok) {
+          throw new Error('Erro na resposta da rede');
+        }
+
+        const data = res.json();
+
+        console.log('funfo', data)
+        setnome(data.user.nome)
+        setEmail(data.user.email)
+        setNasci(data.user.nascimento)
+
+        setTextLogin(false)
+
+      } catch (error) {
+          console.log('erro', error.message)
+      } finally {
+        setLoading(false)
+      }
     }
 
     vemId();
   }, [])
 
-  const update = () => {
+ /*  const update = () => {
 
     setLoading(true)
     var usuario = new FormData();
@@ -90,7 +99,7 @@ export default function App() {
   console.log('erro', erro.response?.data || erro.message)
         });
         
-      }
+      } */
 
 
   if (loading) {
@@ -107,17 +116,18 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+        <StatusBar style="auto" />
       <View style={styles.containerPerfil}>
         <View style={styles.containerImage}>
           <Image style={styles.foto} source={require('../../../assets/perfilPng.png')}></Image>
-          {
+    {/*       {
             textoLogin == false ?
               <Text style={styles.txt}>{nome}</Text>
               :
               <ActivityIndicator size='large' color='#ccc'>
                 <Text>carregando...</Text>
               </ActivityIndicator>
-          }
+          } */}
 
         </View>
         <View style={styles.opcoes}>
@@ -133,18 +143,12 @@ export default function App() {
           </View>
         </View>
       </View>
-      <StatusBar style="auto" />
+    
 
-      <Modal transparent={true} visible={modal}>
+       <Modal transparent={true} visible={modal}>
         <View style={styles.containerModal}>
           <View style={styles.containerEdita}>
-            <View style={styles.containerDados}>
-
-            {
-              textoLogin == false ? (
-                <>
-             
-
+          <View style={styles.containerDados}>
                   <Pressable onPress={() => { }}>
                     {imagem == null ?
                       <Image style={styles.img} source={require('../../../assets/perfilPng.png')}></Image>
@@ -180,7 +184,7 @@ export default function App() {
                     value={senha}
                     onChangeText={setSenha}
                   />
-<View style={styles.botoes}>
+                  <View style={styles.botoes}>
 
                   <Pressable style={styles.botao} onPress={() => setModal(false)}>
                     <Text style={styles.letraBotao}>fecha</Text>
@@ -188,17 +192,15 @@ export default function App() {
                   <Pressable style={styles.botao} onPress={() => update()}>
                     <Text style={styles.letraBotao}>salva</Text>
                   </Pressable>
-</View>
-                </>)
-                :
-                <ActivityIndicator size='large' color='blue'>
-                  <Text>carregando...</Text>
-                </ActivityIndicator>
-            }
+                 </View>
+                
+                
+                
+            
             </View>
           </View>
         </View>
-      </Modal>
+      </Modal> 
     </View>
 
 
