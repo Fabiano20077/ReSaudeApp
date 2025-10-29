@@ -34,8 +34,8 @@ export default StyleSheet.create({
      },
 
      botao: {
-        width: 100,
-        height: '20%',
+        width: 120,
+        height: '15%',
         backgroundColor: 'blue',
         alignItems: 'center',
         justifyContent: 'center',

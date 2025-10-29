@@ -20,6 +20,7 @@ export default StyleSheet.create({
   },
 
  card: {
+  margin:6,
   width: '45%',
   height: 150,
   backgroundColor: '#E8F5E9',
@@ -58,5 +59,16 @@ export default StyleSheet.create({
   fontWeight: '500',
   marginTop: 8,
   color: '#333'
+  },
+
+  mapa:{
+    width:20,
+    height: 20,
+    backgroundColor: '#E8F5E9',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 3
   }
+
 });

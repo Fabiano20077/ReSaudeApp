@@ -1,51 +1,51 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, TextInput, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import styles from './styleSangue';
 import api from '../api';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 export default function App() {
-
     const navigation = useNavigation();
-
     const [sangue, setSangue] = useState('');
-    const [loanding, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-
         const vemId = async () => {
-            setLoading(true)
-            const valor = await AsyncStorage.getItem('usuario')
-            const usuario = JSON.parse(valor)
-            const id = usuario.user['id']
+            setLoading(true);
+            try {
+                const valor = await AsyncStorage.getItem('usuario');
+                if (!valor) {
+                    console.log("Nenhum usuário salvo no AsyncStorage");
+                    setLoading(false);
+                    return;
+                }
 
-            api.get(`/chamar-usuario/${id}`)
-                .then(res => {
-                    console.log('foi', res.data)
-                    setSangue(res.data.user.sangue)
-                    setLoading(false)
-                })
-                .catch(erro => {
-                    console.log('erro', erro.response?.data || erro.messagem)
-                    setLoading(false)
-                })
-        }
+                const usuario = JSON.parse(valor);
+                const id = usuario.user['id'];
+
+                const res = await api.get(`/chamar-usuario/${id}`);
+                console.log('foi', res.data);
+                setSangue(res.data.user.sangue);
+            } catch (erro) {
+                console.log('erro', erro.response?.data || erro.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
         vemId();
-    }, [])
+    }, []);
 
-    if (loanding) {
+    if (loading) {
         return (
-            <ActivityIndicator size='large' color='blue'>
-                <Text>carregando...</Text>
-            </ActivityIndicator>
-        )
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" color="blue" />
+                <Text>Carregando...</Text>
+            </View>
+        );
     }
-
 
     return (
         <View style={styles.container}>

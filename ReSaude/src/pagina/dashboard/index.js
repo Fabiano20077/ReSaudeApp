@@ -41,12 +41,7 @@ export default function App() {
               <Text style={styles.txt}>IMC</Text>
             </Pressable>
           </View>
-
-          <Pressable style={styles.imgPerfil} onPress={() => navigation.navigate('geolocalizacao')}>
-              <Text style={styles.txt}>Mapa</Text>
-            </Pressable>
           <View style={styles.card}>
-            
             <Pressable onPress={() => navigation.navigate('Água')}>
               <Text style={styles.txt}>Água</Text>
             </Pressable>
@@ -58,8 +53,8 @@ export default function App() {
             </Pressable>
           </View>
           <View style={styles.card}>
-            <Pressable onPress={() => navigation.navigate('')}>
-              <Text></Text>
+            <Pressable onPress={() => navigation.navigate('Vacinas')}>
+              <Text style={styles.txt}>Vacinas</Text>
             </Pressable>
           </View>
           <View style={styles.card}>
@@ -70,8 +65,11 @@ export default function App() {
         </View>
         <View style={styles.nav}>
           <Pressable onPress={() =>apagarLocal()}>
-            <Text>volta</Text>
+            <Text style={styles.txt}>volta</Text>
           </Pressable>
+          <Pressable style={styles.imgPerfil} onPress={() => navigation.navigate('geolocalizacao')}>
+              <Text style={styles.txt}>Mapa</Text>
+            </Pressable>
           <Pressable onPress={() => navigation.navigate('Perfil')}>
             <Image style={styles.imgPerfil} source={require('../../../assets/perfilPng.png')}></Image>
           </Pressable>

@@ -29,7 +29,7 @@ export default StyleSheet.create({
 
     botao: {
         width: 100,
-        height: '100%',
+        height: '30%',
         backgroundColor: 'blue',
         alignItems: 'center',
         justifyContent: 'center',
