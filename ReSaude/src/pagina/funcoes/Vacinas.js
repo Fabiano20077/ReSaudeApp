@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+/* import { StatusBar } from 'expo-status-bar';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
@@ -139,4 +139,4 @@ export default function App() {
 
         
     );
-}
+} */

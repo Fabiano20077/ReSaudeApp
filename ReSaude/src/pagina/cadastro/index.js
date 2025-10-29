@@ -9,7 +9,7 @@ import Etapa1 from './etapa1';
 import Etapa2 from './etapa2';
 import Etapa3 from './etapa3';
 import Etapa4 from './etapa4';
-import Etapa5 from './etapa5';
+import Etapa5 from './etapa100';
 
 export default function App() {
 

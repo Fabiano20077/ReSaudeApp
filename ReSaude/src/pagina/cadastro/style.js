@@ -15,10 +15,25 @@ export default StyleSheet.create({
   },
 
   titulo: {
-    flex: .1,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    position: 'relative',
+    flexDirection: 'row',
+    height: '13%',
+    paddingTop: '5%',
+    borderBottomWidth: 2,
+    backgroundColor: '#2E8B57',
+    borderColor: 'white',
+    padding: 10
+  },
+
+  X: {
+    position: 'absolute',
+    bottom: '25%',
+    left: '5%',
+  },
+
+  img2: {
+    width: 45,
+    height: 45,
   },
 
   textoTitulo: {
@@ -28,8 +43,7 @@ export default StyleSheet.create({
 },
 
   campoInputs: {
-    flex: .9,
-    borderWidth: 1,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10
@@ -57,9 +71,11 @@ export default StyleSheet.create({
   paddingVertical: 12,
   paddingHorizontal: 20,
   borderRadius: radius.md,
+  width: '50%',
   alignItems: 'center',
   elevation: 3
 },
+
 botao2: {
   backgroundColor: colors.accent,
   paddingVertical: 12,
@@ -69,17 +85,10 @@ botao2: {
   elevation: 3
 },
 
-  botaoRed: {
-    backgroundColor: colors.accent,
-    padding: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 10
-  },
 
   texto: {
     fontSize: 20,
-    color:colors.textDark
+    color:colors.textLight
   },
 
   imagem: {

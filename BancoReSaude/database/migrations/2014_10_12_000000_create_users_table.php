@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('bairro')->nullable();
             $table->string('uf')->nullable();
             $table->string('estado')->nullable();
+            $table->integer('peso')->nullable();
+            $table->integer('altura')->nullable();
+            $table->json('alergia')->nullable();
             $table->string('sangue')->nullable();
             $table->string('senha')->nullable();
             $table->rememberToken();

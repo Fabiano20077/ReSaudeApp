@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, Pressable, TextInput, ActivityIndicator } from 'react-native';
+import { View, Text, Pressable, TextInput, ActivityIndicator, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import api from '../api';
 import styles from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import InputScale from './inputAnima';
 
 export default function etapa1({ data, onChange, onNext }) {
   const [loading, setLoading] = useState(false);
@@ -56,14 +57,14 @@ export default function etapa1({ data, onChange, onNext }) {
   return (
     <View style={styles.container}>
       <View style={styles.containeretapa}>
-        <View style={styles.titulo} >
-          <Text style={styles.textoTitulo}>Etapa 1</Text>
+        <View style={styles.titulo}>
+          <Pressable style={styles.X} onPress={() => navigation.navigate("Login")} >
+             <Image style={styles.img2} source={require('../../../assets/marca-x.png')} ></Image>
+          </Pressable>
         </View>
-
         <View style={styles.campoInputs}>
-          <TextInput
-            style={styles.input}
-            placeholder='digite seu nome'
+            <InputScale
+            label="Digite seu nome"
             value={data.nome}
             onChangeText={(text) => onChange('nome', text)}
           />
@@ -81,11 +82,6 @@ export default function etapa1({ data, onChange, onNext }) {
           />
 
         <View style={styles.botoes}>
-          <Pressable 
-            style={styles.botao2} onPress={() => navigation.navigate("Login")} >
-            <Text style={styles.texto}>Voltar</Text>
-          </Pressable>
-
           <Pressable style={styles.bbotao} onPress={() =>insert()}>
             <Text style={styles.texto}>Prosseguir</Text>
           </Pressable>
