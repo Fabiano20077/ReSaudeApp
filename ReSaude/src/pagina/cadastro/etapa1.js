@@ -59,7 +59,7 @@ export default function etapa1({ data, onChange, onNext }) {
       <View style={styles.containeretapa}>
         <View style={styles.titulo}>
           <Pressable style={styles.X} onPress={() => navigation.navigate("Login")} >
-             <Image style={styles.img2} source={require('../../../assets/marca-x.png')} ></Image>
+             <Image style={styles.img2} source={require('../../../assets/seta-esquerda.png')} ></Image>
           </Pressable>
         </View>
         <View style={styles.campoInputs}>
