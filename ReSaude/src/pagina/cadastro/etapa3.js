@@ -82,15 +82,13 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
           <TextInput
             style={styles.input}
             placeholder='digite seu bairo'
-            value={data.bairro}
-            onChangeText={(text) => onChange('bairro', text)}
+        
           />
 
           <TextInput
             style={styles.input}
             placeholder='digite seu uf'
-            value={data.uf}
-            onChangeText={(text) => onChange('uf', text)}
+    
           />
           <TextInput
             style={styles.input}

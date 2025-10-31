@@ -21,6 +21,7 @@ export default function App() {
     nome: "",
     email: "",
     nasci: "",
+    cpf: "",
     cep: "",
     logradouro: "",
     num: "",

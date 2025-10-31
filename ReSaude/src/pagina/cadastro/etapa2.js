@@ -111,8 +111,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
           <TextInput
             style={styles.input}
             placeholder='digite seu cep'
-            value={data.cep}
-            onChangeText={(text) => onChange('cep', text)}
+           
             onBlur={() => buscaCep(data.cep)}
           />
 
@@ -126,8 +125,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
           <TextInput
             style={styles.input}
             placeholder='digite sua data de numero'
-            value={data.num}
-            onChangeText={(text) => onChange('num', text)}
+
           />
 
           <View style={styles.botoes}>
