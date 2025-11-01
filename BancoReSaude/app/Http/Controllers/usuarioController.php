@@ -48,6 +48,22 @@ class usuarioController extends Controller
         $usuario->nome = $request->inputNome;
         $usuario->email = $request->inputEmail;
         $usuario->nascimento = $request->inputNasci;
+        $usuario->cep = $request->inputCep;
+        $usuario->logra = $request->inputLogra;
+        $usuario->numero = $request->inputNumero;
+        $usuario->bairro = $request->inputBairro;
+        $usuario->uf = $request->inputUf;
+        $usuario->estado = $request->inputEstado;
+
+          $imagem = $request->file('foto');
+
+        if ($imagem) {
+            $path = $imagem->store('imagens', 'public');
+        } else {
+            $path = "";
+        }
+
+        $usuario->img = $path;
 
         $usuario->save();
 
@@ -103,16 +119,7 @@ class usuarioController extends Controller
     {
         $usuario = User::find($id);
 
-        $imagem = $request->file('foto');
-
-        if ($imagem) {
-            $path = $imagem->store('imagens', 'public');
-        } else {
-            $path = "";
-        }
-
-        $usuario->img = $path;
-
+      
         $usuario->save();
 
         return response()->json(
