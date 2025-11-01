@@ -1,139 +1,106 @@
-import { StatusBar } from 'expo-status-bar';
-import { View, Text, Pressable, Image, TextInput, ActivityIndicator, Platform } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useState, useEffect } from 'react';
-import api from '../api';
-import styles from './style';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StatusBar } from "expo-status-bar";
+import {
+  View,
+  Text,
+  Pressable,
+  Image,
+  TextInput,
+  ActivityIndicator,
+  Platform,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useState, useEffect } from "react";
 
+import styles from "./style";
+import InputScale from "./inputAnima";
+import SelectScan from "./select";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function etapa2({ data, onChange, onNext, onBack }) {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-
-  const buscaCep = async (cep) => {
-
-    setLoading(true)
-
-    try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      
-      if (response.data.erro) {
-        console.log('CEP não encontrado');
-        return;
-      }
-
-      onChange('bairro', response.data.bairro || "");
-      onChange('logradouro', response.data.logradouro || "");
-      onChange('cidade', response.data.localidade || "");
-      onChange('uf', response.data.uf || "");
-      console.log('CEP encontrado:', response.data);
-
-    } catch (err) {
-      console.log('Erro ao buscar CEP:', err.response?.data || err.message);
-    } finally {
-      setLoading(false)
-    }
-
-  }
-
   const insert = async () => {
-    setLoading(true)
+    setLoading(true);
 
-    var usuario = new FormData();
+    const usuario = new FormData();
 
-    usuario.append('inputCep', data.cep);
-    usuario.append('inputLogra', data.logradouro);
-    usuario.append('inputNum', data.num);
+    usuario.append("inputCep", data.cep);
+    usuario.append("inputLogra", data.logradouro);
+    usuario.append("inputNum", data.num);
 
-    var array = await AsyncStorage.getItem('usuario')
+    var array = await AsyncStorage.getItem("usuario");
 
-    var user = JSON.parse(array)
+    var user = JSON.parse(array);
 
     try {
+      const response = await fetch(
+        `http://10.0.2.2:8000/api/cadastra-etapa2/${user.usuario["id"]}`,
+        {
+          method: "POST",
+          body: usuario,
+        }
+      );
 
-      const response = await fetch(`http://10.0.2.2:8000/api/cadastra-etapa2/${user.usuario['id']}`, {
-        method: 'POST',
-        body: usuario
-      });
-
-      if(!response.ok) {
-        const errorData = await response.json();
+      const resData = await response.json();
+      if (!response.ok) {
         throw new Error(JSON.stringify(errorData));
       }
 
-      const resData = await response.json();
-      console.log('etapa1 feita', resData);
-      await AsyncStorage.setItem('usuario', JSON.stringify(resData));
+      console.log("etapa1 feita", resData);
+      await AsyncStorage.setItem("usuario", JSON.stringify(resData));
       onNext();
     } catch (error) {
-      console.log('erro etapa2', error.message)
+      console.log("erro etapa2", error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-
-   /*  api.post(`/cadastra-etapa2/${user.usuario['id']}`, usuario)
-      .then(res => {
-        console.log('etapa2 feita', res.data)
-        onNext();
-        setLoading(false)
-      })
-      .catch(err => {
-        console.log('erro na etapa2', err.response?.data || err.message)
-      }) */
-
-  }
-
-
+  };
 
   if (loading) {
     return (
       <View>
-        <ActivityIndicator size='large' color='blue'></ActivityIndicator>
+        <ActivityIndicator size="large" color="blue"></ActivityIndicator>
         <Text>carregando...</Text>
       </View>
-    )
+    );
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.containeretapa}>
-        <View style={styles.titulo} >
-          <Text style={styles.textoTitulo}>
-            ETAPA 2
-          </Text>
-        </View>
+        <View style={styles.titulo}></View>
 
         <View style={styles.campoInputs}>
-
-          <TextInput
-            style={styles.input}
-            placeholder='digite seu cep'
-           
-            onBlur={() => buscaCep(data.cep)}
-          />
-
-
-          <TextInput
-            style={styles.input}
-            placeholder='digite seu logra'
-            value={data.logradouro}
-            onChangeText={(text) => onChange('logradouro', text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder='digite sua data de numero'
-
-          />
+          <View style={styles.conjunto}>
+            <View style={styles.partes}>
+              <InputScale
+                label="peso"
+                value={data.peso}
+                onChangeText={(text) => onChange("nome", text)}
+              />
+              <InputScale
+                label="altura"
+                keyboardType="numeric"
+                value={data.altura}
+                onChangeText={(text) => onChange("sangue")}
+              />
+            </View>
+            <View style={styles.partes}>
+              <SelectScan
+                label="sangue"
+                selectedValue={data.sangue}
+                onValueChange={(itemValue, itemIndex) =>
+                  onChange("sangue", itemValue)
+                }
+              />
+            </View>
+          </View>
 
           <View style={styles.botoes}>
-
-             
-                      <Pressable style={styles.botao2} onPress={() =>onBack()}>
-                        <Text style={styles.texto}>Voltar</Text>
-                      </Pressable>
+            <Pressable style={styles.botao2} onPress={() => onBack()}>
+              <Text style={styles.texto}>Voltar</Text>
+            </Pressable>
 
             <Pressable style={styles.bbotao} onPress={() => insert()}>
               <Text style={styles.texto}>Prosseguir</Text>

@@ -25,13 +25,7 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
 
     var usuario = new FormData();
 
-    if (imagem) {
-      usuario.append('foto', {
-        uri: imagem,
-        name: 'image.png',
-        type: 'image/png'
-      });
-    }
+   
 
     var array = await AsyncStorage.getItem('usuario')
 

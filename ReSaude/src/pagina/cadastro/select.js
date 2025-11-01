@@ -1,9 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, TextInput, Animated, StyleSheet } from "react-native";
 import { Button } from "react-native-web";
+import { Picker } from "@react-native-picker/picker";
 
-
-export default function InputScale({ label, value, onChangeText,  inputStyle,  containerStyle, onBlur }) {
+export default function selectScan({
+  label,
+  value,
+  selectedValue,
+  onValueChange,
+  inputStyle,
+  containerStyle,
+  onBlur,
+}) {
   const [isFocused, setIsFocused] = useState(false);
   const animatedLabel = useRef(new Animated.Value(value ? 1 : 0)).current;
 
@@ -34,19 +42,25 @@ export default function InputScale({ label, value, onChangeText,  inputStyle,  c
   };
 
   return (
-    <View style={[styles.container,containerStyle]}>
+    <View style={[styles.container, containerStyle]}>
       <Animated.Text style={labelStyle}>{label}</Animated.Text>
-      <TextInput
-        style={[
-          styles.input,
-          { borderColor: isFocused ? "#007AFF" : "#ccc" },
-          inputStyle
-        ]}
-        value={value}
-        onChangeText={onChangeText}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => {setIsFocused(false); if(onBlur) onBlur()}}
-      />
+      <View style={[styles.input]}>
+        <Picker
+          onFocus={() => setIsFocused(true)}
+          selectedValue={selectedValue}
+          onValueChange={onValueChange}
+        >
+          <Picker.Item label="" value="" />
+          <Picker.Item label="A+" value="A+" />
+          <Picker.Item label="A-" value="A-" />
+          <Picker.Item label="B+" value="B+" />
+          <Picker.Item label="B-" value="B-" />
+          <Picker.Item label="AB+" value="AB+" />
+          <Picker.Item label="AB-" value="AB-" />
+          <Picker.Item label="O+" value="O+" />
+          <Picker.Item label="O-" value="O-" />
+        </Picker>
+      </View>
     </View>
   );
 }
@@ -58,11 +72,9 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    borderBottomWidth: 3,
-    borderWidth: 3,
     borderRadius: 12,
     fontSize: 22,
-    color: 'black',
-    backgroundColor: 'white'
+    color: "black",
+    backgroundColor: "white",
   },
 });

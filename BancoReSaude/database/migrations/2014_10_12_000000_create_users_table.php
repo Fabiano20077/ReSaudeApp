@@ -27,6 +27,12 @@ return new class extends Migration
             $table->integer('altura')->nullable();
             $table->json('alergia')->nullable();
             $table->string('sangue')->nullable();
+            $table->string('fatorRh')->nullable();
+            $table->string('fumante')->nullable();
+            $table->string('alcolatra')->nullable();
+            $table->string('cirugia')->nullable();
+            $table->json('remedios')->nullable();
+            $table->json('doencas')->nullable();
             $table->string('senha')->nullable();
             $table->rememberToken();
             $table->timestamps();

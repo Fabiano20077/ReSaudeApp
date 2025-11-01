@@ -99,59 +99,79 @@ export default function etapa1({ data, onChange, onNext }) {
     onChange("cep", cleaded);
   };
 
-  const formataCpf = (text) => {
-    let cleaded = text.replace(/\D/g, "");
+  const buscaCep = async (cep) => {
+    
 
-    if (cleaded.length > 11) cleaded = cleaded.slice(0, 11);
+    const cepV = cep.replace(/\-/g, "");
 
-    if (cleaded.length > 9) {
-      cleaded = cleaded.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/,"$1.$2.$3-$4");
-    } else if (cleaded.length > 6) {
-      cleaded = cleaded.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
-    } else if (cleaded.length > 3) {
-      cleaded = cleaded.replace(/(\d{3})(\d{1,3})/, "$1.$2");
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cepV}/json/`);
+
+      const dataCep = await response.json();
+
+      if (dataCep.erro) {
+        console.log("CEP não encontrado");
+        return;
+      }
+
+      onChange("bairro", dataCep.bairro || "");
+      onChange("logradouro", dataCep.logradouro || "");
+      onChange("uf", dataCep.uf || "");
+      console.log("CEP encontrado:", dataCep);
+    } catch (err) {
+      console.log("Erro ao buscar CEP:", err.response?.data || err.message);
     }
-
-    onChange("cpf", cleaded);
   };
 
   const insert = async () => {
-
-    if(data.nome == "") {
-      alert('nome invalido')
-      return false
-    }
-
-    const [dia,mes,ano] = data.nasci.split("/")
-
-    const nascimento = `${dia}-${mes}-${ano}`
-
-    var cpf = data.cpf.replace(/[\/-]/g, "")
-
-    var cep = data.cep.replace(/\-/g,'')
-
     setLoading(true);
 
+    if (data.nome == "") {
+      alert("nome invalido");
+      return false;
+    }
+
+    const [dia, mes, ano] = data.nasci.split("/");
+
+    const nascimento = `${ano}-${mes}-${dia}`;
+
+    const cep = data.cep.replace(/\-/g, "");
+
     const usuario = new FormData();
+
+    if (imagem) {
+      usuario.append("foto", {
+        uri: imagem,
+        name: "image.png",
+        type: "image/png",
+      });
+    }
+
     usuario.append("inputNome", data.nome);
     usuario.append("inputEmail", data.email);
-    usuario.append("inputNasci", data.nasci);
+    usuario.append("inputNasci", nascimento);
+    usuario.append("inputCep", cep);
+    usuario.append("inputLogra", data.logradouro);
+    usuario.append("inputNumero", data.num);
+    usuario.append("inputBairro", data.bairro);
+    usuario.append("inputUf", data.uf);
+
 
     try {
+   
+
       const response = await fetch("http://10.0.2.2:8000/api/cadastra-etapa1", {
         method: "POST",
         body: usuario,
-        // Importante: NÃO definir o header 'Content-Type' para FormData,
-        // o fetch define automaticamente o boundary.
       });
 
+
+
+      const resData = await response.json();
       if (!response.ok) {
-        // Se a resposta não for 2xx, lança erro para ser tratado no catch
-        const errorData = await response.json();
         throw new Error(JSON.stringify(errorData));
       }
 
-      const resData = await response.json();
       console.log("etapa1 feita", resData);
       await AsyncStorage.setItem("usuario", JSON.stringify(resData));
       onNext();
@@ -222,6 +242,7 @@ export default function etapa1({ data, onChange, onNext }) {
                 label="cep"
                 value={data.cep}
                 onChangeText={(text) => formataCep(text)}
+                onBlur={() => buscaCep(data.cep)}
               />
 
               <InputScale
@@ -247,9 +268,9 @@ export default function etapa1({ data, onChange, onNext }) {
 
             <View style={styles.partes}>
               <InputScale
-                label="cpf"
-                value={data.cpf}
-                onChangeText={(text) => formataCpf(text)}
+                label="endereço"
+                value={data.logradouro}
+                onChangeText={(text) => onChange("logradouro", text)}
                 containerStyle={{ width: "92%" }}
               />
             </View>

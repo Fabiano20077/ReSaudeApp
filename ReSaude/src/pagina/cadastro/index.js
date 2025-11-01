@@ -21,19 +21,21 @@ export default function App() {
     nome: "",
     email: "",
     nasci: "",
-    cpf: "",
     cep: "",
     logradouro: "",
     num: "",
     bairro: "",
     uf: "",
-    cidade: "",
     foto: "",
+    peso: "",
+    altura: "",
+    alergia: [],
+    sangue: "",
     senha: "",
   });
 
   const handleChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
+    setFormData(pre => ({ ...pre, [field]: value }));
   };
 
   return (
