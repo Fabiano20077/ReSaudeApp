@@ -9,6 +9,7 @@ export default function selectScan({
   selectedValue,
   onValueChange,
   inputStyle,
+  opitions = [],
   containerStyle,
   onBlur,
 }) {
@@ -50,15 +51,18 @@ export default function selectScan({
           selectedValue={selectedValue}
           onValueChange={onValueChange}
         >
-          <Picker.Item label="" value="" />
-          <Picker.Item label="A+" value="A+" />
-          <Picker.Item label="A-" value="A-" />
-          <Picker.Item label="B+" value="B+" />
-          <Picker.Item label="B-" value="B-" />
-          <Picker.Item label="AB+" value="AB+" />
-          <Picker.Item label="AB-" value="AB-" />
-          <Picker.Item label="O+" value="O+" />
-          <Picker.Item label="O-" value="O-" />
+          {opitions.map((item, index) => (
+            <Picker.Item key={index} label={item.label} value={item.value} />
+          ))}
+          {/*   />
+       
+          <Picker.Item >
+          <Picker.Item >
+          <Picker.Item >
+          <Picker.Item  />
+          <Picker.Item  />
+          <Picker.Item >
+          <Picker.Item > */}
         </Picker>
       </View>
     </View>

@@ -29,9 +29,14 @@ export default function App() {
     foto: "",
     peso: "",
     altura: "",
-    alergia: [],
+    diabetico: "",
+    fumante: "",
+    alcolatra: "",
+    alergias: [{id:1,nome: ""}],
+    remedios: [{id:1,nome: ""}],
+    doencas: [{id:1,nome: ""}],
     sangue: "",
-    senha: "",
+    senha: ""
   });
 
   const handleChange = (field, value) => {

@@ -53,12 +53,13 @@ export default StyleSheet.create({
     alignItems: "center",
     paddingTop: "10%",
     gap: 15,
+  
   },
 
   partes: {
     flexDirection: "row",
     gap: 10,
-    marginTop: 10
+    marginTop: 10,
   },
 
   input: {
@@ -92,7 +93,7 @@ export default StyleSheet.create({
     backgroundColor: colors.accent,
     paddingVertical: 12,
     paddingHorizontal: 20,
-     width: "40%",
+    width: "40%",
     borderRadius: radius.md,
     alignItems: "center",
     elevation: 3,
@@ -106,7 +107,7 @@ export default StyleSheet.create({
   imagem: {
     flex: 0.6,
     width: "95%",
-    marginTop: 10
+    marginTop: 10,
   },
 
   imagem2: {
@@ -120,7 +121,7 @@ export default StyleSheet.create({
     width: size,
     height: size,
     borderRadius: size / 2,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
 
   escolher: {
@@ -144,7 +145,7 @@ export default StyleSheet.create({
     justifyContent: "space-evenly",
   },
 
-  // modal
+  // modal etapa 1
 
   containerModal: {
     flex: 1,
@@ -175,4 +176,51 @@ export default StyleSheet.create({
     width: "50%",
     height: "100%",
   },
+
+  // etapa 2
+
+  parte2: {
+    gap: 10,
+    marginTop: 10,
+  },
+
+  card: {
+    flexDirection: "row",
+    width: 370,
+    height: 100,
+    backgroundColor: "#ffffffff",
+    borderWidth: 3,
+    borderRadius: 12,
+    fontSize: 22,
+  },
+
+  addFoto: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: "30%",
+    height: "100%",
+   
+  },
+
+  addText: {
+    width: '70%',
+    justifyContent: 'center'
+  },
+
+  textCard:{
+    marginLeft: 40,
+    fontSize: 22
+  },
+
+  containerScrrol:{
+    height: '55%',
+  },
+
+  //etapa 3 
+
+  addContainer: {
+    alignItems: 'center',
+    width: '95%',
+    height: '90%',
+  }
 });

@@ -80,19 +80,22 @@ class usuarioController extends Controller
     {
        $usuario = User::find($id);
 
-        $usuario->cep = $request->inputCep;
-        $usuario->logra = $request->inputLogra;
-        $usuario->numero = $request->inputNum;
+       $usuario->peso = $request->peso;
+       $usuario->altura = $request->altura;
+       $usuario->sangue = $request->sangue;
+       $usuario->diabetico = $request->diabetico;
+       $usuario->fumante = $request->fumante;
+       $usuario->alcolatra = $request->alcolatra;
 
-        $usuario->save();
+       $usuario->save();
 
-        return response()->json(
-            [
-                'messagme' => 'etapa2 salvo com sucesso',
-                'usuario' => $usuario
-            ],
-            200
-        );
+       return response()->json(
+        ['message' => 'etapa2 salvo com sucesso',
+         'usuario' => $usuario
+       ],
+        200
+       );
+       
     }
 
     public function etapa3(string $id,Request $request)

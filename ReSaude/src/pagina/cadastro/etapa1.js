@@ -216,10 +216,11 @@ export default function etapa1({ data, onChange, onNext }) {
           <View style={styles.conjunto}>
             <View style={styles.partes}>
               <InputScale
-                label=" nome"
+                label="nome"
                 value={data.nome}
                 onChangeText={(text) => onChange("nome", text)}
               />
+              
               <InputScale
                 label="data de nasc."
                 keyboardType="numeric"
