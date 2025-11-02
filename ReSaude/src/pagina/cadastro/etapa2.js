@@ -21,6 +21,18 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
+  const formataAltura = (text) => {
+    let cleaded = text.replace(/\D/g, "");
+
+    if (cleaded.length > 3) cleaded = cleaded.slice(0, 3);
+
+    if (cleaded.length > 1) {
+      cleaded = cleaded.replace(/(\d{1})(\d{1,2})/, "$1.$2");
+    }
+
+    onChange("altura", cleaded);
+  };
+
   const [alergias, setAlergias] = useState([{ id: 1, nome: "" }]);
 
   const addAlergia = () => {
@@ -28,19 +40,35 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
   };
 
   const handleAlergiaChange = (id, valor) => {
-    setAlergias((prev) =>
+    /*  setAlergias((prev) =>
       prev.map((item) => (item.id === id ? { ...item, nome: valor } : item))
+    ); */
+
+    const atualizar = alergias.map((item) =>
+      item.id === id ? { ...item, nome: valor } : item
     );
+
+    console.log(atualizar)
+
+    setAlergias(atualizar);
+    onChange("alergia", atualizar);
   };
 
   const insert = async () => {
     setLoading(true);
 
+    const alturaF = data.altura.replace(/\./g, "")
     const usuario = new FormData();
 
-    usuario.append("inputCep", data.cep);
-    usuario.append("inputLogra", data.logradouro);
-    usuario.append("inputNum", data.num);
+    usuario.append("peso", data.peso);
+    usuario.append("altura", alturaF);
+    usuario.append("sangue", data.sangue);
+    usuario.append("diabetico", data.diabetico);
+    usuario.append("fumante", data.fumante);
+    usuario.append("alcolatra", data.alcolatra);
+    usuario.append("alergia", JSON.stringify(data.alergia));
+
+    console.log(data.alergia)
 
     var array = await AsyncStorage.getItem("usuario");
 
@@ -56,11 +84,12 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
       );
 
       const resData = await response.json();
+
       if (!response.ok) {
         throw new Error(JSON.stringify(errorData));
       }
 
-      console.log("etapa1 feita", resData);
+      console.log("etapa2 feita", resData);
       await AsyncStorage.setItem("usuario", JSON.stringify(resData));
       onNext();
     } catch (error) {
@@ -97,7 +126,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
                 label="altura"
                 keyboardType="numeric"
                 value={data.altura}
-                onChangeText={(text) => onChange("altura", text)}
+                onChangeText={(text) => formataAltura(text)}
               />
             </View>
 
@@ -205,7 +234,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
                 <Text style={styles.texto}>Voltar</Text>
               </Pressable>
 
-              <Pressable style={styles.bbotao} onPress={() => onNext()}>
+              <Pressable style={styles.bbotao} onPress={() => insert()}>
                 <Text style={styles.texto}>Prosseguir</Text>
               </Pressable>
             </View>

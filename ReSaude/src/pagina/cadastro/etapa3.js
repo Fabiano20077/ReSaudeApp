@@ -20,16 +20,19 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-  const [alergias, setAlergias] = useState([{ id: 1, nome: "" }]);
+  const [remedio, setRemedio] = useState([{ id: 1, nome: "" }]);
 
-  const addAlergia = () => {
-    setAlergias((prev) => [...prev, { id: Date.now(), nome: "" }]);
+  const addRemedio = () => {
+    setRemedio((prev) => [...prev, { id: Date.now(), nome: "" }]);
   };
 
   const handleAlergiaChange = (id, valor) => {
-    setAlergias((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, nome: valor } : item))
+    const atualizar = remedio.map((item) =>
+      item.id === id ? { ...item, nome: valor } : item
     );
+
+    setRemedio(atualizar);
+    onChange("remedios", atualizar)
   };
 
   const insert = async () => {
@@ -37,9 +40,7 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
 
     var usuario = new FormData();
 
-    usuario.append("inputBairro", data.bairro);
-    usuario.append("inputUf", data.uf);
-    usuario.append("inputEstado", data.cidade);
+    usuario.append('remedios', JSON.stringify(data.remedios))
 
     var array = await AsyncStorage.getItem("usuario");
 
@@ -54,12 +55,12 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
         }
       );
 
+         const resData = await response.json();
       if (!response.ok) {
-        const erroData = await response.json();
-        throw new error(JSON.stringify(erroData));
+   
+        throw new error(JSON.stringify(resData));
       }
 
-      const resData = await response.json();
       console.log("funfo", resData);
       await AsyncStorage.setItem("usuario", JSON.stringify(resData));
       onNext();
@@ -69,15 +70,6 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
       setLoading(false);
     }
 
-    /*  api.post(`/cadastra-etapa3/${user.usuario['id']}`, usuario)
-      .then(res => {
-        console.log('etapa1 feita', res.data)
-        onNext();
-        setLoading(false)
-      })
-      .catch(err => {
-        console.log('erro na etapa1', err.response?.data || err.message)
-      }) */
   };
 
   if (loading) {
@@ -96,11 +88,11 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
         <View style={styles.campoInputs}>
           <View style={styles.addContainer}>
             <ScrollView
-             style={{gap:20}}
+              style={{ gap: 20 }}
               showsVerticalScrollIndicator={false}
             >
               <View style={styles.parte2}>
-                {alergias.map((item) => (
+                {remedio.map((item) => (
                   <InputScale
                     key={item.id}
                     label="remedios"
@@ -115,7 +107,7 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
                 ))}
               </View>
               <View style={styles.parte2}>
-                <Pressable onPress={addAlergia}>
+                <Pressable onPress={addRemedio}>
                   <View style={styles.card}>
                     <View style={styles.addFoto}>
                       <Image
@@ -135,7 +127,7 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
               <Text style={styles.texto}>Voltar</Text>
             </Pressable>
 
-            <Pressable style={styles.bbotao} onPress={() => onNext()}>
+            <Pressable style={styles.bbotao} onPress={() => insert()}>
               <Text style={styles.texto}>Prosseguir</Text>
             </Pressable>
           </View>

@@ -9,7 +9,7 @@ import Etapa1 from './etapa1';
 import Etapa2 from './etapa2';
 import Etapa3 from './etapa3';
 import Etapa4 from './etapa4';
-import Etapa5 from './etapa100';
+import Etapa5 from './etapa5';
 
 export default function App() {
 
@@ -32,9 +32,9 @@ export default function App() {
     diabetico: "",
     fumante: "",
     alcolatra: "",
-    alergias: [{id:1,nome: ""}],
-    remedios: [{id:1,nome: ""}],
-    doencas: [{id:1,nome: ""}],
+    alergia: [],
+    remedios: [],
+    doencas: [],
     sangue: "",
     senha: ""
   });

@@ -55,7 +55,7 @@ class usuarioController extends Controller
         $usuario->uf = $request->inputUf;
         $usuario->estado = $request->inputEstado;
 
-          $imagem = $request->file('foto');
+        $imagem = $request->file('foto');
 
         if ($imagem) {
             $path = $imagem->store('imagens', 'public');
@@ -76,36 +76,35 @@ class usuarioController extends Controller
         );
     }
 
-    public function etapa2(string $id,Request $request)
+    public function etapa2(string $id, Request $request)
     {
-       $usuario = User::find($id);
-
-       $usuario->peso = $request->peso;
-       $usuario->altura = $request->altura;
-       $usuario->sangue = $request->sangue;
-       $usuario->diabetico = $request->diabetico;
-       $usuario->fumante = $request->fumante;
-       $usuario->alcolatra = $request->alcolatra;
-
-       $usuario->save();
-
-       return response()->json(
-        ['message' => 'etapa2 salvo com sucesso',
-         'usuario' => $usuario
-       ],
-        200
-       );
-       
-    }
-
-    public function etapa3(string $id,Request $request)
-    {
-     
         $usuario = User::find($id);
 
-        $usuario->bairro = $request->inputBairro;
-        $usuario->uf = $request->inputUf;
-        $usuario->estado = $request->inputEstado;
+        $usuario->peso = $request->peso;
+        $usuario->altura = $request->altura;
+        $usuario->sangue = $request->sangue;
+        $usuario->diabetico = $request->diabetico;
+        $usuario->fumante = $request->fumante;
+        $usuario->alcolatra = $request->alcolatra;
+        $usuario->alergia = json_decode($request->alergia);
+
+        $usuario->save();
+
+        return response()->json(
+            [
+                'message' => 'etapa2 salvo com sucesso',
+                'usuario' => $usuario
+            ],
+            200
+        );
+    }
+
+    public function etapa3(string $id, Request $request)
+    {
+
+        $usuario = User::find($id);
+
+        $usuario->remedios = json_decode($request->remedios);
 
         $usuario->save();
 
@@ -118,11 +117,12 @@ class usuarioController extends Controller
         );
     }
 
-    public function etapa4(string $id,Request $request)
+    public function etapa4(string $id, Request $request)
     {
         $usuario = User::find($id);
 
-      
+        $usuario->doencas = json_decode($request->doencas);
+
         $usuario->save();
 
         return response()->json(
@@ -133,7 +133,7 @@ class usuarioController extends Controller
             200
         );
     }
-    public function etapa5(string $id,Request $request)
+    public function etapa5(string $id, Request $request)
     {
         $usuario = User::find($id);
 
@@ -143,7 +143,7 @@ class usuarioController extends Controller
 
         return response()->json(
             [
-                'messagme' => 'etapa4 salvo com sucesso',
+                'messagme' => 'etapa5 salvo com sucesso',
                 'usuario' => $usuario
             ],
             200
@@ -169,7 +169,7 @@ class usuarioController extends Controller
                 [
                     'mensage' => 'login feito',
                     'user' => $usuario,
-            
+
                 ]
             ));
         }

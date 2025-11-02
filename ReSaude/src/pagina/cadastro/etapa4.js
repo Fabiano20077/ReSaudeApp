@@ -21,22 +21,27 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
 
   const [loading, setLoading] = useState(false);
 
-  const [alergias, setAlergias] = useState([{ id: 1, nome: "" }]);
+  const [doencas, setDoencas] = useState([{ id: 1, nome: "" }]);
 
-  const addAlergia = () => {
-    setAlergias((prev) => [...prev, { id: Date.now(), nome: "" }]);
+  const addDoencas = () => {
+    setDoencas((prev) => [...prev, { id: Date.now(), nome: "" }]);
   };
 
   const handleAlergiaChange = (id, valor) => {
-    setAlergias((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, nome: valor } : item))
-    );
+   
+   const atualizar =  doencas.map((item) => (item.id === id ? { ...item, nome: valor } : item))
+    
+   setDoencas(atualizar)
+   onChange('doencas', atualizar)
   };
 
   const insert = async () => {
     setLoading(true);
 
     var usuario = new FormData();
+
+    
+    usuario.append('doencas', JSON.stringify(data.doencas))
 
     var array = await AsyncStorage.getItem("usuario");
 
@@ -51,13 +56,13 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
         }
       );
 
+       const resData = await response.json();
+
       if (!response.ok) {
-        const resError = await response.json();
-        console.log("erro", resError);
-        throw Error(JSON.stringify(resError));
+        console.log("erro", resData);
+        throw Error(JSON.stringify(resData));
       }
 
-      const resData = await response.json();
       console.log("funfo", resData);
       await AsyncStorage.setItem("usuario", JSON.stringify(resData));
       onNext();
@@ -88,7 +93,7 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
               showsVerticalScrollIndicator={false}
             >
               <View style={styles.parte2}>
-                {alergias.map((item) => (
+                {doencas.map((item) => (
                   <InputScale
                     key={item.id}
                     label="doenças"
@@ -103,7 +108,7 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
                 ))}
               </View>
               <View style={styles.parte2}>
-                <Pressable onPress={addAlergia}>
+                <Pressable onPress={addDoencas}>
                   <View style={styles.card}>
                     <View style={styles.addFoto}>
                       <Image
@@ -123,7 +128,7 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
               <Text style={styles.texto}>Voltar</Text>
             </Pressable>
 
-            <Pressable style={styles.bbotao} onPress={() => onNext()}>
+            <Pressable style={styles.bbotao} onPress={() => insert()}>
               <Text style={styles.texto}>Prosseguir</Text>
             </Pressable>
           </View>

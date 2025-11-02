@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tb_usuario', function (Blueprint $table) {
             $table->id();
             $table->string('nome')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->text('img')->nullable();
             $table->date('nascimento')->nullable();
             $table->string('cep')->nullable();

@@ -128,6 +128,7 @@ export default function etapa1({ data, onChange, onNext }) {
 
     if (data.nome == "") {
       alert("nome invalido");
+      setLoading(false)
       return false;
     }
 

@@ -53,7 +53,6 @@ export default StyleSheet.create({
     alignItems: "center",
     paddingTop: "10%",
     gap: 15,
-  
   },
 
   partes: {
@@ -195,32 +194,38 @@ export default StyleSheet.create({
   },
 
   addFoto: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     width: "30%",
     height: "100%",
-   
   },
 
   addText: {
-    width: '70%',
-    justifyContent: 'center'
+    width: "70%",
+    justifyContent: "center",
   },
 
-  textCard:{
+  textCard: {
     marginLeft: 40,
-    fontSize: 22
+    fontSize: 22,
   },
 
-  containerScrrol:{
-    height: '55%',
+  containerScrrol: {
+    height: "55%",
   },
 
-  //etapa 3 
+  //etapa 3
 
   addContainer: {
-    alignItems: 'center',
-    width: '95%',
-    height: '90%',
-  }
+    alignItems: "center",
+    width: "95%",
+    height: "84.2%",
+  },
+
+  parte3: {
+    alignItems: "center",
+    width: "95%",
+    height: "84.2%",
+    gap: 20,
+  },
 });
