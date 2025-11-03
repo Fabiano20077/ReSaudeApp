@@ -3,15 +3,12 @@ import {
   View,
   Text,
   Pressable,
-  TextInput,
   ActivityIndicator,
-  Platform,
   Image,
   ScrollView,
+  Modal,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
-
 import styles from "./style";
 import InputScale from "./inputAnima";
 import SelectScan from "./select";
@@ -19,7 +16,65 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function etapa2({ data, onChange, onNext, onBack }) {
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
+
+  const [labels, setLabels] = useState({
+    peso: "Peso",
+    altura: "Altura",
+    diabetico: "Diabetico",
+    fumante: "Fumante",
+    alcolatra: "Alcolatra",
+    sangue: "Sangue",
+    alergia: "Alergia",
+  });
+
+  const resetLabel = () => {
+    setLabels({
+      peso: "Peso",
+      altura: "Altura",
+      diabetico: "Diabetico",
+      fumante: "Fumante",
+      alcolatra: "Alcolatra",
+      sangue: "Sangue",
+      alergia: "Alergia",
+    });
+  };
+
+  const validacao = () => {
+    setLoading(true);
+    resetLabel();
+
+    const obrigadorio = [
+      "peso",
+      "altura",
+      "diabetico",
+      "fumante",
+      "alcolatra",
+      "sangue",
+    ];
+
+    let erros = false;
+
+    obrigadorio.forEach((campo) => {
+      if (data[campo] === "") {
+        erroLabel(campo, `${campo} invalido`);
+        erros = true;
+      }
+    });
+
+    if (erros == true) {
+      setLoading(false);
+      return false;
+    }
+
+    insert();
+  };
+
+  const erroLabel = (campo, msg) => {
+    setLabels((prev) => ({
+      ...prev,
+      [campo]: msg,
+    }));
+  };
 
   const formataAltura = (text) => {
     let cleaded = text.replace(/\D/g, "");
@@ -48,7 +103,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
       item.id === id ? { ...item, nome: valor } : item
     );
 
-    console.log(atualizar)
+    console.log(atualizar);
 
     setAlergias(atualizar);
     onChange("alergia", atualizar);
@@ -57,7 +112,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
   const insert = async () => {
     setLoading(true);
 
-    const alturaF = data.altura.replace(/\./g, "")
+    const alturaF = data.altura.replace(/\./g, "");
     const usuario = new FormData();
 
     usuario.append("peso", data.peso);
@@ -68,7 +123,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
     usuario.append("alcolatra", data.alcolatra);
     usuario.append("alergia", JSON.stringify(data.alergia));
 
-    console.log(data.alergia)
+    console.log(data.alergia);
 
     var array = await AsyncStorage.getItem("usuario");
 
@@ -99,15 +154,6 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
     }
   };
 
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size="large" color="blue"></ActivityIndicator>
-        <Text>carregando...</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.containeretapa}>
@@ -117,14 +163,19 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
           <View style={styles.conjunto}>
             <View style={styles.partes}>
               <InputScale
-                label="peso"
+                label={labels.peso}
+                labelEstilo2={
+                  labels.peso.includes("invalido") ? "red" : "black"
+                }
                 value={data.peso}
                 onChangeText={(text) => onChange("peso", text)}
               />
 
               <InputScale
-                label="altura"
-                keyboardType="numeric"
+                label={labels.altura}
+                labelEstilo2={
+                  labels.altura.includes("invalido") ? "red" : "black"
+                }
                 value={data.altura}
                 onChangeText={(text) => formataAltura(text)}
               />
@@ -132,7 +183,10 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
 
             <View style={styles.partes}>
               <SelectScan
-                label="sangue"
+                label={labels.sangue}
+                labelEstilo2={
+                  labels.sangue.includes("invalido") ? "red" : "black"
+                }
                 selectedValue={data.sangue}
                 onValueChange={(itemValue, itemIndex) =>
                   onChange("sangue", itemValue)
@@ -150,7 +204,10 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
               />
 
               <SelectScan
-                label="diabetico"
+                label={labels.diabetico}
+                labelEstilo2={
+                  labels.diabetico.includes("invalido") ? "red" : "black"
+                }
                 selectedValue={data.diabetico}
                 onValueChange={(itemValue, itemIndex) =>
                   onChange("diabetico", itemValue)
@@ -165,7 +222,10 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
 
             <View style={styles.partes}>
               <SelectScan
-                label="fumante"
+                label={labels.fumante}
+                labelEstilo2={
+                  labels.fumante.includes("invalido") ? "red" : "black"
+                }
                 selectedValue={data.fumante}
                 onValueChange={(itemValue, itemIndex) =>
                   onChange("fumante", itemValue)
@@ -178,7 +238,10 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
               />
 
               <SelectScan
-                label="alcolatra"
+                label={labels.alcolatra}
+                labelEstilo2={
+                  labels.alcolatra.includes("invalido") ? "red" : "black"
+                }
                 selectedValue={data.alcolatra}
                 onValueChange={(itemValue, itemIndex) =>
                   onChange("alcolatra", itemValue)
@@ -200,7 +263,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
                   {alergias.map((item) => (
                     <InputScale
                       key={item.id}
-                      label="alergia"
+                      label={labels.alergia}
                       keyboardType="numeric"
                       value={item.nome}
                       onChangeText={(text) =>
@@ -234,7 +297,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
                 <Text style={styles.texto}>Voltar</Text>
               </Pressable>
 
-              <Pressable style={styles.bbotao} onPress={() => insert()}>
+              <Pressable style={styles.bbotao} onPress={() => validacao()}>
                 <Text style={styles.texto}>Prosseguir</Text>
               </Pressable>
             </View>
@@ -243,6 +306,13 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
 
         <StatusBar style="auto" />
       </View>
+
+      <Modal transparent={loading} visible={loading}>
+        <View style={styles.containerModal}>
+          <ActivityIndicator size="large" color="blue" />
+          <Text style={{ color: "white", fontSize: 20 }}>Carregando...</Text>
+        </View>
+      </Modal>
     </View>
   );
 }

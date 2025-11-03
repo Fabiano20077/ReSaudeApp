@@ -3,33 +3,31 @@ import {
   View,
   Text,
   Pressable,
-  Image,
-  TextInput,
   ActivityIndicator,
-  Platform,
+  Modal,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
-import api from "../api";
 import styles from "./style";
 import InputScale from "./inputAnima";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function etapa5({ data, onChange, onFinish, onBack }) {
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
 
-  const [senhaC, setSenhaC] = useState('')
+  const [senhaC, setSenhaC] = useState("");
+  const [senha,setSenha] = useState('senha')
 
   const insert = async () => {
 
     setLoading(true);
 
-    if(senhaC !== data.senha){
-      alert('senhas diferents')
-      setLoading(false)
+    setSenha('senha')
+    
+    if (senhaC !== data.senha) {
+      setSenha("senhas diferents");
+      setLoading(false);
       return false;
-    } 
+    }
 
     var usuario = new FormData();
 
@@ -55,7 +53,7 @@ export default function etapa5({ data, onChange, onFinish, onBack }) {
       }
 
       console.log("etapa5 sucesso", resData);
-      alert('sucesso')
+      alert("sucesso");
       await AsyncStorage.setItem("usuario", JSON.stringify(resData));
       onFinish();
     } catch (error) {
@@ -64,15 +62,6 @@ export default function etapa5({ data, onChange, onFinish, onBack }) {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size="large" color="blue"></ActivityIndicator>
-        <Text>carregando</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -91,10 +80,10 @@ export default function etapa5({ data, onChange, onFinish, onBack }) {
               position={23}
             />
             <InputScale
-              label="senha"
+              label={senha}
               keyboardType="numeric"
               value={data.senha}
-              onChangeText={(text) => onChange('senha', text)}
+              onChangeText={(text) => onChange("senha", text)}
               containerStyle={{ width: 370, height: 100 }}
               inputStyle={{ height: "100%", fontSize: 32 }}
               labelEstilo={40}
@@ -113,6 +102,13 @@ export default function etapa5({ data, onChange, onFinish, onBack }) {
         </View>
         <StatusBar style="auto" />
       </View>
+
+      <Modal transparent={loading} visible={loading}>
+        <View style={styles.containerModal}>
+          <ActivityIndicator size="large" color="blue" />
+          <Text style={{ color: "white", fontSize: 20 }}>Carregando...</Text>
+        </View>
+      </Modal>
     </View>
   );
 }

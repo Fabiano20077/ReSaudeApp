@@ -23,6 +23,17 @@ export default function etapa1({ data, onChange, onNext }) {
   const [imagem, setImagem] = useState("");
   const [modal, setModal] = useState(false);
 
+  const [labels, setLabels] = useState({
+    nome: "Nome",
+    nasci: "Data de nasc",
+    email: "Email",
+    cep: "Cep",
+    num: "Numero",
+    bairro: "Bairro",
+    uf: "Uf",
+    logradouro: "Endereço",
+  });
+
   const solicitarPermissao = async () => {
     const camera = await ImagePicker.requestCameraPermissionsAsync();
     const galeria = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -100,8 +111,6 @@ export default function etapa1({ data, onChange, onNext }) {
   };
 
   const buscaCep = async (cep) => {
-    
-
     const cepV = cep.replace(/\-/g, "");
 
     try {
@@ -123,15 +132,59 @@ export default function etapa1({ data, onChange, onNext }) {
     }
   };
 
-  const insert = async () => {
-    setLoading(true);
+  const resetLabel = () => {
+    setLabels({
+      nome: "Nome",
+      nasci: "Data de nasc",
+      email: "Email",
+      cep: "Cep",
+      num: "Numero",
+      bairro: "Bairro",
+      uf: "Uf",
+      logradouro: "Endereço",
+    });
+  };
 
-    if (data.nome == "") {
-      alert("nome invalido");
-      setLoading(false)
+  const erroLabel = (campo, msg) => {
+    setLabels((prev) => ({
+      ...prev,
+      [campo]: msg,
+    }));
+  };
+
+  const validacao = () => {
+    setLoading(true);
+    resetLabel();
+
+    const obrigadorio = [
+      "nome",
+      "nasci",
+      "email",
+      "cep",
+      "num",
+      "bairro",
+      "uf",
+      "logradouro",
+    ];
+
+    let erros = false;
+
+    obrigadorio.forEach((campo) => {
+      if (data[campo] === "") {
+        erroLabel(campo, `${campo} invalido`);
+        erros = true;
+      }
+    });
+
+    if (erros == true) {
+      setLoading(false);
       return false;
     }
 
+    insert();
+  };
+
+  const insert = async () => {
     const [dia, mes, ano] = data.nasci.split("/");
 
     const nascimento = `${ano}-${mes}-${dia}`;
@@ -157,16 +210,11 @@ export default function etapa1({ data, onChange, onNext }) {
     usuario.append("inputBairro", data.bairro);
     usuario.append("inputUf", data.uf);
 
-
     try {
-   
-
       const response = await fetch("http://10.0.2.2:8000/api/cadastra-etapa1", {
         method: "POST",
         body: usuario,
       });
-
-
 
       const resData = await response.json();
       if (!response.ok) {
@@ -182,15 +230,6 @@ export default function etapa1({ data, onChange, onNext }) {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size="large" color="blue" />
-        <Text>Carregando...</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -217,13 +256,19 @@ export default function etapa1({ data, onChange, onNext }) {
           <View style={styles.conjunto}>
             <View style={styles.partes}>
               <InputScale
-                label="nome"
+                label={labels.nome}
+                labelEstilo2={
+                  labels.nome.includes("invalido") ? "red" : "black"
+                }
                 value={data.nome}
                 onChangeText={(text) => onChange("nome", text)}
               />
-              
+
               <InputScale
-                label="data de nasc."
+                label={labels.nasci}
+                labelEstilo2={
+                  labels.nasci.includes("invalido") ? "red" : "black"
+                }
                 keyboardType="numeric"
                 value={data.nasci}
                 onChangeText={(text) => formatacaoData(text)}
@@ -232,7 +277,10 @@ export default function etapa1({ data, onChange, onNext }) {
 
             <View style={styles.partes}>
               <InputScale
-                label="email"
+                label={labels.email}
+                labelEstilo2={
+                  labels.email.includes("invalido") ? "red" : "black"
+                }
                 value={data.email}
                 onChangeText={(text) => onChange("email", text)}
                 containerStyle={{ width: "92%" }}
@@ -241,14 +289,16 @@ export default function etapa1({ data, onChange, onNext }) {
 
             <View style={styles.partes}>
               <InputScale
-                label="cep"
+                label={labels.cep}
+                labelEstilo2={labels.cep.includes("invalido") ? "red" : "black"}
                 value={data.cep}
                 onChangeText={(text) => formataCep(text)}
                 onBlur={() => buscaCep(data.cep)}
               />
 
               <InputScale
-                label="numero"
+                label={labels.num}
+                labelEstilo2={labels.num.includes("invalido") ? "red" : "black"}
                 value={data.num}
                 onChangeText={(text) => onChange("num", text)}
               />
@@ -256,13 +306,17 @@ export default function etapa1({ data, onChange, onNext }) {
 
             <View style={styles.partes}>
               <InputScale
-                label="bairro"
+                label={labels.bairro}
+                labelEstilo2={
+                  labels.bairro.includes("invalido") ? "red" : "black"
+                }
                 value={data.bairro}
                 onChangeText={(text) => onChange("bairro", text)}
               />
 
               <InputScale
-                label="uf"
+                label={labels.uf}
+                labelEstilo2={labels.uf.includes("invalido") ? "red" : "black"}
                 value={data.uf}
                 onChangeText={(text) => onChange("uf", text)}
               />
@@ -270,7 +324,10 @@ export default function etapa1({ data, onChange, onNext }) {
 
             <View style={styles.partes}>
               <InputScale
-                label="endereço"
+                label={labels.logradouro}
+                labelEstilo2={
+                  labels.logradouro.includes("invalido") ? "red" : "black"
+                }
                 value={data.logradouro}
                 onChangeText={(text) => onChange("logradouro", text)}
                 containerStyle={{ width: "92%" }}
@@ -285,7 +342,7 @@ export default function etapa1({ data, onChange, onNext }) {
             >
               <Text style={styles.texto}>Voltar</Text>
             </Pressable>
-            <Pressable style={styles.bbotao} onPress={() => insert()}>
+            <Pressable style={styles.bbotao} onPress={() => validacao()}>
               <Text style={styles.texto}>Prosseguir</Text>
             </Pressable>
           </View>
@@ -313,6 +370,8 @@ export default function etapa1({ data, onChange, onNext }) {
           </View>
         </View>
       </Modal>
+
+      
     </View>
   );
 }

@@ -4,21 +4,18 @@ import {
   Text,
   Pressable,
   Image,
-  TextInput,
   ActivityIndicator,
-  Platform,
   ScrollView,
+  Modal,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
-import api from "../api";
 import styles from "./style";
 import InputScale from "./inputAnima";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function etapa3({ data, onChange, onNext, onBack }) {
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
+
 
   const [remedio, setRemedio] = useState([{ id: 1, nome: "" }]);
 
@@ -32,7 +29,7 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
     );
 
     setRemedio(atualizar);
-    onChange("remedios", atualizar)
+    onChange("remedios", atualizar);
   };
 
   const insert = async () => {
@@ -40,7 +37,7 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
 
     var usuario = new FormData();
 
-    usuario.append('remedios', JSON.stringify(data.remedios))
+    usuario.append("remedios", JSON.stringify(data.remedios));
 
     var array = await AsyncStorage.getItem("usuario");
 
@@ -55,9 +52,8 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
         }
       );
 
-         const resData = await response.json();
+      const resData = await response.json();
       if (!response.ok) {
-   
         throw new error(JSON.stringify(resData));
       }
 
@@ -69,17 +65,7 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
     } finally {
       setLoading(false);
     }
-
   };
-
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size="large" color="blue"></ActivityIndicator>
-        <Text>carregando</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -135,6 +121,13 @@ export default function etapa3({ data, onChange, onNext, onBack }) {
       </View>
 
       <StatusBar style="auto" />
+
+      <Modal transparent={loading} visible={loading}>
+        <View style={styles.containerModal}>
+          <ActivityIndicator size="large" color="blue" />
+          <Text style={{ color: "white", fontSize: 20 }}>Carregando...</Text>
+        </View>
+      </Modal>
     </View>
   );
 }

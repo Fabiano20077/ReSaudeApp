@@ -11,6 +11,7 @@ export default function InputScale({
   onBlur,
   labelEstilo,
   position,
+  labelEstilo2,
 }) {
   const [isFocused, setIsFocused] = useState(false);
   const animatedLabel = useRef(new Animated.Value(value ? 1 : 0)).current;
@@ -27,11 +28,12 @@ export default function InputScale({
   const posicaoTop = position == 23? position : position = 15
 
 
+
   const labelStyle = {
     position: "absolute",
     left: 10,
     zIndex: 2,
-
+    color: labelEstilo2,
     top: animatedLabel.interpolate({
       inputRange: [0, 1],
       outputRange: [posicaoTop, -19],
@@ -40,10 +42,8 @@ export default function InputScale({
       inputRange: [0, 1],
       outputRange: [tamanhoFont, 15],
     }),
-    color: animatedLabel.interpolate({
-      inputRange: [0, 1],
-      outputRange: ["#333", "#007AFF"], // cor muda no foco
-    }),
+
+    
     
   };
 

@@ -4,20 +4,17 @@ import {
   Text,
   Pressable,
   Image,
-  TextInput,
   ActivityIndicator,
-  Platform,
   ScrollView,
+  Modal,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
-import api from "../api";
 import styles from "./style";
 import InputScale from "./inputAnima";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function etapa4({ data, onChange, onNext, onBack }) {
-  const navigation = useNavigation();
+
 
   const [loading, setLoading] = useState(false);
 
@@ -28,11 +25,12 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
   };
 
   const handleAlergiaChange = (id, valor) => {
-   
-   const atualizar =  doencas.map((item) => (item.id === id ? { ...item, nome: valor } : item))
-    
-   setDoencas(atualizar)
-   onChange('doencas', atualizar)
+    const atualizar = doencas.map((item) =>
+      item.id === id ? { ...item, nome: valor } : item
+    );
+
+    setDoencas(atualizar);
+    onChange("doencas", atualizar);
   };
 
   const insert = async () => {
@@ -40,8 +38,7 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
 
     var usuario = new FormData();
 
-    
-    usuario.append('doencas', JSON.stringify(data.doencas))
+    usuario.append("doencas", JSON.stringify(data.doencas));
 
     var array = await AsyncStorage.getItem("usuario");
 
@@ -56,7 +53,7 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
         }
       );
 
-       const resData = await response.json();
+      const resData = await response.json();
 
       if (!response.ok) {
         console.log("erro", resData);
@@ -72,15 +69,6 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size="large" color="blue"></ActivityIndicator>
-        <Text>carregando</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -134,6 +122,13 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
           </View>
         </View>
       </View>
+
+      <Modal transparent={loading} visible={loading}>
+        <View style={styles.containerModal}>
+          <ActivityIndicator size="large" color="blue" />
+          <Text style={{ color: "white", fontSize: 20 }}>Carregando...</Text>
+        </View>
+      </Modal>
     </View>
   );
 }

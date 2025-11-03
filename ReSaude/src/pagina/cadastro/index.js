@@ -32,10 +32,10 @@ export default function App() {
     diabetico: "",
     fumante: "",
     alcolatra: "",
+    sangue: "",
     alergia: [],
     remedios: [],
     doencas: [],
-    sangue: "",
     senha: ""
   });
 

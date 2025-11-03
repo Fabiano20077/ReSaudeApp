@@ -12,6 +12,7 @@ export default function selectScan({
   opitions = [],
   containerStyle,
   onBlur,
+  labelEstilo2,
 }) {
   const [isFocused, setIsFocused] = useState(false);
   const animatedLabel = useRef(new Animated.Value(value ? 1 : 0)).current;
@@ -27,6 +28,7 @@ export default function selectScan({
   const labelStyle = {
     position: "absolute",
     left: 10,
+    color: labelEstilo2,
     zIndex: 2,
     top: animatedLabel.interpolate({
       inputRange: [0, 1],
@@ -35,10 +37,6 @@ export default function selectScan({
     fontSize: animatedLabel.interpolate({
       inputRange: [0, 1],
       outputRange: [20, 15],
-    }),
-    color: animatedLabel.interpolate({
-      inputRange: [0, 1],
-      outputRange: ["#333", "#007AFF"], // cor muda no foco
     }),
   };
 
