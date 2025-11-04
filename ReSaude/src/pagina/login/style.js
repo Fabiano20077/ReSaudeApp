@@ -31,10 +31,11 @@ export default StyleSheet.create({
 
   containerTitulo: {
     flex: 0.2,
+    justifyContent: 'center',
   },
 
   titulo: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "500",
   },
 

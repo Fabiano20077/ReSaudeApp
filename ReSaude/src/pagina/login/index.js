@@ -57,7 +57,7 @@ export default function App() {
         </View>
         <View style={styles.login}>
           <View style={styles.containerTitulo}>
-            <Text style={styles.titulo}>Bem-vindo de volta</Text>
+            <Text style={styles.titulo}>Bem-vindo</Text>
           </View>
           <View style={styles.inputs}>
             <Text style={styles.texto}>Email</Text>

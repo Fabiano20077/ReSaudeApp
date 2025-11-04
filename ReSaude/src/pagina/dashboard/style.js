@@ -1,73 +1,128 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#89D99D',
+    backgroundColor: "#89D99D",
   },
 
   containerDashboard: {
-    flex: 1
+    flex: 1,
   },
 
   corpo: {
-    flex: .9,
+    flex: 0.9,
     padding: 20,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 10
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 10,
   },
 
- card: {
-  margin:6,
-  width: '45%',
-  height: 150,
-  backgroundColor: '#39a367ff',
-  borderRadius: 12,
-  justifyContent: 'center',
-  alignItems: 'center',
-  elevation: 3
-},
+  card: {
+    margin: 6,
+    width: "45%",
+    height: 150,
+    backgroundColor: "#39a367ff",
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 3,
+  },
 
   nav: {
-    flexDirection: 'row',
-    width: '100%',
+    flexDirection: "row",
+    width: "100%",
     height: "12%",
     borderBottomWidth: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
     padding: 10,
-    backgroundColor:'#F7F9F8'
+    backgroundColor: "#F7F9F8",
   },
 
   imgPerfil: {
-   width:50,
-   height:50
+    width: 50,
+    height: 50,
   },
 
   img: {
-    width:'100%',
-    height:'100%',
-    borderRadius:15,
-    marginTop:8
+    width: "100%",
+    height: "100%",
+    borderRadius: 15,
+    marginTop: 8,
   },
 
   txt: {
-  fontSize: 16,
-  fontWeight: '500',
-  marginTop: 8,
-  color: '#333'
+    fontSize: 16,
+    fontWeight: "500",
+    marginTop: 8,
+    color: "#333",
   },
 
-  mapa:{
-    width:20,
+  mapa: {
+    width: 20,
     height: 20,
-    backgroundColor: '#E8F5E9',
+    backgroundColor: "#E8F5E9",
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 3
-  }
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 3,
+  },
 
+  sabar: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.2)",
+    alignItems: "flex-end",
+  },
+
+  lado: {
+     position: "relative",
+    backgroundColor: "#89D99D",
+    width: "40%",
+    height: "100%",
+    borderTopLeftRadius: 30,
+    borderBottomLeftRadius: 30,
+    
+  },
+
+  perfil: {
+    width: "100%",
+    height: "15%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  lista: {
+    height: "85%",
+  },
+
+  li: {
+    height: "7%",
+  },
+
+  acessa: {
+    position: "relative",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  img2: {
+    position: "absolute",
+    left: 10,
+    top: 5,
+    width: 30,
+    height: 30,
+  },
+
+  textLi: {
+    fontSize: 26,
+  },
+
+  x: {
+    position: "absolute",
+    left: 10,
+    top: 13
+  },
 });

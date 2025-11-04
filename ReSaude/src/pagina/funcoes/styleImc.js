@@ -39,7 +39,9 @@ export default StyleSheet.create({
   },
 
   containerMostrarImc: {
-    flex: 0.5,
+    flex: 0.3,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 
   txt: {
@@ -74,5 +76,11 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 12
   },
+
+  corpo: {
+    flex: 0.7,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 
 });

@@ -8,49 +8,75 @@ import {
   Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styleImc";
 
 export default function App() {
   const navigation = useNavigation();
 
-  const [imc, setImc] = useState("");
+  const [imc, setImc] = useState();
   const [peso, setPeso] = useState("");
   const [altura, setAltura] = useState("");
   const [message, setMessage] = useState("");
+  const [img, setImg] = useState("");
+
+  useEffect(() => {
+    const automatico = async () => {
+      const respnse = await AsyncStorage.getItem("usuario");
+      if (respnse) {
+        const usuario = JSON.parse(respnse);
+        console.log(usuario.user.peso);
+        setPeso(usuario.user.peso);
+        var arruma = usuario.user.altura.toString();
+        arruma = arruma.replace(/(\d{1})(\d{1,2})/, "$1.$2");
+        setAltura(arruma);
+        console.log(peso);
+      }
+    };
+    automatico();
+  }, []);
+
+  useEffect(() => {
+    if (peso && altura) {
+      calcularImc();
+    }
+  }, [peso, altura]);
 
   const calcularImc = () => {
+    console.log("foi");
     if (!peso) {
       alert("Digite o peso");
       return false;
     }
-
     if (!altura) {
       alert("Digite a altura");
       return false;
     }
 
-    const ImcPrepa = peso / (altura * altura);
+    const pesoV = parseFloat(peso);
+    const alturaV = parseFloat(altura);
+
+    const ImcPrepa = pesoV / (alturaV * alturaV);
 
     if (ImcPrepa < 18.5) {
-      setPeso("");
-      setAltura("");
       setMessage("Você está abaixo do peso");
-      setImc(ImcPrepa.toFixed(2));
+      setImg(require("../../../assets/magro.png"));
     } else if (ImcPrepa >= 18.5 && ImcPrepa < 25) {
-      setPeso("");
-      setAltura("");
       setMessage("seu peso está normal");
-      setImc(ImcPrepa.toFixed(2));
+      setImg(require("../../../assets/normal.png"));
     } else if (ImcPrepa >= 25 && ImcPrepa < 30) {
-      setPeso("");
-      setAltura("");
       setMessage("Você está sobrepeso");
-      setImc(ImcPrepa.toFixed(2));
+      setImg(require("../../../assets/gordo.png"));
     } else {
       setMessage("Você está com obesidsde");
-      setImc(ImcPrepa.toFixed(2));
+      setImg(require("../../../assets/sobrepeso.png"));
     }
+
+    console.log(pesoV);
+    console.log(alturaV);
+    console.log(ImcPrepa);
+    setImc(ImcPrepa.toFixed(1));
   };
 
   return (
@@ -70,30 +96,28 @@ export default function App() {
             <Text style={styles.txt}>Qual seu peso?</Text>
             <TextInput
               style={styles.input}
-              value={peso}
+              value={String(peso)}
               onChangeText={setPeso}
             />
             <Text style={styles.txt}>Qual sua altura?</Text>
             <TextInput
               style={styles.input}
-              value={altura}
+              value={String(altura)}
               onChangeText={setAltura}
             />
-
-            <Pressable style={styles.botao} onPress={() => calcularImc()}>
-              <Text style={styles.tetxB}>Calcular</Text>
-            </Pressable>
           </View>
           <View style={styles.containerCard}>
             <View style={styles.card}>
-              
+              <View style={styles.containerMostrarImc}>
+                <Text style={styles.txt}>
+                  {imc} {message}
+                </Text>
+              </View>
+              <View style={styles.corpo}>
+                <Image source={img}></Image>
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.containerMostrarImc}>
-          <Text style={styles.txt}>
-            {imc} {message}
-          </Text>
         </View>
       </View>
       <StatusBar style="auto" />
