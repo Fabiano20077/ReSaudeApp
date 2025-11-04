@@ -1,4 +1,4 @@
-/* import { StatusBar } from 'expo-status-bar';
+ import { StatusBar } from 'expo-status-bar';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
@@ -6,7 +6,7 @@ import styles from './styleVacinas';
 import api from '../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const vacinas = [
+/* const vacinas = [
     {
       categoria: 'Crianças (0–9 anos)',
       lista: [
@@ -69,23 +69,9 @@ const vacinas = [
         'Pneumocócica 23-valente – recomendada para grupos de risco',
       ],
     },
-  ];
+  ]; */
 
-  return(
-    <ScrollView>
-    <StatusBar style="auto" />
-    <Text>Vacinas Obrigatórias por Categoria</Text>
 
-    {vacinas.map((grupo, index) => (
-      <View key={index}>
-        <Text>{grupo.categoria}</Text>
-        {grupo.lista.map((item, i) => (
-          <Text key={i} >• {item}</Text>
-        ))}
-      </View>
-    ))}
-  </ScrollView>
-  );
 
 export default function App() {
 
@@ -93,7 +79,7 @@ export default function App() {
     const [Vacinas, setVacinas] = useState('');
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+   /*  useEffect(() => {
         const vemId = async () => {
             setLoading(true);
             try {
@@ -118,25 +104,16 @@ export default function App() {
         };
 
         vemId();
-    }, []);
-
-    if (loading) {
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ActivityIndicator size="large" color="blue" />
-                <Text>Carregando...</Text>
-            </View>
-        );
-    }
+    }, []); */
 
     return (
         <View style={styles.container}>
             <View style={styles.containerSangue}>
-                <Text>{Vacinas}</Text>
+                <Text>opa</Text>
             </View>
             <StatusBar style="auto" />
         </View>
 
         
     );
-} */
+}  

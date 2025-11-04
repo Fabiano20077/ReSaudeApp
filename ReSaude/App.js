@@ -9,6 +9,7 @@ import Perfil from './src/pagina/perfil';
 import Calorias from './src/pagina/funcoes/calorias';
 import Mmc from './src/pagina/funcoes/Imc';
 import agua from './src/pagina/funcoes/Água';
+import Vacinas from './src/pagina/funcoes/Vacinas'
 import Sangue from './src/pagina/funcoes/sangue'
 
 import geolocalizacao from './src/pagina/geolocalizacao/index'
@@ -29,8 +30,10 @@ export default function App() {
                 <Stack.Screen name='geolocalizacao' component={geolocalizacao}></Stack.Screen>
                 <Stack.Screen name='Água' component={agua} />
                 <Stack.Screen name='Sangue' component={Sangue}/>
-                <Stack.Screen name='Imc' component={Mmc} />
+                <Stack.Screen name='Imc' component={Mmc}
+                options={{headerShown: false}} />
                 <Stack.Screen name='Calorias' component={Calorias} />
+                <Stack.Screen name='Vacinas' component={Vacinas} />
                 <Stack.Screen name='Perfil' component={Perfil}
                     options={{ headerShown: true }} />
                 <Stack.Screen name='Cadastro' component={Cadastro}

@@ -371,7 +371,12 @@ export default function etapa1({ data, onChange, onNext }) {
         </View>
       </Modal>
 
-      
+      <Modal transparent={loading} visible={loading}>
+        <View style={styles.containerModal}>
+          <ActivityIndicator size="large" color="blue" />
+          <Text style={{ color: "white", fontSize: 20 }}>Carregando...</Text>
+        </View>
+      </Modal>
     </View>
   );
 }

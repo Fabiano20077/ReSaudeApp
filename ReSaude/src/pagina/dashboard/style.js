@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#89D99D',
   },
 
   containerDashboard: {
@@ -23,7 +23,7 @@ export default StyleSheet.create({
   margin:6,
   width: '45%',
   height: 150,
-  backgroundColor: '#E8F5E9',
+  backgroundColor: '#39a367ff',
   borderRadius: 12,
   justifyContent: 'center',
   alignItems: 'center',
@@ -31,14 +31,13 @@ export default StyleSheet.create({
 },
 
   nav: {
-    flex: .1,
     flexDirection: 'row',
     width: '100%',
-    height: 70,
-    borderTopWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 5,
+    height: "12%",
+    borderBottomWidth: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    padding: 10,
     backgroundColor:'#F7F9F8'
   },
 
