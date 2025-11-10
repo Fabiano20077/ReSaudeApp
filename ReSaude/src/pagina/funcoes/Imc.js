@@ -66,11 +66,11 @@ export default function App() {
       setMessage("seu peso está normal");
       setImg(require("../../../assets/normal.png"));
     } else if (ImcPrepa >= 25 && ImcPrepa < 30) {
-      setMessage("Você está sobrepeso");
+      setMessage("Você está com sobrepeso");
       setImg(require("../../../assets/gordo.png"));
     } else {
       setMessage("Você está com obesidsde");
-      setImg(require("../../../assets/sobrepeso.png"));
+      setImg(require("../../../assets/obesidade.png"));
     }
 
     console.log(pesoV);

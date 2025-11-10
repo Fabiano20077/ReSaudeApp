@@ -133,6 +133,7 @@ class usuarioController extends Controller
             200
         );
     }
+
     public function etapa5(string $id, Request $request)
     {
         $usuario = User::find($id);
@@ -149,6 +150,53 @@ class usuarioController extends Controller
             200
         );
     }
+
+    public function etapa1Update(Request $request, string $id)
+    {
+        $usuario = User::find($id);
+
+
+         $validar = $request->validator([
+            'nome' => 'string',
+            'email' => 'string',
+            'nascimento' => 'date',
+            'cep' => 'min: 11',
+            'logra' => 'string',
+            'numero' => 'numeric',
+            'bairro' => 'string'
+         ]);
+
+        $usuario->update($validar);//nome = $request->inputNome;
+        $usuario->email = $request->inputEmail;
+        $usuario->nascimento = $request->inputNasci;
+        $usuario->cep = $request->inputCep;
+        $usuario->logra = $request->inputLogra;
+        $usuario->numero = $request->inputNumero;
+        $usuario->bairro = $request->inputBairro;
+        $usuario->uf = $request->inputUf;
+        $usuario->estado = $request->inputEstado;
+
+        $imagem = $request->file('foto');
+
+        if ($imagem) {
+            $path = $imagem->store('imagens', 'public');
+        } else {
+            $path = "";
+        }
+
+        $usuario->img = $path;
+
+        $usuario->save();
+
+        return response()->json(
+            [
+                'messagme' => 'etapa1 salvo com sucesso',
+                'usuario' => $usuario
+            ],
+            200
+        );
+    }
+
 
     /**
      * Display the specified resource.

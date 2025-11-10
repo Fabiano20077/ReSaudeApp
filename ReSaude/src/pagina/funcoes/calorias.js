@@ -5,6 +5,7 @@ import {
   TextInput,
   Pressable,
   ActivityIndicator,
+  Image
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
@@ -103,6 +104,14 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.containerPrincipal}>
+         <View style={styles.nav}>
+                  <Pressable onPress={() => navigation.navigate("Dashboard")}>
+                    <Image
+                      style={styles.imgPerfil}
+                      source={require("../../../assets/seta-esquerda.png")}
+                    ></Image>
+                  </Pressable>
+                </View>
         <View style={styles.containerBuscar}>
           <TextInput
             style={styles.input}

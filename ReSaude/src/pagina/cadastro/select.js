@@ -52,15 +52,6 @@ export default function selectScan({
           {opitions.map((item, index) => (
             <Picker.Item key={index} label={item.label} value={item.value} />
           ))}
-          {/*   />
-       
-          <Picker.Item >
-          <Picker.Item >
-          <Picker.Item >
-          <Picker.Item  />
-          <Picker.Item  />
-          <Picker.Item >
-          <Picker.Item > */}
         </Picker>
       </View>
     </View>
