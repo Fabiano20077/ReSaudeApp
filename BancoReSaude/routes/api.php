@@ -30,6 +30,7 @@ Route::post('/cadastra-etapa2/{id}', [usuarioController::class, 'etapa2']);
 Route::post('/cadastra-etapa3/{id}', [usuarioController::class, 'etapa3']);
 Route::post('/cadastra-etapa4/{id}', [usuarioController::class, 'etapa4']);
 Route::post('/cadastra-etapa5/{id}', [usuarioController::class, 'etapa5']);
+Route::post('/updatePerfil/{id}', [usuarioController::class, 'Update']);
 
 Route::post('/login', [usuarioController::class, 'show']);
 

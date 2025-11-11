@@ -56,7 +56,7 @@ export default StyleSheet.create({
   },
 
   opcao: {
-    borderWidth: 1,
+    borderTopWidth: 1,
     padding: 10,
   },
 
@@ -161,7 +161,7 @@ export default StyleSheet.create({
   },
 
   parte2: {
-    gap: 10,
+    gap: 20,
     marginTop: 10,
   },
 
@@ -194,11 +194,19 @@ export default StyleSheet.create({
 
   containerScrrol: {
     height: "45%",
+    gap: 20,
   },
 
   addContainer: {
     alignItems: "center",
     width: "95%",
     height: "84.2%",
+  },
+
+  parte3: {
+    alignItems: "center",
+    width: "95%",
+    height: "84.2%",
+    gap: 20,
   },
 });

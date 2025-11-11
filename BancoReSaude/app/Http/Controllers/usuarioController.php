@@ -151,46 +151,55 @@ class usuarioController extends Controller
         );
     }
 
-    public function etapa1Update(Request $request, string $id)
+    public function Update(string $id, Request $request)
     {
-        $usuario = User::find($id);
 
-
-         $validar = $request->validator([
+        $validarDados = $request->validate([
             'nome' => 'string',
             'email' => 'string',
             'nascimento' => 'date',
             'cep' => 'min: 11',
-            'logra' => 'string',
             'numero' => 'numeric',
-            'bairro' => 'string'
-         ]);
+            'bairro' => 'string',
+            'uf' => 'string',
+            'logra' => 'string',
+            'peso' => 'min:2',
+            'altura' => 'min:3',
+            'sangue' => 'string',
+            'diabetico' => 'string',
+            'fumante' => 'string',
+            'alcolatra' => 'string',
+            'alergia' => 'json',
+            'remedios' => 'json',
+            'doencas' => 'json',
+            'senha' => 'min:3'
+        ]);
 
-        $usuario->update($validar);//nome = $request->inputNome;
-        $usuario->email = $request->inputEmail;
-        $usuario->nascimento = $request->inputNasci;
-        $usuario->cep = $request->inputCep;
-        $usuario->logra = $request->inputLogra;
-        $usuario->numero = $request->inputNumero;
-        $usuario->bairro = $request->inputBairro;
-        $usuario->uf = $request->inputUf;
-        $usuario->estado = $request->inputEstado;
+        $usuario = User::find($id);
 
-        $imagem = $request->file('foto');
+        if ($request->filled('senhaA') && $request->filled('senhaN')) {
 
-        if ($imagem) {
-            $path = $imagem->store('imagens', 'public');
-        } else {
-            $path = "";
+            if (!Hash::check($request->senhaA, $usuario->senha)) {
+
+                return response()->json(
+                    ['message' => 'senha antiga incorreta'],
+                    403
+                );
+            }
+
+
+
+            $validarDados['alergia'] = json_decode($request->alergia);
+            $validarDados['remedios'] = json_decode($request->remedios);
+            $validarDados['doencas'] = json_decode($request->doencas);
+            $validarDados['senha'] = Hash::make($request->senhaN);
         }
 
-        $usuario->img = $path;
-
-        $usuario->save();
+        $usuario->update($validarDados);
 
         return response()->json(
             [
-                'messagme' => 'etapa1 salvo com sucesso',
+                'messagme' => 'usuario atualizado com sucesso',
                 'usuario' => $usuario
             ],
             200
@@ -234,7 +243,7 @@ class usuarioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    /*     public function update(Request $request, string $id)
     {
 
 
@@ -267,7 +276,7 @@ class usuarioController extends Controller
             ],
             200
         );
-    }
+    } */
 
     /**
      * Remove the specified resource from storage.

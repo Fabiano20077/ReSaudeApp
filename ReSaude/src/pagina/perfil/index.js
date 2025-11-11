@@ -22,10 +22,6 @@ export default function App() {
   const [modal, setModal] = useState(false);
 
   const [id, setId] = useState("");
-  const [nome, setnome] = useState("");
-  const [email, setEmail] = useState("");
-  const [nasci, setNasci] = useState("");
-  const [senha, setSenha] = useState("");
   const [imagem, setImagem] = useState();
   const [loading, setLoading] = useState(false);
   const [textoLogin, setTextLogin] = useState(false);
@@ -50,6 +46,9 @@ export default function App() {
     alcolatra: "Alcolatra",
     sangue: "Sangue",
     alergia: "Alergia",
+    senhaA: "senha antiga",
+    senhaN: "senha nova",
+    senhaC: "confirmar senha",
   });
 
   const [data, setData] = useState({
@@ -67,14 +66,11 @@ export default function App() {
     fumante: "",
     alcolatra: "",
     sangue: "",
-    alergia: [],
+    senhaA: "",
+    senhaN: "",
   });
 
   const handleAlergiaChange = (id, valor) => {
-    /*  setAlergias((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, nome: valor } : item))
-    ); */
-
     const atualizar = alergias.map((item) =>
       item.id === id ? { ...item, nome: valor } : item
     );
@@ -141,6 +137,29 @@ export default function App() {
 
         console.log("funfo", data);
 
+        const safeParse = (valor) => {
+          try {
+            if (typeof valor === "string") {
+              return JSON.parse(valor);
+            }
+            if (Array.isArray(valor)) {
+              return valor;
+            }
+            return [];
+          } catch (e) {
+            console.log("Erro ao parsear:", e);
+            return [];
+          }
+        };
+
+        const alergiasUsuario = safeParse(data.user.alergia);
+        const remedeiosUsuarios = safeParse(data.user.remedios);
+        const doencasUsuarios = safeParse(data.user.doencas);
+
+        setAlergias(alergiasUsuario);
+        setRemedio(remedeiosUsuarios);
+        setDoencas(doencasUsuarios);
+
         setData({
           nome: data.user.nome,
           nasci: data.user.nascimento,
@@ -156,7 +175,6 @@ export default function App() {
           fumante: data.user.fumante,
           alcolatra: data.user.alcolatra,
           sangue: data.user.sangue,
-          alergia: data.user.alergia,
         });
 
         setTextLogin(false);
@@ -169,6 +187,67 @@ export default function App() {
 
     vemId();
   }, []);
+
+  const onChange = (campo, valor) => {
+    setData((prev) => ({ ...prev, [campo]: valor }));
+  };
+
+  const update = async () => {
+    setLoading(true);
+    console.log("chegou aqui1");
+    var array = await AsyncStorage.getItem("usuario");
+
+    var user = JSON.parse(array);
+    console.log("chegou aqui2");
+    var usuario = new FormData();
+
+    usuario.append("nome", data.nome);
+    usuario.append("email", data.email);
+    usuario.append("nascimento", data.nasci);
+    usuario.append("cep", data.cep);
+    usuario.append("logra", data.logradouro);
+    usuario.append("numero", data.num);
+    usuario.append("bairro", data.bairro);
+    usuario.append("uf", data.uf);
+    usuario.append("peso", data.peso);
+    usuario.append("altura", data.altura);
+    usuario.append("sangue", data.sangue);
+    usuario.append("diabetico", data.diabetico);
+    usuario.append("fumante", data.fumante);
+    usuario.append("alcolatra", data.alcolatra);
+     console.log('é aqui')
+    usuario.append("alergia", JSON.stringify(alergias));
+    usuario.append("remedios", JSON.stringify(remedio));
+    usuario.append("doencas", JSON.stringify(doencas));
+    usuario.append("senhaA", data.senhaA);
+    usuario.append("senhaN", data.senhaN);
+    console.log("chegou aqui3");
+
+    try {
+      const response = await fetch(
+        `http://10.0.2.2:8000/api/updatePerfil/${user.usuario["id"]}`,
+        {
+          method: "POST",
+          body: usuario,
+        }
+      );
+      
+      console.log(response);
+      const resData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(JSON.stringify(resData));
+      }
+
+      console.log(resData);
+
+      setModal(false);
+    } catch (erro) {
+      console.log("erro", erro.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -190,8 +269,8 @@ export default function App() {
             ></Image>
           </View>
           <View style={styles.dados}>
-            <Text style={styles.textNome}>{nome}</Text>
-            <Text style={styles.textEmail}>{email}</Text>
+            <Text style={styles.textNome}>{data.nome}</Text>
+            <Text style={styles.textEmail}>{data.email}</Text>
           </View>
         </View>
         <View style={styles.opcoes}>
@@ -460,7 +539,7 @@ export default function App() {
                   <View style={styles.addContainer}>
                     <ScrollView
                       style={{ gap: 20 }}
-                      showsVerticalScrollIndicator={false}
+                      showsVerticalScrollIndicator={true}
                     >
                       <View style={styles.parte2}>
                         {remedio.map((item) => (
@@ -473,7 +552,7 @@ export default function App() {
                               handleAlergiaChange2(item.id, text)
                             }
                             containerStyle={{ width: "100%", height: 50 }}
-                            inputStyle={{ height: "100%", fontSize: 32 }}
+                            inputStyle={{ height: "100%", fontSize: 22 }}
                             labelEstilo={20}
                             position={20}
                           />
@@ -502,7 +581,7 @@ export default function App() {
                 <>
                   <View style={styles.addContainer}>
                     <ScrollView
-                      style={{ gap: 20 }}
+                      style={{ gap: 30 }}
                       showsVerticalScrollIndicator={false}
                     >
                       <View style={styles.parte2}>
@@ -513,10 +592,10 @@ export default function App() {
                             keyboardType="numeric"
                             value={item.nome}
                             onChangeText={(text) =>
-                              handleAlergiaChange(item.id, text)
+                              handleAlergiaChange3(item.id, text)
                             }
                             containerStyle={{ width: "100%", height: 50 }}
-                            inputStyle={{ height: "100%", fontSize: 32 }}
+                            inputStyle={{ height: "100%", fontSize: 22 }}
                             labelEstilo={20}
                             position={20}
                           />
@@ -542,7 +621,41 @@ export default function App() {
                   </View>
                 </>
               ) : step == 5 ? (
-                <></>
+                <>
+                  <View style={styles.parte3}>
+                    <InputScale
+                      label={labels.senhaA}
+                      keyboardType="numeric"
+                      value={data.senha}
+                      onChangeText={setSenhaC}
+                      containerStyle={{ width: 370, height: 50 }}
+                      inputStyle={{ height: "100%", fontSize: 20 }}
+                      labelEstilo={20}
+                      position={20}
+                    />
+                    <InputScale
+                      label={labels.senhaN}
+                      keyboardType="numeric"
+                      value={data.senha}
+                      onChangeText={(text) => onChange("senha", text)}
+                      containerStyle={{ width: 370, height: 50 }}
+                      inputStyle={{ height: "100%", fontSize: 20 }}
+                      labelEstilo={20}
+                      position={20}
+                    />
+
+                    <InputScale
+                      label={labels.senhaC}
+                      keyboardType="numeric"
+                      value={data.senha}
+                      onChangeText={(text) => onChange("senha", text)}
+                      containerStyle={{ width: 370, height: 50 }}
+                      inputStyle={{ height: "100%", fontSize: 20 }}
+                      labelEstilo={20}
+                      position={20}
+                    />
+                  </View>
+                </>
               ) : null}
 
               <View style={styles.botoes}>
