@@ -22,9 +22,8 @@ return new class extends Migration
             $table->string('numero')->nullable();
             $table->string('bairro')->nullable();
             $table->string('uf')->nullable();
-            $table->string('estado')->nullable();
-            $table->integer('peso')->nullable();
-            $table->integer('altura')->nullable();
+            $table->string('peso')->nullable();
+            $table->string('altura')->nullable();
             $table->string("diabetico")->nullable();
             $table->json('alergia')->nullable();
             $table->string('sangue')->nullable();

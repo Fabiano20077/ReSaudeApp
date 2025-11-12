@@ -68,6 +68,7 @@ export default function App() {
     sangue: "",
     senhaA: "",
     senhaN: "",
+    senhaC: "",
   });
 
   const handleAlergiaChange = (id, valor) => {
@@ -160,6 +161,8 @@ export default function App() {
         setRemedio(remedeiosUsuarios);
         setDoencas(doencasUsuarios);
 
+        setImagem(data.user.img);
+
         setData({
           nome: data.user.nome,
           nasci: data.user.nascimento,
@@ -194,6 +197,22 @@ export default function App() {
 
   const update = async () => {
     setLoading(true);
+
+    if (data.senhaN && data.senhaN !== data.senhaC) {
+      alert("campo de senhas diferentes");
+      setLoading(false);
+      return;
+    }
+
+    if (
+      (data.senhaA || data.senhaN || data.senhaC) &&
+      (!data.senhaA || !data.senhaN || !data.senhaC)
+    ) {
+      alert("Para alterar a senha, preencha todos os campos de senha!");
+      setLoading(false);
+      return;
+    }
+
     console.log("chegou aqui1");
     var array = await AsyncStorage.getItem("usuario");
 
@@ -215,23 +234,26 @@ export default function App() {
     usuario.append("diabetico", data.diabetico);
     usuario.append("fumante", data.fumante);
     usuario.append("alcolatra", data.alcolatra);
-     console.log('é aqui')
+    console.log("é aqui");
     usuario.append("alergia", JSON.stringify(alergias));
     usuario.append("remedios", JSON.stringify(remedio));
     usuario.append("doencas", JSON.stringify(doencas));
-    usuario.append("senhaA", data.senhaA);
-    usuario.append("senhaN", data.senhaN);
-    console.log("chegou aqui3");
+    if (data.senhaA) {
+      usuario.append("senhaA", data.senhaA);
+      usuario.append("senhaN", data.senhaN);
+      usuario.append("senhaC", data.senhaC);
+    }
+    console.log(user.user["id"]);
 
     try {
       const response = await fetch(
-        `http://10.0.2.2:8000/api/updatePerfil/${user.usuario["id"]}`,
+        `http://10.0.2.2:8000/api/updatePerfil/${user.user["id"]}`,
         {
           method: "POST",
           body: usuario,
         }
       );
-      
+
       console.log(response);
       const resData = await response.json();
 
@@ -240,10 +262,11 @@ export default function App() {
       }
 
       console.log(resData);
-
+      alert("usuario atualizado ccom sucesso");
       setModal(false);
     } catch (erro) {
       console.log("erro", erro.message);
+      alert("erro ao atualizar perfil" + erro.message);
     } finally {
       setLoading(false);
     }
@@ -265,7 +288,19 @@ export default function App() {
           <View style={styles.containerImage}>
             <Image
               style={styles.foto}
-              source={require("../../../assets/perfilPng.png")}
+              source={
+                imagem
+                  ? {
+                      uri: `http://10.0.2.2:8000${imagem}`,
+                      cache: "force-cache",
+                    }
+                  : require("../../../assets/perfilPng.png")
+              }
+              onError={(e) => {
+                console.log("Erro ao carregar imagem:", e.nativeEvent.error);
+                // Fallback para imagem local em caso de erro
+              }}
+              resizeMode="cover"
             ></Image>
           </View>
           <View style={styles.dados}>
@@ -626,8 +661,8 @@ export default function App() {
                     <InputScale
                       label={labels.senhaA}
                       keyboardType="numeric"
-                      value={data.senha}
-                      onChangeText={setSenhaC}
+                      value={data.senhaA}
+                      onChangeText={(text) => onChange("senhaA", text)}
                       containerStyle={{ width: 370, height: 50 }}
                       inputStyle={{ height: "100%", fontSize: 20 }}
                       labelEstilo={20}
@@ -636,8 +671,8 @@ export default function App() {
                     <InputScale
                       label={labels.senhaN}
                       keyboardType="numeric"
-                      value={data.senha}
-                      onChangeText={(text) => onChange("senha", text)}
+                      value={data.senhaN}
+                      onChangeText={(text) => onChange("senhaN", text)}
                       containerStyle={{ width: 370, height: 50 }}
                       inputStyle={{ height: "100%", fontSize: 20 }}
                       labelEstilo={20}
@@ -647,8 +682,8 @@ export default function App() {
                     <InputScale
                       label={labels.senhaC}
                       keyboardType="numeric"
-                      value={data.senha}
-                      onChangeText={(text) => onChange("senha", text)}
+                      value={data.senhaC}
+                      onChangeText={(text) => onChange("senhaC", text)}
                       containerStyle={{ width: 370, height: 50 }}
                       inputStyle={{ height: "100%", fontSize: 20 }}
                       labelEstilo={20}

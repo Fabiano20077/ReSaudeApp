@@ -209,4 +209,11 @@ export default StyleSheet.create({
     height: "84.2%",
     gap: 20,
   },
+
+  foto: {
+    width: 150,
+    height: 150,
+    borderRadius: 100, 
+    backgroundColor: "#f0f0f0", 
+  },
 });

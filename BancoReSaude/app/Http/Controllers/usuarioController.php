@@ -22,6 +22,10 @@ class usuarioController extends Controller
             return response()->json(['erro' => 'usuario nao encontardo'], 404);
         }
 
+        if ($usuario && $usuario->img) {
+            $usuario->img = asset('storage/' . $usuario->img);
+        }
+
         return response()->json(
             [
                 'mensagem' => 'usuario encontrado',
@@ -53,7 +57,6 @@ class usuarioController extends Controller
         $usuario->numero = $request->inputNumero;
         $usuario->bairro = $request->inputBairro;
         $usuario->uf = $request->inputUf;
-        $usuario->estado = $request->inputEstado;
 
         $imagem = $request->file('foto');
 
@@ -158,8 +161,8 @@ class usuarioController extends Controller
             'nome' => 'string',
             'email' => 'string',
             'nascimento' => 'date',
-            'cep' => 'min: 11',
-            'numero' => 'numeric',
+            'cep' => 'min: 8',
+            'numero' => 'string',
             'bairro' => 'string',
             'uf' => 'string',
             'logra' => 'string',
@@ -172,12 +175,12 @@ class usuarioController extends Controller
             'alergia' => 'json',
             'remedios' => 'json',
             'doencas' => 'json',
-            'senha' => 'min:3'
         ]);
 
         $usuario = User::find($id);
 
-        if ($request->filled('senhaA') && $request->filled('senhaN')) {
+
+        if (!empty(trim($request->senhaA)) && !empty(trim($request->senhaN))) {
 
             if (!Hash::check($request->senhaA, $usuario->senha)) {
 
@@ -187,13 +190,20 @@ class usuarioController extends Controller
                 );
             }
 
-
-
-            $validarDados['alergia'] = json_decode($request->alergia);
-            $validarDados['remedios'] = json_decode($request->remedios);
-            $validarDados['doencas'] = json_decode($request->doencas);
             $validarDados['senha'] = Hash::make($request->senhaN);
+        } else if (!empty(trim($request->senhaA)) || !empty(trim($request->senhaN))) {
+
+            return response()->json(
+                ['message' => 'Para alterar a senha, preencha ambos os campos'],
+                400
+            );
         }
+
+        $validarDados['alergia'] = json_decode($request->alergia);
+        $validarDados['remedios'] = json_decode($request->remedios);
+        $validarDados['doencas'] = json_decode($request->doencas);
+
+
 
         $usuario->update($validarDados);
 
