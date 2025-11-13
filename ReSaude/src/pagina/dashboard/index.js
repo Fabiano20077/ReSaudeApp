@@ -12,20 +12,21 @@ export default function App() {
 
   const [modal, setModal] = useState(false);
   const [anima, setAnima] = useState("");
+
   const animacaoEntrada = () => {
     setModal(true);
-    setAnima('fadeInRight')
+    setAnima("fadeInRight");
   };
 
   const animacaoSaida = () => {
-    setAnima('fadeOutRight')
-    setModal(false)
+    setAnima("fadeOutRight");
+    setTimeout(() => setModal(false), 300);
   };
 
   const irPerfil = () => {
-    setModal(false),
-    navigation.navigate('Perfil')
-  }
+    setModal(false);
+    navigation.navigate("Perfil");
+  };
 
   const apagarLocal = async () => {
     try {
@@ -37,115 +38,158 @@ export default function App() {
     }
   };
 
+  // Dados dos cards
+  const cards = [
+    {
+      key: "calorias",
+      title: "Calorias",
+      icon: require("../../../assets/calorias.png"),
+      route: "Calorias",
+      color: "#FF6B6B",
+    },
+    {
+      key: "imc",
+      title: "IMC",
+      icon: require("../../../assets/imc.png"),
+      route: "Imc",
+      color: "#4ECDC4",
+    },
+    {
+      key: "agua",
+      title: "Água",
+      icon: require("../../../assets/agua.png"),
+      route: "Água",
+      color: "#45B7D1",
+    },
+    {
+      key: "sangue",
+      title: "Tipo Sanguíneo",
+      icon: require("../../../assets/bolsaSangue.png"),
+      route: "Sangue",
+      color: "#FFA726",
+    },
+    {
+      key: "vacinas",
+      title: "Vacinas",
+      icon: require("../../../assets/vacina.png"),
+      route: "Vacinas",
+      color: "#AB47BC",
+    },
+    {
+      key: "mapa",
+      title: "Hospitais Próximos",
+      icon: require("../../../assets/hospital.png"),
+      route: "geolocalizacao",
+      color: "#66BB6A",
+    },
+    {
+      key: "motivacional",
+      title: "Motivação",
+
+      route: "Motivacional",
+      color: "#FFA726",
+    },
+    {
+      key: "musica",
+      title: "Relaxamento",
+
+      route: "Musica",
+      color: "#5C6BC0",
+    },
+    {
+      key: "relogio",
+      title: "Dispertador",
+      icon: require("../../../assets/relogio.png"),
+      route: "Relogio",
+      color: "#4ECDC4",
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.containerDashboard}>
         <View style={styles.nav}>
-          <Pressable onPress={() => animacaoEntrada()}>
+          <Text style={styles.navTitle}>Home</Text>
+          <Pressable
+            style={styles.menuButton}
+            onPress={() => animacaoEntrada()}
+          >
             <Image
               style={styles.imgPerfil}
               source={require("../../../assets/barras.png")}
-            ></Image>
+            />
           </Pressable>
         </View>
 
-        <View style={styles.corpo}>
-          <Pressable
-            style={styles.card}
-            onPress={() => navigation.navigate("Calorias")}
-          >
-            <Image source={require("../../../assets/calorias.png")}></Image>
-          </Pressable>
-
-          <Pressable
-            style={styles.card}
-            onPress={() => navigation.navigate("Imc")}
-          >
-            <Image source={require("../../../assets/imc.png")}></Image>
-          </Pressable>
-
-          <Pressable
-            style={styles.card}
-            onPress={() => navigation.navigate("Água")}
-          >
-            <Image source={require("../../../assets/agua.png")}></Image>
-          </Pressable>
-
-          <Pressable
-            style={styles.card}
-            onPress={() => navigation.navigate("Sangue")}
-          >
-            <Text style={styles.txt}>Sangue</Text>
-          </Pressable>
-
-          <Pressable
-            style={styles.card}
-            onPress={() => navigation.navigate("Vacinas")}
-          >
-            <Text style={styles.txt}>Vacinas</Text>
-          </Pressable>
-
-          <Pressable
-            style={styles.card}
-            onPress={() => navigation.navigate("geolocalizacao")}
-          >
-            <Text>mapa</Text>
-          </Pressable>
-
-          <Pressable
-            style={styles.card}
-            onPress={() => navigation.navigate("geolocalizacao")}
-          >
-            <Text>motivacional</Text>
-          </Pressable>
-
-          <Pressable
-            style={styles.card}
-            onPress={() => navigation.navigate("geolocalizacao")}
-          >
-            <Text>musica</Text>
-          </Pressable>
-        </View>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.corpo}
+          showsVerticalScrollIndicator={false}
+        >
+          {cards.map((card, index) => (
+            <Animatable.View
+              key={card.key}
+              animation="fadeInUp"
+              delay={index * 100}
+              duration={800}
+            >
+              <Pressable
+                style={[styles.card, { backgroundColor: card.color }]}
+                onPress={() => navigation.navigate(card.route)}
+              >
+                <View style={styles.cardContent}>
+                  <Image style={styles.cardIcon} source={card.icon} />
+                  <Text style={styles.cardTitle}>{card.title}</Text>
+                </View>
+                <View style={styles.cardOverlay} />
+              </Pressable>
+            </Animatable.View>
+          ))}
+        </ScrollView>
       </View>
       <StatusBar style="auto" />
 
-      <Modal transparent={true} visible={modal}>
-        <View style={styles.sabar}>
-          <Animatable.View style={styles.lado} animation={anima} duration={500}>
-            <View style={styles.perfil}>
-              <Image source={require("../../../assets/perfil2.png")}></Image>
+      <Modal transparent={true} visible={modal} animationType="none">
+        <Pressable style={styles.sabar} onPress={animacaoSaida}>
+          <Animatable.View style={styles.lado} animation={anima} duration={300}>
+            <View style={styles.menuHeader}>
+              <View style={styles.perfil}>
+                <Image
+                  style={styles.perfilIcon}
+                  source={require("../../../assets/perfil2.png")}
+                />
+              </View>
+              <Text style={styles.menuTitle}>Menu</Text>
             </View>
+
             <View style={styles.lista}>
-              <View style={styles.li}>
-                <Pressable
-                  style={styles.acessa}
-                  onPress={() => irPerfil()}
-                >
-                  <Image
-                    style={styles.img2}
-                    source={require("../../../assets/perfil3.png")}
-                  ></Image>
-                  <Text style={styles.textLi}> perfil</Text>
-                </Pressable>
-              </View>
-              <View style={styles.li}>
-                <Pressable
-                  style={styles.acessa}
-                  onPress={() => apagarLocal()}
-                >
-                  <Image
-                    style={styles.img2}
-                    source={require("../../../assets/sair.png")}
-                  ></Image>
-                  <Text style={styles.textLi}> sair </Text>
-                </Pressable>
-              </View>
+              <Pressable style={styles.menuItem} onPress={() => irPerfil()}>
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../../assets/perfil3.png")}
+                />
+                <Text style={styles.menuText}>Meu Perfil</Text>
+                <View style={styles.arrow}></View>
+              </Pressable>
+
+              <Pressable style={styles.menuItem} onPress={() => apagarLocal()}>
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../../assets/sair.png")}
+                />
+                <Text style={styles.menuText}>Sair</Text>
+                <View style={styles.arrow}></View>
+              </Pressable>
             </View>
-            <Pressable style={styles.x} onPress={() => animacaoSaida()}>
-              <Image source={require("../../../assets/x.png")}></Image>
+
+            <Pressable style={styles.closeButton} onPress={animacaoSaida}>
+              <Image
+                style={styles.closeIcon}
+                source={require("../../../assets/x.png")}
+              />
             </Pressable>
           </Animatable.View>
-        </View>
+        </Pressable>
       </Modal>
     </View>
   );

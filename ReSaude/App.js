@@ -10,6 +10,8 @@ import Mmc from "./src/pagina/funcoes/Imc";
 import agua from "./src/pagina/funcoes/Água";
 import Vacinas from "./src/pagina/funcoes/Vacinas";
 import Sangue from "./src/pagina/funcoes/sangue";
+import Relogio from "./src/pagina/funcoes/relogio";
+import Musica from "./src/pagina/funcoes/musica";
 
 import geolocalizacao from "./src/pagina/geolocalizacao/index";
 
@@ -63,6 +65,16 @@ export default function App() {
         <Stack.Screen
           name="Cadastro"
           component={Cadastro}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Relogio"
+          component={Relogio}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Musica"
+          component={Musica}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

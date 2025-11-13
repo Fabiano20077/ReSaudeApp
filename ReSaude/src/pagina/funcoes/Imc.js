@@ -20,6 +20,7 @@ export default function App() {
   const [altura, setAltura] = useState("");
   const [message, setMessage] = useState("");
   const [img, setImg] = useState("");
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     const automatico = async () => {
@@ -58,64 +59,133 @@ export default function App() {
     const alturaV = parseFloat(altura);
 
     const ImcPrepa = pesoV / (alturaV * alturaV);
+    const imcValue = ImcPrepa.toFixed(1);
+
+    let newMessage = "";
+    let newCategory = "";
+    let newImg = null;
 
     if (ImcPrepa < 18.5) {
-      setMessage("Você está abaixo do peso");
-      setImg(require("../../../assets/magro.png"));
+      newMessage = "Você está abaixo do peso";
+      newCategory = "Abaixo do peso";
+      newImg = require("../../../assets/magro.png");
     } else if (ImcPrepa >= 18.5 && ImcPrepa < 25) {
-      setMessage("seu peso está normal");
-      setImg(require("../../../assets/normal.png"));
+      newMessage = "Seu peso está normal";
+      newCategory = "Peso normal";
+      newImg = require("../../../assets/normal.png");
     } else if (ImcPrepa >= 25 && ImcPrepa < 30) {
-      setMessage("Você está com sobrepeso");
-      setImg(require("../../../assets/gordo.png"));
+      newMessage = "Você está com sobrepeso";
+      newCategory = "Sobrepeso";
+      newImg = require("../../../assets/gordo.png");
     } else {
-      setMessage("Você está com obesidsde");
-      setImg(require("../../../assets/obesidade.png"));
+      newMessage = "Você está com obesidade";
+      newCategory = "Obesidade";
+      newImg = require("../../../assets/obesidade.png");
     }
 
     console.log(pesoV);
     console.log(alturaV);
     console.log(ImcPrepa);
-    setImc(ImcPrepa.toFixed(1));
+
+    setImc(imcValue);
+    setMessage(newMessage);
+    setCategory(newCategory);
+    setImg(newImg);
+  };
+
+  const getImcColor = () => {
+    if (!imc) return "#666";
+    const value = parseFloat(imc);
+    if (value < 18.5) return "#FFA726"; // Laranja
+    if (value < 25) return "#4CAF50"; // Verde
+    if (value < 30) return "#FF9800"; // Laranja escuro
+    return "#F44336"; // Vermelho
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.containerImc}>
         <View style={styles.nav}>
-          <Pressable onPress={() => navigation.navigate("Dashboard")}>
+          <Pressable
+            style={styles.backButton}
+            onPress={() => navigation.navigate("Dashboard")}
+          >
             <Image
               style={styles.imgPerfil}
               source={require("../../../assets/seta-esquerda.png")}
-            ></Image>
+            />
           </Pressable>
         </View>
 
         <View style={styles.containerCalcular}>
-          <View style={styles.botoes}>
-            <Text style={styles.txt}>Qual seu peso?</Text>
-            <TextInput
-              style={styles.input}
-              value={String(peso)}
-              onChangeText={setPeso}
-            />
-            <Text style={styles.txt}>Qual sua altura?</Text>
-            <TextInput
-              style={styles.input}
-              value={String(altura)}
-              onChangeText={setAltura}
-            />
+          <View style={styles.header}>
+            <Text style={styles.title}>Calculadora de IMC</Text>
+            <Text style={styles.subtitle}>
+              Descubra seu Índice de Massa Corporal
+            </Text>
           </View>
+
+          <View style={styles.inputContainer}>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Peso (kg)</Text>
+              <TextInput
+                style={styles.input}
+                value={String(peso)}
+                onChangeText={setPeso}
+                keyboardType="numeric"
+                placeholder="Ex: 70"
+                placeholderTextColor="#999"
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Altura (m)</Text>
+              <TextInput
+                style={styles.input}
+                value={String(altura)}
+                onChangeText={setAltura}
+                keyboardType="numeric"
+                placeholder="Ex: 1.75"
+                placeholderTextColor="#999"
+              />
+            </View>
+          </View>
+
           <View style={styles.containerCard}>
             <View style={styles.card}>
-              <View style={styles.containerMostrarImc}>
-                <Text style={styles.txt}>
-                  {imc} {message}
-                </Text>
+              <View style={styles.cardHeader}>
+                <Text style={styles.cardTitle}>Seu Resultado</Text>
               </View>
-              <View style={styles.corpo}>
-                <Image source={img}></Image>
-              </View>
+
+              
+                <View style={styles.containerMostrarImc}>
+                  {imc ? (
+                    <>
+                      <View
+                        style={[
+                          styles.imcCircle,
+                          { borderColor: getImcColor() },
+                        ]}
+                      >
+                        <Text
+                          style={[styles.imcValue, { color: getImcColor() }]}
+                        >
+                          {imc}
+                        </Text>
+                        <Text style={styles.imcLabel}>IMC</Text>
+                      </View>
+                      <Text style={[styles.category, { color: getImcColor() }]}>
+                        {category}
+                      </Text>
+                      <Text style={styles.message}>{message}</Text>
+                    </>
+                  ) : (
+                    <Text style={styles.placeholderText}>
+                      Preencha peso e altura para calcular seu IMC
+                    </Text>
+                  )}
+                </View>
+          
             </View>
           </View>
         </View>

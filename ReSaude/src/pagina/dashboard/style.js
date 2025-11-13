@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
@@ -10,119 +12,225 @@ export default StyleSheet.create({
     flex: 1,
   },
 
-  corpo: {
-    flex: 0.9,
-    padding: 20,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 10,
-  },
-
-  card: {
-    margin: 6,
-    width: "45%",
-    height: 150,
-    backgroundColor: "#39a367ff",
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 3,
-  },
-
   nav: {
     flexDirection: "row",
     width: "100%",
-    height: "12%",
-    borderBottomWidth: 1,
+    height: height * 0.12,
     alignItems: "flex-end",
-    justifyContent: "flex-end",
-    padding: 10,
-    backgroundColor: "#F7F9F8",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingBottom: 15,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+
+  navTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#2C3E50",
+  },
+
+  menuButton: {
+    padding: 8,
   },
 
   imgPerfil: {
-    width: 50,
-    height: 50,
+    width: 28,
+    height: 28,
+    tintColor: "#2C3E50",
   },
 
-  img: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 15,
-    marginTop: 8,
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 25,
+    backgroundColor: "#FFFFFF",
   },
 
-  txt: {
+  welcome: {
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#2C3E50",
+    marginBottom: 5,
+  },
+
+  subtitle: {
     fontSize: 16,
+    color: "#7F8C8D",
     fontWeight: "500",
-    marginTop: 8,
-    color: "#333",
   },
 
-  mapa: {
-    width: 20,
-    height: 20,
-    backgroundColor: "#E8F5E9",
-    borderRadius: 12,
+  scrollView: {
+    flex: 1,
+  },
+
+  corpo: {
+    padding: 15,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+
+  card: {
+    width: (width - 45) / 2,
+    height: 160,
+    borderRadius: 20,
+    marginBottom: 15,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 8,
+    overflow: 'hidden',
   },
 
+  cardContent: {
+    alignItems: 'center',
+    zIndex: 2,
+  },
+
+  cardIcon: {
+    width: 50,
+    height: 50,
+    marginBottom: 12,
+    tintColor: '#FFFFFF',
+  },
+
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
+    textAlign: "center",
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+  },
+
+  cardOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.1)',
+  },
+
+  // Modal Styles
   sabar: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.2)",
-    alignItems: "flex-end",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    alignItems: 'flex-end'
   },
 
   lado: {
-     position: "relative",
-    backgroundColor: "#89D99D",
-    width: "40%",
+    position: "relative",
+    backgroundColor: "#FFFFFF",
+    width: width * 0.75,
     height: "100%",
     borderTopLeftRadius: 30,
     borderBottomLeftRadius: 30,
-    
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -2,
+      height: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+
+  menuHeader: {
+    paddingTop: 60,
+    paddingBottom: 30,
+    paddingHorizontal: 25,
+    backgroundColor: "#89D99D",
+    borderTopLeftRadius: 30,
+    alignItems: 'center',
   },
 
   perfil: {
-    width: "100%",
-    height: "15%",
-    alignItems: "center",
-    justifyContent: "center",
+    marginBottom: 15,
+  },
+
+  perfilIcon: {
+    width: 80,
+    height: 80,
+    tintColor: '#FFFFFF',
+  },
+
+  menuTitle: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#FFFFFF",
   },
 
   lista: {
-    height: "85%",
+    paddingTop: 30,
   },
 
-  li: {
-    height: "7%",
-  },
-
-  acessa: {
-    position: "relative",
+  menuItem: {
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 18,
+    paddingHorizontal: 25,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ECF0F1",
   },
 
-  img2: {
+  menuIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 15,
+    tintColor: "#7F8C8D",
+  },
+
+  menuText: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#2C3E50",
+    flex: 1,
+  },
+
+  arrow: {
+    width: 8,
+    height: 8,
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
+    borderColor: "#BDC3C7",
+    transform: [{ rotate: '-45deg' }],
+  },
+
+  closeButton: {
     position: "absolute",
-    left: 10,
-    top: 5,
-    width: 30,
-    height: 30,
+    top: 40,
+    left: 20,
+    padding: 10,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
   },
 
-  textLi: {
-    fontSize: 26,
-  },
-
-  x: {
-    position: "absolute",
-    left: 10,
-    top: 13
+  closeIcon: {
+    width: 16,
+    height: 16,
+    tintColor: "#2C3E50",
   },
 });

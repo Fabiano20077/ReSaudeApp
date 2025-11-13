@@ -20,7 +20,6 @@ export default function App() {
   const navigation = useNavigation();
 
   const [modal, setModal] = useState(false);
-
   const [id, setId] = useState("");
   const [imagem, setImagem] = useState();
   const [loading, setLoading] = useState(false);
@@ -32,23 +31,23 @@ export default function App() {
 
   const [labels, setLabels] = useState({
     nome: "Nome",
-    nasci: "Data de nasc",
+    nasci: "Data de nascimento",
     email: "Email",
-    cep: "Cep",
-    num: "Numero",
+    cep: "CEP",
+    num: "Número",
     bairro: "Bairro",
-    uf: "Uf",
+    uf: "UF",
     logradouro: "Endereço",
-    peso: "Peso",
-    altura: "Altura",
-    diabetico: "Diabetico",
+    peso: "Peso (kg)",
+    altura: "Altura (m)",
+    diabetico: "Diabético",
     fumante: "Fumante",
-    alcolatra: "Alcolatra",
-    sangue: "Sangue",
+    alcolatra: "Alcoolatra",
+    sangue: "Tipo Sanguíneo",
     alergia: "Alergia",
-    senhaA: "senha antiga",
-    senhaN: "senha nova",
-    senhaC: "confirmar senha",
+    senhaA: "Senha Antiga",
+    senhaN: "Nova Senha",
+    senhaC: "Confirmar Senha",
   });
 
   const [data, setData] = useState({
@@ -75,9 +74,6 @@ export default function App() {
     const atualizar = alergias.map((item) =>
       item.id === id ? { ...item, nome: valor } : item
     );
-
-    console.log(atualizar);
-
     setAlergias(atualizar);
     onChange("alergia", atualizar);
   };
@@ -94,7 +90,6 @@ export default function App() {
     const atualizar = remedio.map((item) =>
       item.id === id ? { ...item, nome: valor } : item
     );
-
     setRemedio(atualizar);
     onChange("remedios", atualizar);
   };
@@ -107,7 +102,6 @@ export default function App() {
     const atualizar = doencas.map((item) =>
       item.id === id ? { ...item, nome: valor } : item
     );
-
     setDoencas(atualizar);
     onChange("doencas", atualizar);
   };
@@ -123,20 +117,15 @@ export default function App() {
 
       try {
         setLoading(true);
-
         const res = await fetch(
           `http://10.0.2.2:8000/api/chamar-usuario/${userId}`
         );
-
-        console.log(res);
 
         if (!res.ok) {
           throw new Error("Erro na resposta da rede");
         }
 
         const data = await res.json();
-
-        console.log("funfo", data);
 
         const safeParse = (valor) => {
           try {
@@ -160,7 +149,6 @@ export default function App() {
         setAlergias(alergiasUsuario);
         setRemedio(remedeiosUsuarios);
         setDoencas(doencasUsuarios);
-
         setImagem(data.user.img);
 
         setData({
@@ -199,7 +187,7 @@ export default function App() {
     setLoading(true);
 
     if (data.senhaN && data.senhaN !== data.senhaC) {
-      alert("campo de senhas diferentes");
+      alert("As senhas não coincidem!");
       setLoading(false);
       return;
     }
@@ -213,39 +201,34 @@ export default function App() {
       return;
     }
 
-    console.log("chegou aqui1");
-    var array = await AsyncStorage.getItem("usuario");
-
-    var user = JSON.parse(array);
-    console.log("chegou aqui2");
-    var usuario = new FormData();
-
-    usuario.append("nome", data.nome);
-    usuario.append("email", data.email);
-    usuario.append("nascimento", data.nasci);
-    usuario.append("cep", data.cep);
-    usuario.append("logra", data.logradouro);
-    usuario.append("numero", data.num);
-    usuario.append("bairro", data.bairro);
-    usuario.append("uf", data.uf);
-    usuario.append("peso", data.peso);
-    usuario.append("altura", data.altura);
-    usuario.append("sangue", data.sangue);
-    usuario.append("diabetico", data.diabetico);
-    usuario.append("fumante", data.fumante);
-    usuario.append("alcolatra", data.alcolatra);
-    console.log("é aqui");
-    usuario.append("alergia", JSON.stringify(alergias));
-    usuario.append("remedios", JSON.stringify(remedio));
-    usuario.append("doencas", JSON.stringify(doencas));
-    if (data.senhaA) {
-      usuario.append("senhaA", data.senhaA);
-      usuario.append("senhaN", data.senhaN);
-      usuario.append("senhaC", data.senhaC);
-    }
-    console.log(user.user["id"]);
-
     try {
+      const array = await AsyncStorage.getItem("usuario");
+      const user = JSON.parse(array);
+      
+      const usuario = new FormData();
+      usuario.append("nome", data.nome);
+      usuario.append("email", data.email);
+      usuario.append("nascimento", data.nasci);
+      usuario.append("cep", data.cep);
+      usuario.append("logra", data.logradouro);
+      usuario.append("numero", data.num);
+      usuario.append("bairro", data.bairro);
+      usuario.append("uf", data.uf);
+      usuario.append("peso", data.peso);
+      usuario.append("altura", data.altura);
+      usuario.append("sangue", data.sangue);
+      usuario.append("diabetico", data.diabetico);
+      usuario.append("fumante", data.fumante);
+      usuario.append("alcolatra", data.alcolatra);
+      usuario.append("alergia", JSON.stringify(alergias));
+      usuario.append("remedios", JSON.stringify(remedio));
+      usuario.append("doencas", JSON.stringify(doencas));
+      
+      if (data.senhaA) {
+        usuario.append("senhaA", data.senhaA);
+        usuario.append("senhaN", data.senhaN);
+      }
+
       const response = await fetch(
         `http://10.0.2.2:8000/api/updatePerfil/${user.user["id"]}`,
         {
@@ -254,22 +237,24 @@ export default function App() {
         }
       );
 
-      console.log(response);
       const resData = await response.json();
 
       if (!response.ok) {
         throw new Error(JSON.stringify(resData));
       }
 
-      console.log(resData);
-      alert("usuario atualizado ccom sucesso");
+      alert("Perfil atualizado com sucesso!");
       setModal(false);
     } catch (erro) {
       console.log("erro", erro.message);
-      alert("erro ao atualizar perfil" + erro.message);
+      alert("Erro ao atualizar perfil: " + erro.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const deleta = async () => {
+    alert("Função de deletar conta em desenvolvimento");
   };
 
   return (
@@ -277,193 +262,197 @@ export default function App() {
       <StatusBar style="auto" />
       <View style={styles.containerPerfil}>
         <View style={styles.nav}>
-          <Pressable onPress={() => navigation.navigate("Dashboard")}>
+          <Pressable 
+            style={styles.backButton}
+            onPress={() => navigation.navigate("Dashboard")}
+          >
             <Image
-              style={styles.imgPerfil}
+              style={styles.backIcon}
               source={require("../../../assets/seta-esquerda.png")}
-            ></Image>
+            />
           </Pressable>
         </View>
-        <View style={styles.containerDois}>
-          <View style={styles.containerImage}>
+        
+        <View style={styles.profileHeader}>
+          <View style={styles.avatarContainer}>
             <Image
-              style={styles.foto}
+              style={styles.avatar}
               source={
                 imagem
-                  ? {
-                      uri: `http://10.0.2.2:8000${imagem}`,
-                      cache: "force-cache",
-                    }
+                  ? { uri: `http://10.0.2.2:8000${imagem}` }
                   : require("../../../assets/perfilPng.png")
               }
               onError={(e) => {
                 console.log("Erro ao carregar imagem:", e.nativeEvent.error);
-                // Fallback para imagem local em caso de erro
               }}
               resizeMode="cover"
-            ></Image>
+            />
+            <View style={styles.editBadge}>
+              <Text style={styles.editBadgeText}>✏️</Text>
+            </View>
           </View>
-          <View style={styles.dados}>
-            <Text style={styles.textNome}>{data.nome}</Text>
-            <Text style={styles.textEmail}>{data.email}</Text>
+          
+          <View style={styles.userInfo}>
+            <Text style={styles.userName}>{data.nome}</Text>
+            <Text style={styles.userEmail}>{data.email}</Text>
+            <View style={styles.userStats}>
+              <View style={styles.stat}>
+                <Text style={styles.statValue}>{alergias.length}</Text>
+                <Text style={styles.statLabel}>Alergias</Text>
+              </View>
+              <View style={styles.stat}>
+                <Text style={styles.statValue}>{remedio.length}</Text>
+                <Text style={styles.statLabel}>Medicamentos</Text>
+              </View>
+              <View style={styles.stat}>
+                <Text style={styles.statValue}>{doencas.length}</Text>
+                <Text style={styles.statLabel}>Condições</Text>
+              </View>
+            </View>
           </View>
         </View>
-        <View style={styles.opcoes}>
-          <View style={styles.opcao}>
-            <Pressable onPress={() => setModal(true)}>
-              <Text style={styles.txt}>Editar</Text>
-            </Pressable>
-          </View>
-          <View style={styles.opcao}>
-            <Pressable onPress={() => deleta()}>
-              <Text style={styles.txtA}>Apagar</Text>
-            </Pressable>
-          </View>
+
+        <View style={styles.actions}>
+          <Pressable 
+            style={styles.primaryButton}
+            onPress={() => setModal(true)}
+          >
+            <Text style={styles.primaryButtonText}>✏️ Editar Perfil</Text>
+          </Pressable>
+          <Pressable 
+            style={styles.secondaryButton}
+            onPress={deleta}
+          >
+            <Text style={styles.secondaryButtonText}>🗑️ Excluir Conta</Text>
+          </Pressable>
         </View>
       </View>
 
-      <Modal transparent={true} visible={modal}>
-        <View style={styles.containerModal}>
-          <View style={styles.containerEdita}>
-            <View style={styles.nav2}>
-              <Pressable onPress={() => mudar(1)}>
-                <Text style={styles.text}>etapa 1</Text>
-              </Pressable>
-              <Pressable onPress={() => mudar(2)}>
-                <Text style={styles.text}>etapa 2</Text>
-              </Pressable>
-              <Pressable onPress={() => mudar(3)}>
-                <Text style={styles.text}>etapa 3</Text>
-              </Pressable>
-              <Pressable onPress={() => mudar(4)}>
-                <Text style={styles.text}>etapa 4</Text>
-              </Pressable>
-              <Pressable onPress={() => mudar(5)}>
-                <Text style={styles.text}>etapa 5</Text>
+      {/* Modal de Edição */}
+      <Modal transparent={true} visible={modal} animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Editar Perfil</Text>
+              <Pressable onPress={() => setModal(false)}>
+                <Text style={styles.closeButton}>✕</Text>
               </Pressable>
             </View>
-            <View style={styles.containerDados}>
-              {step == 1 ? (
-                <>
-                  <View style={styles.partes}>
+
+            <View style={styles.stepsContainer}>
+              {[1, 2, 3, 4, 5].map((stepNum) => (
+                <Pressable
+                  key={stepNum}
+                  style={[
+                    styles.step,
+                    step === stepNum && styles.activeStep
+                  ]}
+                  onPress={() => mudar(stepNum)}
+                >
+                  <Text style={[
+                    styles.stepText,
+                    step === stepNum && styles.activeStepText
+                  ]}>
+                    {stepNum}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+
+            <ScrollView style={styles.modalContent}>
+              {step === 1 && (
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Informações Pessoais</Text>
+                  
+                  <View style={styles.inputRow}>
                     <InputScale
                       label={labels.nome}
-                      labelEstilo2={
-                        labels.nome.includes("invalido") ? "red" : "black"
-                      }
                       value={data.nome}
                       onChangeText={(text) => onChange("nome", text)}
+                      containerStyle={styles.inputField}
                     />
-
                     <InputScale
                       label={labels.nasci}
-                      labelEstilo2={
-                        labels.nasci.includes("invalido") ? "red" : "black"
-                      }
                       keyboardType="numeric"
                       value={data.nasci}
-                      onChangeText={(text) => formatacaoData(text)}
+                      onChangeText={(text) => onChange("nasci", text)}
+                      containerStyle={styles.inputField}
                     />
                   </View>
 
-                  <View style={styles.partes}>
-                    <InputScale
-                      label={labels.email}
-                      labelEstilo2={
-                        labels.email.includes("invalido") ? "red" : "black"
-                      }
-                      value={data.email}
-                      onChangeText={(text) => onChange("email", text)}
-                      containerStyle={{ width: "92%" }}
-                    />
-                  </View>
+                  <InputScale
+                    label={labels.email}
+                    value={data.email}
+                    onChangeText={(text) => onChange("email", text)}
+                    containerStyle={styles.fullInput}
+                  />
 
-                  <View style={styles.partes}>
+                  <View style={styles.inputRow}>
                     <InputScale
                       label={labels.cep}
-                      labelEstilo2={
-                        labels.cep.includes("invalido") ? "red" : "black"
-                      }
                       value={data.cep}
-                      onChangeText={(text) => formataCep(text)}
+                      onChangeText={(text) => onChange("cep", text)}
+                      containerStyle={styles.inputField}
                     />
-
                     <InputScale
                       label={labels.num}
-                      labelEstilo2={
-                        labels.num.includes("invalido") ? "red" : "black"
-                      }
                       value={data.num}
                       onChangeText={(text) => onChange("num", text)}
+                      containerStyle={styles.inputField}
                     />
                   </View>
 
-                  <View style={styles.partes}>
+                  <View style={styles.inputRow}>
                     <InputScale
                       label={labels.bairro}
-                      labelEstilo2={
-                        labels.bairro.includes("invalido") ? "red" : "black"
-                      }
                       value={data.bairro}
                       onChangeText={(text) => onChange("bairro", text)}
+                      containerStyle={styles.inputField}
                     />
-
                     <InputScale
                       label={labels.uf}
-                      labelEstilo2={
-                        labels.uf.includes("invalido") ? "red" : "black"
-                      }
                       value={data.uf}
                       onChangeText={(text) => onChange("uf", text)}
+                      containerStyle={styles.inputField}
                     />
                   </View>
 
-                  <View style={styles.partes}>
-                    <InputScale
-                      label={labels.logradouro}
-                      labelEstilo2={
-                        labels.logradouro.includes("invalido") ? "red" : "black"
-                      }
-                      value={data.logradouro}
-                      onChangeText={(text) => onChange("logradouro", text)}
-                      containerStyle={{ width: "92%" }}
-                    />
-                  </View>
-                </>
-              ) : step == 2 ? (
-                <>
-                  <View style={styles.partes}>
+                  <InputScale
+                    label={labels.logradouro}
+                    value={data.logradouro}
+                    onChangeText={(text) => onChange("logradouro", text)}
+                    containerStyle={styles.fullInput}
+                  />
+                </View>
+              )}
+
+              {step === 2 && (
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Saúde Básica</Text>
+                  
+                  <View style={styles.inputRow}>
                     <InputScale
                       label={labels.peso}
-                      labelEstilo2={
-                        labels.peso.includes("invalido") ? "red" : "black"
-                      }
                       value={data.peso}
                       onChangeText={(text) => onChange("peso", text)}
+                      containerStyle={styles.inputField}
                     />
-
                     <InputScale
                       label={labels.altura}
-                      labelEstilo2={
-                        labels.altura.includes("invalido") ? "red" : "black"
-                      }
                       value={data.altura}
-                      onChangeText={(text) => formataAltura(text)}
+                      onChangeText={(text) => onChange("altura", text)}
+                      containerStyle={styles.inputField}
                     />
                   </View>
 
-                  <View style={styles.partes}>
+                  <View style={styles.inputRow}>
                     <SelectScan
                       label={labels.sangue}
-                      labelEstilo2={
-                        labels.sangue.includes("invalido") ? "red" : "black"
-                      }
                       selectedValue={data.sangue}
-                      onValueChange={(itemValue, itemIndex) =>
-                        onChange("sangue", itemValue)
-                      }
+                      onValueChange={(itemValue) => onChange("sangue", itemValue)}
                       opitions={[
-                        { label: "", value: "" },
+                        { label: "Selecione", value: "" },
+                        { label: "A+", value: "A+" },
                         { label: "A-", value: "A-" },
                         { label: "B+", value: "B+" },
                         { label: "B-", value: "B-" },
@@ -472,247 +461,167 @@ export default function App() {
                         { label: "O+", value: "O+" },
                         { label: "O-", value: "O-" },
                       ]}
+                      containerStyle={styles.inputField}
                     />
-
                     <SelectScan
                       label={labels.diabetico}
-                      labelEstilo2={
-                        labels.diabetico.includes("invalido") ? "red" : "black"
-                      }
                       selectedValue={data.diabetico}
-                      onValueChange={(itemValue, itemIndex) =>
-                        onChange("diabetico", itemValue)
-                      }
+                      onValueChange={(itemValue) => onChange("diabetico", itemValue)}
                       opitions={[
-                        { label: "", value: "" },
-                        { label: "sim", value: "sim" },
-                        { label: "não", value: "não" },
+                        { label: "Selecione", value: "" },
+                        { label: "Sim", value: "sim" },
+                        { label: "Não", value: "não" },
                       ]}
+                      containerStyle={styles.inputField}
                     />
                   </View>
 
-                  <View style={styles.partes}>
+                  <View style={styles.inputRow}>
                     <SelectScan
                       label={labels.fumante}
-                      labelEstilo2={
-                        labels.fumante.includes("invalido") ? "red" : "black"
-                      }
                       selectedValue={data.fumante}
-                      onValueChange={(itemValue, itemIndex) =>
-                        onChange("fumante", itemValue)
-                      }
+                      onValueChange={(itemValue) => onChange("fumante", itemValue)}
                       opitions={[
-                        { label: "", value: "" },
-                        { label: "sim", value: "sim" },
-                        { label: "não", value: "não" },
+                        { label: "Selecione", value: "" },
+                        { label: "Sim", value: "sim" },
+                        { label: "Não", value: "não" },
                       ]}
+                      containerStyle={styles.inputField}
                     />
-
                     <SelectScan
                       label={labels.alcolatra}
-                      labelEstilo2={
-                        labels.alcolatra.includes("invalido") ? "red" : "black"
-                      }
                       selectedValue={data.alcolatra}
-                      onValueChange={(itemValue, itemIndex) =>
-                        onChange("alcolatra", itemValue)
-                      }
+                      onValueChange={(itemValue) => onChange("alcolatra", itemValue)}
                       opitions={[
-                        { label: "", value: "" },
-                        { label: "sim", value: "sim" },
-                        { label: "não", value: "não" },
-                        {
-                          label: "bebo socialmente",
-                          value: "bebo socialmente",
-                        },
+                        { label: "Selecione", value: "" },
+                        { label: "Sim", value: "sim" },
+                        { label: "Não", value: "não" },
+                        { label: "Socialmente", value: "bebo socialmente" },
                       ]}
+                      containerStyle={styles.inputField}
                     />
                   </View>
-                  <View style={styles.containerScrrol}>
-                    <ScrollView
-                      contentContainerStyle={{ padding: 20 }}
-                      showsVerticalScrollIndicator={false}
-                    >
-                      <View style={styles.parte2}>
-                        {alergias.map((item) => (
-                          <InputScale
-                            key={item.id}
-                            label={labels.alergia}
-                            keyboardType="numeric"
-                            value={item.nome}
-                            onChangeText={(text) =>
-                              handleAlergiaChange(item.id, text)
-                            }
-                            containerStyle={{ width: "100%", height: 50 }}
-                            inputStyle={{ height: "100%", fontSize: 22 }}
-                            labelEstilo={20}
-                            position={13}
-                          />
-                        ))}
-                      </View>
-                      <View style={styles.parte2}>
-                        <Pressable onPress={addAlergia}>
-                          <View style={styles.card}>
-                            <View style={styles.addFoto}>
-                              <Image
-                                source={require("../../../assets/adicionar.png")}
-                              ></Image>
-                            </View>
-                            <View style={styles.addText}>
-                              <Text style={styles.textCard}>
-                                Adiciona alergia
-                              </Text>
-                            </View>
-                          </View>
-                        </Pressable>
-                      </View>
+
+                  <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Alergias</Text>
+                    <ScrollView style={styles.listContainer}>
+                      {alergias.map((item) => (
+                        <InputScale
+                          key={item.id}
+                          label=""
+                          value={item.nome}
+                          onChangeText={(text) => handleAlergiaChange(item.id, text)}
+                          containerStyle={styles.listInput}
+                          placeholder="Digite uma alergia"
+                        />
+                      ))}
                     </ScrollView>
+                    <Pressable style={styles.addButton} onPress={addAlergia}>
+                      <Text style={styles.addButtonText}>+ Adicionar Alergia</Text>
+                    </Pressable>
                   </View>
-                </>
-              ) : step == 3 ? (
-                <>
-                  <View style={styles.addContainer}>
-                    <ScrollView
-                      style={{ gap: 20 }}
-                      showsVerticalScrollIndicator={true}
-                    >
-                      <View style={styles.parte2}>
-                        {remedio.map((item) => (
-                          <InputScale
-                            key={item.id}
-                            label="remedios"
-                            keyboardType="numeric"
-                            value={item.nome}
-                            onChangeText={(text) =>
-                              handleAlergiaChange2(item.id, text)
-                            }
-                            containerStyle={{ width: "100%", height: 50 }}
-                            inputStyle={{ height: "100%", fontSize: 22 }}
-                            labelEstilo={20}
-                            position={20}
-                          />
-                        ))}
-                      </View>
-                      <View style={styles.parte2}>
-                        <Pressable onPress={addRemedio}>
-                          <View style={styles.card}>
-                            <View style={styles.addFoto}>
-                              <Image
-                                source={require("../../../assets/adicionar.png")}
-                              ></Image>
-                            </View>
-                            <View style={styles.addText}>
-                              <Text style={styles.textCard}>
-                                Adiciona remedios
-                              </Text>
-                            </View>
-                          </View>
-                        </Pressable>
-                      </View>
+                </View>
+              )}
+
+              {step === 3 && (
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Medicamentos</Text>
+                  <View style={styles.section}>
+                    <ScrollView style={styles.listContainer}>
+                      {remedio.map((item) => (
+                        <InputScale
+                          key={item.id}
+                          label=""
+                          value={item.nome}
+                          onChangeText={(text) => handleAlergiaChange2(item.id, text)}
+                          containerStyle={styles.listInput}
+                          placeholder="Digite um medicamento"
+                        />
+                      ))}
                     </ScrollView>
+                    <Pressable style={styles.addButton} onPress={addRemedio}>
+                      <Text style={styles.addButtonText}>+ Adicionar Medicamento</Text>
+                    </Pressable>
                   </View>
-                </>
-              ) : step == 4 ? (
-                <>
-                  <View style={styles.addContainer}>
-                    <ScrollView
-                      style={{ gap: 30 }}
-                      showsVerticalScrollIndicator={false}
-                    >
-                      <View style={styles.parte2}>
-                        {doencas.map((item) => (
-                          <InputScale
-                            key={item.id}
-                            label="doenças"
-                            keyboardType="numeric"
-                            value={item.nome}
-                            onChangeText={(text) =>
-                              handleAlergiaChange3(item.id, text)
-                            }
-                            containerStyle={{ width: "100%", height: 50 }}
-                            inputStyle={{ height: "100%", fontSize: 22 }}
-                            labelEstilo={20}
-                            position={20}
-                          />
-                        ))}
-                      </View>
-                      <View style={styles.parte2}>
-                        <Pressable onPress={addDoencas}>
-                          <View style={styles.card}>
-                            <View style={styles.addFoto}>
-                              <Image
-                                source={require("../../../assets/adicionar.png")}
-                              ></Image>
-                            </View>
-                            <View style={styles.addText}>
-                              <Text style={styles.textCard}>
-                                Adiciona doenças
-                              </Text>
-                            </View>
-                          </View>
-                        </Pressable>
-                      </View>
+                </View>
+              )}
+
+              {step === 4 && (
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Condições de Saúde</Text>
+                  <View style={styles.section}>
+                    <ScrollView style={styles.listContainer}>
+                      {doencas.map((item) => (
+                        <InputScale
+                          key={item.id}
+                          label=""
+                          value={item.nome}
+                          onChangeText={(text) => handleAlergiaChange3(item.id, text)}
+                          containerStyle={styles.listInput}
+                          placeholder="Digite uma condição"
+                        />
+                      ))}
                     </ScrollView>
+                    <Pressable style={styles.addButton} onPress={addDoencas}>
+                      <Text style={styles.addButtonText}>+ Adicionar Condição</Text>
+                    </Pressable>
                   </View>
-                </>
-              ) : step == 5 ? (
-                <>
-                  <View style={styles.parte3}>
+                </View>
+              )}
+
+              {step === 5 && (
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Alterar Senha</Text>
+                  <View style={styles.passwordSection}>
                     <InputScale
                       label={labels.senhaA}
-                      keyboardType="numeric"
+                      secureTextEntry
                       value={data.senhaA}
                       onChangeText={(text) => onChange("senhaA", text)}
-                      containerStyle={{ width: 370, height: 50 }}
-                      inputStyle={{ height: "100%", fontSize: 20 }}
-                      labelEstilo={20}
-                      position={20}
+                      containerStyle={styles.passwordInput}
                     />
                     <InputScale
                       label={labels.senhaN}
-                      keyboardType="numeric"
+                      secureTextEntry
                       value={data.senhaN}
                       onChangeText={(text) => onChange("senhaN", text)}
-                      containerStyle={{ width: 370, height: 50 }}
-                      inputStyle={{ height: "100%", fontSize: 20 }}
-                      labelEstilo={20}
-                      position={20}
+                      containerStyle={styles.passwordInput}
                     />
-
                     <InputScale
                       label={labels.senhaC}
-                      keyboardType="numeric"
+                      secureTextEntry
                       value={data.senhaC}
                       onChangeText={(text) => onChange("senhaC", text)}
-                      containerStyle={{ width: 370, height: 50 }}
-                      inputStyle={{ height: "100%", fontSize: 20 }}
-                      labelEstilo={20}
-                      position={20}
+                      containerStyle={styles.passwordInput}
                     />
                   </View>
-                </>
-              ) : null}
+                </View>
+              )}
+            </ScrollView>
 
-              <View style={styles.botoes}>
-                <Pressable
-                  style={styles.botao2}
-                  onPress={() => setModal(false)}
-                >
-                  <Text style={styles.letraBotao}>fecha</Text>
-                </Pressable>
-                <Pressable style={styles.botao} onPress={() => update()}>
-                  <Text style={styles.letraBotao}>salva</Text>
-                </Pressable>
-              </View>
+            <View style={styles.modalActions}>
+              <Pressable
+                style={styles.cancelButton}
+                onPress={() => setModal(false)}
+              >
+                <Text style={styles.cancelButtonText}>Cancelar</Text>
+              </Pressable>
+              <Pressable style={styles.saveButton} onPress={update}>
+                <Text style={styles.saveButtonText}>
+                  {loading ? "Salvando..." : "Salvar Alterações"}
+                </Text>
+              </Pressable>
             </View>
           </View>
         </View>
       </Modal>
 
-      <Modal transparent={loading} visible={loading}>
-        <View style={styles.containerModal}>
-          <ActivityIndicator size="large" color="blue" />
-          <Text style={{ color: "white", fontSize: 20 }}>Carregando...</Text>
+      <Modal transparent={true} visible={loading}>
+        <View style={styles.loadingOverlay}>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#FF6B6B" />
+            <Text style={styles.loadingText}>Salvando alterações...</Text>
+          </View>
         </View>
       </Modal>
     </View>

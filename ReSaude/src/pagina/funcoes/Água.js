@@ -88,7 +88,10 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.containerAgua}>
         <View style={styles.nav}>
-          <Pressable onPress={() => navigation.navigate("Dashboard")}>
+          <Pressable
+            style={styles.backButton}
+            onPress={() => navigation.navigate("Dashboard")}
+          >
             <Image
               style={styles.imgPerfil}
               source={require("../../../assets/seta-esquerda.png")}

@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
@@ -13,207 +15,364 @@ export default StyleSheet.create({
   nav: {
     flexDirection: "row",
     width: "100%",
-    height: "12%",
-    borderBottomWidth: 1,
+    height: height * 0.12,
     alignItems: "flex-end",
-    padding: 10,
-    backgroundColor: "#F7F9F8",
+    paddingHorizontal: 20,
+    paddingBottom: 15,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
 
-  containerDois: {
+  backButton: {
     flexDirection: "row",
-    height: "20%",
-  },
-
-  containerImage: {
     alignItems: "center",
-    justifyContent: "center",
-    padding: 5,
   },
 
-  dados: {
-    width: "100%",
+  backIcon: {
+    width: 24,
+    height: 24,
+    tintColor: "#2C3E50",
   },
 
-  textNome: {
-    marginTop: "4%",
-    fontSize: 25,
-    padding: 5,
+  backText: {
+    marginLeft: 8,
+    fontSize: 16,
+    color: "#2C3E50",
+    fontWeight: "500",
   },
 
-  textEmail: {
-    fontSize: 20,
-    padding: 5,
+  profileHeader: {
+    flexDirection: "row",
+    padding: 25,
+    backgroundColor: "#FFFFFF",
+    margin: 20,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 8,
   },
 
-  nomee: {
-    fontSize: 50,
+  avatarContainer: {
+    position: 'relative',
+    marginRight: 20,
   },
 
-  foto: {
-    width: 150,
-    height: 150,
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 4,
+    borderColor: "#FF6B6B",
   },
 
-  opcao: {
-    borderTopWidth: 1,
-    padding: 10,
+  editBadge: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: "#FF6B6B",
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
   },
 
-  containerModal: {
+  editBadgeText: {
+    fontSize: 14,
+    color: "#FFFFFF",
+  },
+
+  userInfo: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,.5)",
-    alignItems: "center",
-    justifyContent: "center",
+    justifyContent: 'center',
   },
 
-  containerEdita: {
-    backgroundColor: "white",
-    overflow: "hidden",
-    borderRadius: 10,
-    width: "95%",
-    height: "90%",
+  userName: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#2C3E50",
+    marginBottom: 4,
   },
 
-  nav2: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    backgroundColor: "#89D99D",
-    height: "9%",
+  userEmail: {
+    fontSize: 16,
+    color: "#7F8C8D",
+    marginBottom: 15,
   },
 
-  text: {
-    fontSize: 19,
-    color: "white",
-    fontWeight: 500,
+  userStats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 
-  containerDados: {
+  stat: {
+    alignItems: 'center',
+  },
+
+  statValue: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#FF6B6B",
+    marginBottom: 2,
+  },
+
+  statLabel: {
+    fontSize: 12,
+    color: "#7F8C8D",
+    fontWeight: "500",
+  },
+
+  actions: {
+    paddingHorizontal: 20,
+    gap: 12,
+  },
+
+  primaryButton: {
+    backgroundColor: "#FF6B6B",
+    padding: 18,
+    borderRadius: 12,
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+
+  primaryButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+
+  secondaryButton: {
+    backgroundColor: "transparent",
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: "#E74C3C",
+      backgroundColor: 'white'
+  },
+
+  secondaryButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#E74C3C",
+  
+  },
+
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  modalContainer: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    width: width * 0.9,
+    height: '90%',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 10,
+    overflow: 'hidden',
+  },
+
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 20,
-    height: "91%",
-    borderWidth: 1,
-    gap: 20,
-    alignItems: "center",
-    justifyContent: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ECF0F1",
   },
 
-  img: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-  },
-
-  input: {
-    padding: 10,
-    fontSize: 15,
-    borderWidth: 1,
-    width: 200,
-  },
-
-  botoes: {
-    flexDirection: "row",
-    marginTop: 10,
-    justifyContent: "space-evenly",
-    width: "100%",
-  },
-
-  botao: {
-    backgroundColor: "#164773",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    width: "40%",
-    alignItems: "center",
-    elevation: 3,
-  },
-
-  botao2: {
-    backgroundColor: "#A91F1F",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    width: "40%",
-    borderRadius: 12,
-    alignItems: "center",
-    elevation: 3,
-  },
-
-  letraBotao: {
-    color: "#fff",
+  modalTitle: {
     fontSize: 20,
+    fontWeight: "700",
+    color: "#2C3E50",
   },
 
-  txt: {
-    fontSize: 20,
-    fontWeight: 500,
-    color: "#333",
+  closeButton: {
+    fontSize: 24,
+    color: "#7F8C8D",
+    fontWeight: "300",
   },
 
-  txtA: {
-    color: "#ff3333",
-    fontSize: 20,
+  stepsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 15,
+    backgroundColor: "#F8F9FA",
   },
 
-  partes: {
-    flexDirection: "row",
-    gap: 10,
-    marginTop: 10,
+  step: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#BDC3C7",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
-  parte2: {
+  activeStep: {
+    backgroundColor: "#FF6B6B",
+  },
+
+  stepText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+
+  activeStepText: {
+    color: "#FFFFFF",
+  },
+
+  modalContent: {
+    flex: 1,
+    padding: 20,
+  },
+
+  stepContent: {
     gap: 20,
+  },
+
+  stepTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#2C3E50",
+    marginBottom: 10,
+  },
+
+  inputRow: {
+    flexDirection: 'row',
+    gap: 15,
+  },
+
+  inputField: {
+    flex: 1,
+  },
+
+  fullInput: {
+    width: '100%',
+  },
+
+  section: {
     marginTop: 10,
   },
 
-  card: {
-    flexDirection: "row",
-    width: "100%",
-    height: 80,
-    backgroundColor: "#ffffffff",
-    borderWidth: 3,
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#2C3E50",
+    marginBottom: 15,
+  },
+
+  listContainer: {
+    maxHeight: 200,
+  },
+
+  listInput: {
+    marginBottom: 10,
+    width: '100%'
+  },
+
+  addButton: {
+    backgroundColor: "#3498DB",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+
+  addButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+
+  passwordSection: {
+    gap: 15,
+  },
+
+  passwordInput: {
+    width: '100%',
+  },
+
+  modalActions: {
+    flexDirection: 'row',
+    padding: 20,
+    gap: 15,
+    borderTopWidth: 1,
+    borderTopColor: "#ECF0F1",
+  },
+
+  cancelButton: {
+    flex: 1,
+    padding: 16,
     borderRadius: 12,
-    fontSize: 22,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: "#BDC3C7",
   },
 
-  addFoto: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "30%",
-    height: "100%",
+  cancelButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#7F8C8D",
   },
 
-  addText: {
-    width: "70%",
-    justifyContent: "center",
+  saveButton: {
+    flex: 1,
+    backgroundColor: "#FF6B6B",
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
   },
 
-  textCard: {
-    marginLeft: 40,
-    fontSize: 22,
+  saveButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
 
-  containerScrrol: {
-    height: "45%",
-    gap: 20,
+  loadingOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
-  addContainer: {
-    alignItems: "center",
-    width: "95%",
-    height: "84.2%",
+  loadingContainer: {
+    backgroundColor: "#FFFFFF",
+    padding: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
   },
 
-  parte3: {
-    alignItems: "center",
-    width: "95%",
-    height: "84.2%",
-    gap: 20,
-  },
-
-  foto: {
-    width: 150,
-    height: 150,
-    borderRadius: 100, 
-    backgroundColor: "#f0f0f0", 
+  loadingText: {
+    marginTop: 15,
+    fontSize: 16,
+    color: "#2C3E50",
+    fontWeight: "500",
   },
 });

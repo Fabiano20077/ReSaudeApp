@@ -3,15 +3,15 @@ import {
   View,
   Text,
   Pressable,
-  Image,
   ActivityIndicator,
   Modal,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Callout } from "react-native-maps";
 import { useEffect, useState } from "react";
 import style from "./style";
 
@@ -19,10 +19,12 @@ export default function App() {
   const navigation = useNavigation();
 
   const [filtroBusca, setFiltroBusca] = useState("");
-  const [select, setSelect] = useState([]);
+  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [showList, setShowList] = useState(false);
 
   const [location, setLocation] = useState(null);
   const [places, setPlaces] = useState([]);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -63,19 +65,54 @@ export default function App() {
         const data = await response.json();
 
         if (data.elements) {
-          setPlaces(data.elements);
-          console.log(`Encontrados ${data.elements.length} estabelecimentos`);
+          const healthcarePlaces = data.elements.filter(place => 
+            place.tags?.name && (place.tags.amenity || place.tags.healthcare)
+          );
+          setPlaces(healthcarePlaces);
+          setFilteredPlaces(healthcarePlaces);
+          console.log(`Encontrados ${healthcarePlaces.length} estabelecimentos`);
         } else {
-          alert("erro ");
+          alert("Erro ao buscar estabelecimentos");
         }
       } catch (erro) {
         console.log(erro);
-        alert("erro busca locais");
+        alert("Erro na busca de locais");
       } finally {
         setLoading(false);
       }
     })();
   }, []);
+
+  const handleSearch = (text) => {
+    setFiltroBusca(text);
+    if (text) {
+      const filtered = places.filter(place =>
+        place.tags?.name?.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredPlaces(filtered);
+    } else {
+      setFilteredPlaces(places);
+    }
+  };
+
+  const focusOnPlace = (place) => {
+    setSelectedPlace(place);
+    setShowList(false);
+  };
+
+  const getPlaceType = (place) => {
+    if (place.tags?.amenity === 'hospital' || place.tags?.healthcare === 'hospital') return '🏥 Hospital';
+    if (place.tags?.amenity === 'clinic' || place.tags?.healthcare === 'clinic') return '🩺 Clínica';
+    if (place.tags?.amenity === 'doctors' || place.tags?.healthcare === 'doctor') return '👨‍⚕️ Consultório';
+    return '🏥 Local de Saúde';
+  };
+
+  const getPlaceTypeIcon = (place) => {
+    if (place.tags?.amenity === 'hospital' || place.tags?.healthcare === 'hospital') return '🏥';
+    if (place.tags?.amenity === 'clinic' || place.tags?.healthcare === 'clinic') return '🩺';
+    if (place.tags?.amenity === 'doctors' || place.tags?.healthcare === 'doctor') return '👨‍⚕️';
+    return '🏥';
+  };
 
   return (
     <View style={style.container}>
@@ -90,7 +127,13 @@ export default function App() {
               latitudeDelta: 0.05,
               longitudeDelta: 0.05,
             }}
-            mapType="standard" // standard, satellite, hybrid, terrain
+            region={selectedPlace ? {
+              latitude: selectedPlace.lat,
+              longitude: selectedPlace.lon,
+              latitudeDelta: 0.02,
+              longitudeDelta: 0.02,
+            } : undefined}
+            mapType="standard"
             showsUserLocation={true}
             showsMyLocationButton={true}
             showsCompass={true}
@@ -99,47 +142,163 @@ export default function App() {
             scrollEnabled={true}
             rotateEnabled={true}
           >
-            {/* marcador do usuário */}
+            {/* Marcador do usuário */}
             <Marker
               coordinate={{
                 latitude: location.latitude,
                 longitude: location.longitude,
               }}
-              title="Você está aqui"
-              pinColor="blue"
-            />
+              title="Sua Localização"
+              description="Você está aqui"
+            >
+              <View style={style.userMarker}>
+                <View style={style.userPulse} />
+                <View style={style.userMarkerIcon}>
+                  <Text style={style.userMarkerText}>📍</Text>
+                </View>
+              </View>
+            </Marker>
 
-            {/* marcadores dos locais */}
-            {places.map((p, i) => (
+            {/* Marcadores dos locais de saúde */}
+            {filteredPlaces.map((place, index) => (
               <Marker
-                key={i}
+                key={index}
                 coordinate={{
-                  latitude: p.lat,
-                  longitude: p.lon,
+                  latitude: place.lat,
+                  longitude: place.lon,
                 }}
-                title={p.tags?.name || "Local de saúde"}
-                description={p.tags?.amenity || ""}
-                pinColor="red"
-              />
+                onPress={() => setSelectedPlace(place)}
+              >
+                <View style={[
+                  style.placeMarker,
+                  selectedPlace?.id === place.id && style.selectedMarker
+                ]}>
+                  <Text style={style.markerIcon}>
+                    {getPlaceTypeIcon(place)}
+                  </Text>
+                </View>
+                <Callout tooltip onPress={() => setSelectedPlace(place)}>
+                  <View style={style.callout}>
+                    <Text style={style.calloutTitle}>
+                      {place.tags?.name || "Local de Saúde"}
+                    </Text>
+                    <Text style={style.calloutSubtitle}>
+                      {getPlaceType(place)}
+                    </Text>
+                    {place.tags?.phone && (
+                      <Text style={style.calloutPhone}>📞 {place.tags.phone}</Text>
+                    )}
+                    {place.tags?.website && (
+                      <Text style={style.calloutLink}>🌐 Site disponível</Text>
+                    )}
+                  </View>
+                </Callout>
+              </Marker>
             ))}
           </MapView>
         )}
 
-        <Pressable
-          style={style.flu}
-          onPress={() => navigation.navigate("Dashboard")}
+        {/* Header com busca */}
+        <View style={style.header}>
+          <Pressable
+            style={style.backButton}
+            onPress={() => navigation.navigate("Dashboard")}
+          >
+            <View style={style.backIcon}>
+              <Text style={style.backIconText}>←</Text>
+            </View>
+          </Pressable>
+          
+          <View style={style.searchContainer}>
+            <TextInput
+              style={style.searchInput}
+              placeholder="Buscar hospitais, clínicas..."
+              placeholderTextColor="#999"
+              value={filtroBusca}
+              onChangeText={handleSearch}
+              onFocus={() => setShowList(true)}
+            />
+            <View style={style.searchIcon}>
+              <Text style={style.searchIconText}>🔍</Text>
+            </View>
+          </View>
+
+          <Pressable 
+            style={style.listButton}
+            onPress={() => setShowList(!showList)}
+          >
+            <View style={style.listIcon}>
+              <Text style={style.listIconText}>☰</Text>
+            </View>
+          </Pressable>
+        </View>
+
+        {/* Lista de resultados */}
+        {showList && (
+          <View style={style.resultsList}>
+            <View style={style.resultsHeader}>
+              <Text style={style.resultsTitle}>
+                {filteredPlaces.length} locais encontrados
+              </Text>
+              <Pressable onPress={() => setShowList(false)}>
+                <Text style={style.closeList}>✕</Text>
+              </Pressable>
+            </View>
+            <ScrollView style={style.scrollView}>
+              {filteredPlaces.map((place, index) => (
+                <Pressable
+                  key={index}
+                  style={[
+                    style.placeItem,
+                    selectedPlace?.id === place.id && style.selectedPlaceItem
+                  ]}
+                  onPress={() => focusOnPlace(place)}
+                >
+                  <View style={style.placeIcon}>
+                    <Text style={style.placeTypeIcon}>
+                      {getPlaceTypeIcon(place)}
+                    </Text>
+                  </View>
+                  <View style={style.placeInfo}>
+                    <Text style={style.placeName} numberOfLines={2}>
+                      {place.tags?.name}
+                    </Text>
+                    <Text style={style.placeType}>
+                      {getPlaceType(place)}
+                    </Text>
+                    {place.tags?.phone && (
+                      <Text style={style.placePhone}>📞 {place.tags.phone}</Text>
+                    )}
+                  </View>
+                  <View style={style.distanceBadge}>
+                    <Text style={style.distanceText}>→</Text>
+                  </View>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
+        {/* Botão de centralizar no usuário */}
+        <Pressable 
+          style={style.centerButton}
+          onPress={() => setSelectedPlace(null)}
         >
-          <Image
-            style={style.imgPerfil}
-            source={require("../../../assets/seta-esquerda.png")}
-          ></Image>
+          <View style={style.centerIcon}>
+            <Text style={style.centerIconText}>🎯</Text>
+          </View>
         </Pressable>
       </View>
 
-      <Modal transparent={loading} visible={loading}>
+      <Modal transparent={true} visible={loading}>
         <View style={style.containerModal}>
-          <ActivityIndicator size="large" color="blue" />
-          <Text style={{ color: "white", fontSize: 20 }}>Carregando...</Text>
+          <View style={style.loadingContent}>
+            <ActivityIndicator size="large" color="#FF6B6B" />
+            <Text style={style.loadingText}>Buscando locais de saúde...</Text>
+            <Text style={style.loadingSubtext}>
+              Procurando hospitais e clínicas próximos a você
+            </Text>
+          </View>
         </View>
       </Modal>
     </View>

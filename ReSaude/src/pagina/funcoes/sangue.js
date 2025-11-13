@@ -40,9 +40,9 @@ export default function App() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="blue" />
-        <Text>Carregando...</Text>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#FF6B6B" />
+        <Text style={styles.loadingText}>Carregando seu tipo sanguíneo...</Text>
       </View>
     );
   }
@@ -51,18 +51,40 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.containerSangue}>
         <View style={styles.nav}>
-          <Pressable onPress={() => navigation.navigate("Dashboard")}>
+          <Pressable 
+            style={styles.backButton}
+            onPress={() => navigation.navigate("Dashboard")}
+          >
             <Image
               style={styles.imgPerfil}
               source={require("../../../assets/seta-esquerda.png")}
-            ></Image>
+            />
+       
           </Pressable>
         </View>
+        
         <View style={styles.containerBolsa}>
-            <View style={styles.junto}>
-            <Image style={styles.imgSangue} source={require('../../../assets/bolsaSangue.png')}></Image>
-          <Text style={styles.sangue}>{sangue}</Text>
+          <View style={styles.junto}>
+            <View style={styles.imageContainer}>
+              <Image 
+                style={styles.imgSangue} 
+                source={require('../../../assets/bolsaSangue.png')}
+                resizeMode="contain"
+              />
             </View>
+            
+            <View style={styles.bloodTypeContainer}>
+              <Text style={styles.sangue}>{sangue || "Não informado"}</Text>
+              <Text style={styles.bloodLabel}>SEU TIPO SANGUÍNEO</Text>
+            </View>
+            
+            <View style={styles.infoContainer}>
+              <Text style={styles.infoTitle}>Por que isso é importante?</Text>
+              <Text style={styles.infoText}>
+                Saber seu tipo sanguíneo é crucial em emergências médicas e para doações de sangue.
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
       <StatusBar style="auto" />
