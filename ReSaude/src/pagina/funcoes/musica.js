@@ -107,7 +107,6 @@ export default function App() {
               style={styles.backIcon}
               source={require("../../../assets/seta-esquerda.png")}
             />
-            
           </Pressable>
         </View>
 

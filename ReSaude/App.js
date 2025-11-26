@@ -56,7 +56,11 @@ export default function App() {
           component={Calorias}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Vacinas" component={Vacinas} />
+        <Stack.Screen
+          name="Vacinas"
+          component={Vacinas}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Perfil"
           component={Perfil}
