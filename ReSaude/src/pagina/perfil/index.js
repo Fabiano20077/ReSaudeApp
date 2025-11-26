@@ -15,6 +15,7 @@ import SelectScan from "../cadastro/select";
 import InputScale from "../cadastro/inputAnima";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import * as ImagePicker from "expo-image-picker";
 
 export default function App() {
   const navigation = useNavigation();
