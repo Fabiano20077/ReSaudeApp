@@ -15,7 +15,7 @@ export default StyleSheet.create({
   nav: {
     flexDirection: "row",
     width: "100%",
-    height: height * 0.14,
+    height: height * 0.12,
     alignItems: "flex-end",
     padding: 20,
     paddingBottom: 15,

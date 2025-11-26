@@ -317,13 +317,13 @@ export default function App() {
             style={styles.primaryButton}
             onPress={() => setModal(true)}
           >
-            <Text style={styles.primaryButtonText}>✏️ Editar Perfil</Text>
+            <Text style={styles.primaryButtonText}>Editar Perfil</Text>
           </Pressable>
           <Pressable 
             style={styles.secondaryButton}
             onPress={deleta}
           >
-            <Text style={styles.secondaryButtonText}>🗑️ Excluir Conta</Text>
+            <Text style={styles.secondaryButtonText}>Excluir Conta</Text>
           </Pressable>
         </View>
       </View>

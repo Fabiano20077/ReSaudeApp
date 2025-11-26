@@ -85,14 +85,14 @@ export default function App() {
     {
       key: "motivacional",
       title: "Motivação",
-
+      icon: require("../../../assets/motivacao.png"),
       route: "Motivacional",
       color: "#FFA726",
     },
     {
       key: "musica",
       title: "Relaxamento",
-
+      icon: require("../../../assets/relaxamento.png"),
       route: "Musica",
       color: "#5C6BC0",
     },
@@ -101,6 +101,13 @@ export default function App() {
       title: "Dispertador",
       icon: require("../../../assets/relogio.png"),
       route: "Relogio",
+      color: "#4ECDC4",
+    },
+    {
+      key: "vibração",
+      title: "toque teste",
+      icon: require("../../../assets/relogio.png"),
+      route: "toque",
       color: "#4ECDC4",
     },
   ];
