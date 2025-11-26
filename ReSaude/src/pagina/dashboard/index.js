@@ -106,9 +106,9 @@ export default function App() {
     {
       key: "vibração",
       title: "toque teste",
-      icon: require("../../../assets/relogio.png"),
+      icon: require("../../../assets/vibrar.png"),
       route: "toque",
-      color: "#4ECDC4",
+      color: "#AB47BC",
     },
   ];
 
