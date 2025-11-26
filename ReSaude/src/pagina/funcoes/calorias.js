@@ -5,12 +5,11 @@ import {
   TextInput,
   Pressable,
   ActivityIndicator,
-  Image
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import styles from "./styleCalorias";
-
 
 export default function App() {
   const navigation = useNavigation();
@@ -43,33 +42,43 @@ export default function App() {
     }
   } */
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#FF6B6B" />
+        <Text style={styles.loadingText}>Buscando seu alimento...</Text>
+      </View>
+    );
+  }
+
   const buscarCalorias = async () => {
-
     setLoanding(true);
-
+    console.log("iniciou");
     try {
-
+      console.log("chegou aqui");
+      // Fazendo busca por nome
       const response = await fetch(
-        "https://trackapi.nutritionix.com/v2/natural/nutrients",
+        `https://api.api-ninjas.com/v1/nutrition?query=${encodeURIComponent(
+          nomeAlimento
+        )}`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
-            "Content-Type": "application/json",
-            "x-app-id": "a0514f11",
-            "x-app-key": "0fe676f1389fe11fe47dfbe162a4261b",
+            "X-Api-Key": "cZALYXZjcf8e1QtnDjmw0A==n1UFR1DZ3XkzFHZH",
           },
-          body: JSON.stringify({
-            query: nomeAlimento,
-          }),
         }
       );
-
-      console.log('status', response.status)
-
-      console.log(response);
-      const resData = await response.json();
-
-      console.log("zika", resData);
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.status}`);
+      }
+      const dataRes = await response.json();
+      console.log("funfo");
+      console.log(dataRes);
+      if (!Array.isArray(dataRes) || dataRes.length === 0) {
+        setArray(null);
+      } else {
+        setArray(dataRes[0]);
+      }
     } catch (erro) {
       console.log("erro no nutri", erro.message);
     } finally {
@@ -104,42 +113,65 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.containerPrincipal}>
-         <View style={styles.nav}>
-                  <Pressable onPress={() => navigation.navigate("Dashboard")}>
-                    <Image
-                      style={styles.imgPerfil}
-                      source={require("../../../assets/seta-esquerda.png")}
-                    ></Image>
-                  </Pressable>
-                </View>
-        <View style={styles.containerBuscar}>
-          <TextInput
-            style={styles.input}
-            value={nomeAlimento}
-            onChangeText={setNomeAlimento}
-          />
-          <Pressable style={styles.botao} onPress={() => buscarCalorias()}>
-            <Text style={{ color: "white", fontSize: 20 }}>buscar</Text>
+        <View style={styles.nav}>
+          <Pressable
+            style={styles.backButton}
+            onPress={() => navigation.navigate("Dashboard")}
+          >
+            <Image
+              style={styles.imgPerfil}
+              source={require("../../../assets/seta-esquerda.png")}
+            />
           </Pressable>
         </View>
-        <View style={styles.containerAlimentos}>
-          {arrey == "" ? (
-            <Text style={styles.txt}> escreva algum alimento</Text>
-          ) : !loading ? (
-            <>
-              <Text style={styles.txt}>🍎 {arrey.food_name}</Text>
-              <Text style={styles.txt}>Calorias: {arrey.nf_calories} kcal</Text>
-              <Text style={styles.txt}>Proteínas: {arrey.nf_protein} g</Text>
-              <Text style={styles.txt}>
-                Carboidratos: {arrey.nf_total_carbohydrate} g
-              </Text>
-              <Text style={styles.txt}>Gorduras: {arrey.nf_total_fat} g</Text>
-            </>
-          ) : (
-            <ActivityIndicator size="large" color="blue">
-              <Text>carregando...</Text>
-            </ActivityIndicator>
-          )}
+        <View style={styles.corpoCalorias}>
+          <View style={styles.containerTitulo}>
+            <Text style={styles.titulo}>Calorias</Text>
+            <Text style={styles.subtitle}>
+              Descubra seu Índice de Massa Corporal
+            </Text>
+          </View>
+
+          <View style={styles.containerBuscar}>
+            <Text style={styles.Text}>escreva um alimento</Text>
+            <TextInput
+              style={styles.input}
+              value={nomeAlimento}
+              onChangeText={setNomeAlimento}
+            />
+            <Pressable style={styles.botao} onPress={() => buscarCalorias()}>
+              <Text style={{ color: "white", fontSize: 20 }}>buscar</Text>
+            </Pressable>
+          </View>
+          <View style={styles.containerAlimentos}>
+            {arrey == "" ? (
+              <View style={styles.containerTex2}>
+                <Text style={styles.txt2}> nenhum alimento encontrado</Text>
+              </View>
+            ) : !loading ? (
+              <>
+                <Text style={styles.txt}>
+                  <Text style={styles.negrito}>Nome:</Text> {arrey.name}
+                </Text>
+                <Text style={styles.txt}>
+                <Text style={styles.negrito}>sodio:</Text> {arrey.sodium_mg?.toFixed(1)} mg
+                </Text>
+                <Text style={styles.txt}>
+                <Text style={styles.negrito}>açucar:</Text> {arrey.sugar_g?.toFixed(1)} g
+                </Text>
+                <Text style={styles.txt}>
+                <Text style={styles.negrito}>Carboidratos:</Text> {arrey.carbohydrates_total_g?.toFixed(1)} g
+                </Text>
+                <Text style={styles.txt}>
+                <Text style={styles.negrito}>gordura:</Text> {arrey.fat_total_g?.toFixed(1)} g
+                </Text>
+              </>
+            ) : (
+              <ActivityIndicator size="large" color="blue">
+                <Text>carregando...</Text>
+              </ActivityIndicator>
+            )}
+          </View>
         </View>
       </View>
       <StatusBar style="auto" />

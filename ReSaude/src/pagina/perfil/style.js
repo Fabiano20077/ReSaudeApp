@@ -375,4 +375,34 @@ export default StyleSheet.create({
     color: "#2C3E50",
     fontWeight: "500",
   },
+
+  containerModal: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+  },
+
+  x: {
+    position: "absolute",
+    top: "40%",
+    left: "5%",
+    zIndex: 2,
+  },
+
+  escolherFoto: {
+    flexDirection: "row",
+    width: "95%",
+    height: "23%",
+    backgroundColor: "white",
+    borderRadius: 20,
+  },
+
+  dividir: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50%",
+    height: "100%",
+  },
 });

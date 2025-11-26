@@ -20,6 +20,7 @@ export default function App() {
   const navigation = useNavigation();
 
   const [modal, setModal] = useState(false);
+  const [modalFoto, setModalFoto] = useState(false);
   const [id, setId] = useState("");
   const [imagem, setImagem] = useState();
   const [loading, setLoading] = useState(false);
@@ -69,6 +70,56 @@ export default function App() {
     senhaN: "",
     senhaC: "",
   });
+
+  const solicitarPermissao = async () => {
+    const camera = await ImagePicker.requestCameraPermissionsAsync();
+    const galeria = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (camera.status != "granted" && galeria.status != "granted") {
+      alert(
+        "permissão negeda",
+        "é necessario pedir permissao para acessa a camera ou a galeria"
+      );
+      return false;
+    }
+
+    return true;
+  };
+
+  const tirarFoto = async () => {
+    const permissao = await solicitarPermissao();
+    if (!permissao) return;
+
+    const resultado = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!resultado.canceled) {
+      setImagem(resultado.assets[0].uri);
+    }
+  };
+
+  const escolherGaleria = async () => {
+    const permissao = await solicitarPermissao();
+
+    if (!permissao) return;
+
+    const resultado = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    console.log("Resultado da imagem:", resultado.assets[0].uri);
+
+    if (!resultado.canceled) {
+      setImagem(resultado.assets[0].uri);
+      onChange("foto", resultado.assets[0].uri);
+    }
+  };
 
   const handleAlergiaChange = (id, valor) => {
     const atualizar = alergias.map((item) =>
@@ -204,7 +255,7 @@ export default function App() {
     try {
       const array = await AsyncStorage.getItem("usuario");
       const user = JSON.parse(array);
-      
+
       const usuario = new FormData();
       usuario.append("nome", data.nome);
       usuario.append("email", data.email);
@@ -223,7 +274,7 @@ export default function App() {
       usuario.append("alergia", JSON.stringify(alergias));
       usuario.append("remedios", JSON.stringify(remedio));
       usuario.append("doencas", JSON.stringify(doencas));
-      
+
       if (data.senhaA) {
         usuario.append("senhaA", data.senhaA);
         usuario.append("senhaN", data.senhaN);
@@ -262,7 +313,7 @@ export default function App() {
       <StatusBar style="auto" />
       <View style={styles.containerPerfil}>
         <View style={styles.nav}>
-          <Pressable 
+          <Pressable
             style={styles.backButton}
             onPress={() => navigation.navigate("Dashboard")}
           >
@@ -272,7 +323,7 @@ export default function App() {
             />
           </Pressable>
         </View>
-        
+
         <View style={styles.profileHeader}>
           <View style={styles.avatarContainer}>
             <Image
@@ -288,10 +339,12 @@ export default function App() {
               resizeMode="cover"
             />
             <View style={styles.editBadge}>
+              <Pressable onPress={()=> setModalFoto(true)}>
               <Text style={styles.editBadgeText}>✏️</Text>
+              </Pressable>
             </View>
           </View>
-          
+
           <View style={styles.userInfo}>
             <Text style={styles.userName}>{data.nome}</Text>
             <Text style={styles.userEmail}>{data.email}</Text>
@@ -313,16 +366,13 @@ export default function App() {
         </View>
 
         <View style={styles.actions}>
-          <Pressable 
+          <Pressable
             style={styles.primaryButton}
             onPress={() => setModal(true)}
           >
             <Text style={styles.primaryButtonText}>Editar Perfil</Text>
           </Pressable>
-          <Pressable 
-            style={styles.secondaryButton}
-            onPress={deleta}
-          >
+          <Pressable style={styles.secondaryButton} onPress={deleta}>
             <Text style={styles.secondaryButtonText}>Excluir Conta</Text>
           </Pressable>
         </View>
@@ -343,16 +393,15 @@ export default function App() {
               {[1, 2, 3, 4, 5].map((stepNum) => (
                 <Pressable
                   key={stepNum}
-                  style={[
-                    styles.step,
-                    step === stepNum && styles.activeStep
-                  ]}
+                  style={[styles.step, step === stepNum && styles.activeStep]}
                   onPress={() => mudar(stepNum)}
                 >
-                  <Text style={[
-                    styles.stepText,
-                    step === stepNum && styles.activeStepText
-                  ]}>
+                  <Text
+                    style={[
+                      styles.stepText,
+                      step === stepNum && styles.activeStepText,
+                    ]}
+                  >
                     {stepNum}
                   </Text>
                 </Pressable>
@@ -363,7 +412,7 @@ export default function App() {
               {step === 1 && (
                 <View style={styles.stepContent}>
                   <Text style={styles.stepTitle}>Informações Pessoais</Text>
-                  
+
                   <View style={styles.inputRow}>
                     <InputScale
                       label={labels.nome}
@@ -429,7 +478,7 @@ export default function App() {
               {step === 2 && (
                 <View style={styles.stepContent}>
                   <Text style={styles.stepTitle}>Saúde Básica</Text>
-                  
+
                   <View style={styles.inputRow}>
                     <InputScale
                       label={labels.peso}
@@ -449,7 +498,9 @@ export default function App() {
                     <SelectScan
                       label={labels.sangue}
                       selectedValue={data.sangue}
-                      onValueChange={(itemValue) => onChange("sangue", itemValue)}
+                      onValueChange={(itemValue) =>
+                        onChange("sangue", itemValue)
+                      }
                       opitions={[
                         { label: "Selecione", value: "" },
                         { label: "A+", value: "A+" },
@@ -466,7 +517,9 @@ export default function App() {
                     <SelectScan
                       label={labels.diabetico}
                       selectedValue={data.diabetico}
-                      onValueChange={(itemValue) => onChange("diabetico", itemValue)}
+                      onValueChange={(itemValue) =>
+                        onChange("diabetico", itemValue)
+                      }
                       opitions={[
                         { label: "Selecione", value: "" },
                         { label: "Sim", value: "sim" },
@@ -480,7 +533,9 @@ export default function App() {
                     <SelectScan
                       label={labels.fumante}
                       selectedValue={data.fumante}
-                      onValueChange={(itemValue) => onChange("fumante", itemValue)}
+                      onValueChange={(itemValue) =>
+                        onChange("fumante", itemValue)
+                      }
                       opitions={[
                         { label: "Selecione", value: "" },
                         { label: "Sim", value: "sim" },
@@ -491,7 +546,9 @@ export default function App() {
                     <SelectScan
                       label={labels.alcolatra}
                       selectedValue={data.alcolatra}
-                      onValueChange={(itemValue) => onChange("alcolatra", itemValue)}
+                      onValueChange={(itemValue) =>
+                        onChange("alcolatra", itemValue)
+                      }
                       opitions={[
                         { label: "Selecione", value: "" },
                         { label: "Sim", value: "sim" },
@@ -510,14 +567,18 @@ export default function App() {
                           key={item.id}
                           label=""
                           value={item.nome}
-                          onChangeText={(text) => handleAlergiaChange(item.id, text)}
+                          onChangeText={(text) =>
+                            handleAlergiaChange(item.id, text)
+                          }
                           containerStyle={styles.listInput}
                           placeholder="Digite uma alergia"
                         />
                       ))}
                     </ScrollView>
                     <Pressable style={styles.addButton} onPress={addAlergia}>
-                      <Text style={styles.addButtonText}>+ Adicionar Alergia</Text>
+                      <Text style={styles.addButtonText}>
+                        + Adicionar Alergia
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -533,14 +594,18 @@ export default function App() {
                           key={item.id}
                           label=""
                           value={item.nome}
-                          onChangeText={(text) => handleAlergiaChange2(item.id, text)}
+                          onChangeText={(text) =>
+                            handleAlergiaChange2(item.id, text)
+                          }
                           containerStyle={styles.listInput}
                           placeholder="Digite um medicamento"
                         />
                       ))}
                     </ScrollView>
                     <Pressable style={styles.addButton} onPress={addRemedio}>
-                      <Text style={styles.addButtonText}>+ Adicionar Medicamento</Text>
+                      <Text style={styles.addButtonText}>
+                        + Adicionar Medicamento
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -556,14 +621,18 @@ export default function App() {
                           key={item.id}
                           label=""
                           value={item.nome}
-                          onChangeText={(text) => handleAlergiaChange3(item.id, text)}
+                          onChangeText={(text) =>
+                            handleAlergiaChange3(item.id, text)
+                          }
                           containerStyle={styles.listInput}
                           placeholder="Digite uma condição"
                         />
                       ))}
                     </ScrollView>
                     <Pressable style={styles.addButton} onPress={addDoencas}>
-                      <Text style={styles.addButtonText}>+ Adicionar Condição</Text>
+                      <Text style={styles.addButtonText}>
+                        + Adicionar Condição
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -610,6 +679,27 @@ export default function App() {
                 <Text style={styles.saveButtonText}>
                   {loading ? "Salvando..." : "Salvar Alterações"}
                 </Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal transparent={true} visible={modalFoto}>
+        <View style={styles.containerModal}>
+          <Pressable style={styles.x} onPress={() => setModalFoto(false)}>
+            <Image source={require("../../../assets/marca-x.png")}></Image>
+          </Pressable>
+          <View style={styles.escolherFoto}>
+            <View style={styles.dividir}>
+              <Pressable onPress={() => tirarFoto()}>
+                <Image source={require("../../../assets/camera.png")}></Image>
+              </Pressable>
+            </View>
+
+            <View style={styles.dividir}>
+              <Pressable onPress={() => escolherGaleria()}>
+                <Image source={require("../../../assets/galeria.png")}></Image>
               </Pressable>
             </View>
           </View>

@@ -68,7 +68,7 @@ export default function App() {
             <View style={styles.imageContainer}>
               <Image 
                 style={styles.imgSangue} 
-                source={require('../../../assets/bolsaSangue.png')}
+                source={require('../../../assets/bolsaSangue2.png')}
                 resizeMode="contain"
               />
             </View>
