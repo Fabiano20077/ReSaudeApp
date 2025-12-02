@@ -98,7 +98,7 @@ export default function App() {
     },
     {
       key: "relogio",
-      title: "Dispertador",
+      title: "Despertador",
       icon: require("../../../assets/relogio.png"),
       route: "Relogio",
       color: "#4ECDC4",
