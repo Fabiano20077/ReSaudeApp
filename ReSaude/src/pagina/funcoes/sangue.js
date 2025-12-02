@@ -25,9 +25,10 @@ export default function App() {
         const usuario = JSON.parse(valor);
         const id = usuario.user["id"];
 
-        const res = await api.get(`/chamar-usuario/${id}`);
-        console.log("foi", res.data);
-        setSangue(res.data.user.sangue);
+        const resonse = await fetch(`${api}/chamar-usuario/${id}`);
+        const res = await resonse.json();
+        console.log("foi", res);
+        setSangue(res.user.sangue);
       } catch (erro) {
         console.log("erro", erro.response?.data || erro.message);
       } finally {

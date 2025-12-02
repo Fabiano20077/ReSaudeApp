@@ -211,7 +211,7 @@ export default function etapa1({ data, onChange, onNext }) {
     usuario.append("inputUf", data.uf);
 
     try {
-      const response = await fetch("http://10.0.2.2:8000/api/cadastra-etapa1", {
+      const response = await fetch(`${api}/cadastra-etapa1`, {
         method: "POST",
         body: usuario,
       });

@@ -15,6 +15,7 @@ import SelectScan from "../cadastro/select";
 import InputScale from "../cadastro/inputAnima";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import api from "../api";
 
 export default function App() {
   const navigation = useNavigation();
@@ -118,7 +119,7 @@ export default function App() {
       try {
         setLoading(true);
         const res = await fetch(
-          `http://10.0.2.2:8000/api/chamar-usuario/${userId}`
+          `${api}/chamar-usuario/${userId}`
         );
 
         if (!res.ok) {
@@ -230,7 +231,7 @@ export default function App() {
       }
 
       const response = await fetch(
-        `http://10.0.2.2:8000/api/updatePerfil/${user.user["id"]}`,
+        `${api}/updatePerfil/${user.user["id"]}`,
         {
           method: "POST",
           body: usuario,

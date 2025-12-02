@@ -44,9 +44,11 @@ export default function App() {
   const requestLocationPermission = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      
-      if (status !== 'granted') {
-        setErrorMsg('Permissão de localização negada. Usando localização padrão.');
+
+      if (status !== "granted") {
+        setErrorMsg(
+          "Permissão de localização negada. Usando localização padrão."
+        );
         setUsingFallbackLocation(true);
         return false;
       }
@@ -54,15 +56,19 @@ export default function App() {
       // Verificar se os serviços de localização estão habilitados
       const servicesEnabled = await Location.hasServicesEnabledAsync();
       if (!servicesEnabled) {
-        setErrorMsg('Serviços de localização desativados. Usando localização padrão.');
+        setErrorMsg(
+          "Serviços de localização desativados. Usando localização padrão."
+        );
         setUsingFallbackLocation(true);
         return false;
       }
 
       return true;
     } catch (error) {
-      console.log('Erro ao verificar permissão:', error);
-      setErrorMsg('Erro nos serviços de localização. Usando localização padrão.');
+      console.log("Erro ao verificar permissão:", error);
+      setErrorMsg(
+        "Erro nos serviços de localização. Usando localização padrão."
+      );
       setUsingFallbackLocation(true);
       return false;
     }
@@ -71,7 +77,7 @@ export default function App() {
   const getCurrentLocation = async () => {
     try {
       const hasPermission = await requestLocationPermission();
-      
+
       if (!hasPermission) {
         return DEFAULT_COORDINATES;
       }
@@ -82,9 +88,12 @@ export default function App() {
           accuracy: Location.Accuracy.Balanced,
           timeout: 10000, // 10 segundos
         }),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout ao obter localização')), 10000)
-        )
+        new Promise((_, reject) =>
+          setTimeout(
+            () => reject(new Error("Timeout ao obter localização")),
+            10000
+          )
+        ),
       ]);
 
       return {
@@ -92,8 +101,10 @@ export default function App() {
         longitude: location.coords.longitude,
       };
     } catch (error) {
-      console.log('Erro ao obter localização:', error);
-      setErrorMsg(`Não foi possível obter sua localização: ${error.message}. Usando localização padrão.`);
+      console.log("Erro ao obter localização:", error);
+      setErrorMsg(
+        `Não foi possível obter sua localização: ${error.message}. Usando localização padrão.`
+      );
       setUsingFallbackLocation(true);
       return DEFAULT_COORDINATES;
     }
@@ -110,7 +121,7 @@ export default function App() {
       setLocation(userLocation);
 
       console.log("Buscando locais próximos...", userLocation);
-      
+
       // Query Overpass QL otimizada
       const query = `
         [out:json][timeout:30];
@@ -126,17 +137,14 @@ export default function App() {
       `;
 
       console.log("Enviando requisição para Overpass API...");
-      
-      const response = await fetch(
-        "https://overpass-api.de/api/interpreter",
-        {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          },
-          body: `data=${encodeURIComponent(query)}`,
-        }
-      );
+
+      const response = await fetch("https://overpass-api.de/api/interpreter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+        body: `data=${encodeURIComponent(query)}`,
+      });
 
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
@@ -147,29 +155,34 @@ export default function App() {
 
       if (data.elements && data.elements.length > 0) {
         const healthcarePlaces = data.elements
-          .filter(place => {
+          .filter((place) => {
             const hasName = place.tags?.name;
-            const isHealthcare = place.tags?.amenity === 'hospital' || 
-                               place.tags?.amenity === 'clinic' || 
-                               place.tags?.amenity === 'doctors' ||
-                               place.tags?.healthcare === 'hospital' || 
-                               place.tags?.healthcare === 'clinic' || 
-                               place.tags?.healthcare === 'doctor';
+            const isHealthcare =
+              place.tags?.amenity === "hospital" ||
+              place.tags?.amenity === "clinic" ||
+              place.tags?.amenity === "doctors" ||
+              place.tags?.healthcare === "hospital" ||
+              place.tags?.healthcare === "clinic" ||
+              place.tags?.healthcare === "doctor";
             return hasName && isHealthcare;
           })
-          .map(place => ({
+          .map((place) => ({
             ...place,
             displayLat: place.lat,
-            displayLon: place.lon
+            displayLon: place.lon,
           }));
 
-        console.log(`Encontrados ${healthcarePlaces.length} estabelecimentos de saúde`);
-        
+        console.log(
+          `Encontrados ${healthcarePlaces.length} estabelecimentos de saúde`
+        );
+
         setPlaces(healthcarePlaces);
         setFilteredPlaces(healthcarePlaces);
-        
+
         if (healthcarePlaces.length === 0) {
-          setErrorMsg("Nenhum estabelecimento de saúde encontrado na sua região.");
+          setErrorMsg(
+            "Nenhum estabelecimento de saúde encontrado na sua região."
+          );
         }
       } else {
         console.log("Nenhum resultado encontrado na API");
@@ -177,7 +190,9 @@ export default function App() {
         const fallbackPlaces = getFallbackPlaces(userLocation);
         setPlaces(fallbackPlaces);
         setFilteredPlaces(fallbackPlaces);
-        setErrorMsg("Nenhum estabelecimento encontrado. Mostrando locais de exemplo.");
+        setErrorMsg(
+          "Nenhum estabelecimento encontrado. Mostrando locais de exemplo."
+        );
       }
     } catch (erro) {
       console.log("Erro na busca:", erro);
@@ -186,7 +201,9 @@ export default function App() {
       const fallbackPlaces = getFallbackPlaces(userLocation);
       setPlaces(fallbackPlaces);
       setFilteredPlaces(fallbackPlaces);
-      setErrorMsg(`Erro na busca. Mostrando locais de exemplo. (${erro.message})`);
+      setErrorMsg(
+        `Erro na busca. Mostrando locais de exemplo. (${erro.message})`
+      );
     } finally {
       setLoading(false);
     }
@@ -197,68 +214,68 @@ export default function App() {
     return [
       {
         id: 1,
-        type: 'node',
+        type: "node",
         tags: {
-          name: 'Hospital Municipal',
-          amenity: 'hospital',
-          phone: '(11) 2222-3333',
-          "emergency": "yes"
+          name: "Hospital Municipal",
+          amenity: "hospital",
+          phone: "(11) 2222-3333",
+          emergency: "yes",
         },
         displayLat: userCoords.latitude + 0.005,
-        displayLon: userCoords.longitude + 0.005
+        displayLon: userCoords.longitude + 0.005,
       },
       {
         id: 2,
-        type: 'node',
+        type: "node",
         tags: {
-          name: 'Clínica Médica Central',
-          amenity: 'clinic',
-          phone: '(11) 4444-5555'
+          name: "Clínica Médica Central",
+          amenity: "clinic",
+          phone: "(11) 4444-5555",
         },
         displayLat: userCoords.latitude - 0.003,
-        displayLon: userCoords.longitude + 0.003
+        displayLon: userCoords.longitude + 0.003,
       },
       {
         id: 3,
-        type: 'node',
+        type: "node",
         tags: {
-          name: 'Pronto Socorro 24h',
-          healthcare: 'hospital',
-          phone: '(11) 6666-7777',
-          "emergency": "yes"
+          name: "Pronto Socorro 24h",
+          healthcare: "hospital",
+          phone: "(11) 6666-7777",
+          emergency: "yes",
         },
         displayLat: userCoords.latitude + 0.002,
-        displayLon: userCoords.longitude - 0.004
+        displayLon: userCoords.longitude - 0.004,
       },
       {
         id: 4,
-        type: 'node',
+        type: "node",
         tags: {
-          name: 'Posto de Saúde',
-          amenity: 'clinic',
-          phone: '(11) 8888-9999'
+          name: "Posto de Saúde",
+          amenity: "clinic",
+          phone: "(11) 8888-9999",
         },
         displayLat: userCoords.latitude - 0.006,
-        displayLon: userCoords.longitude - 0.002
+        displayLon: userCoords.longitude - 0.002,
       },
       {
         id: 5,
-        type: 'node',
+        type: "node",
         tags: {
-          name: 'Hospital Regional',
-          healthcare: 'hospital',
-          phone: '(11) 1111-2222'
+          name: "Hospital Regional",
+          healthcare: "hospital",
+          phone: "(11) 1111-2222",
         },
         displayLat: userCoords.latitude + 0.008,
-        displayLon: userCoords.longitude + 0.001
-      }
+        displayLon: userCoords.longitude + 0.001,
+      },
     ];
   };
 
   const handleSearch = (text) => {
     setFiltroBusca(text);
     if (text) {
-      const filtered = places.filter(place =>
+      const filtered = places.filter((place) =>
         place.tags?.name?.toLowerCase().includes(text.toLowerCase())
       );
       setFilteredPlaces(filtered);
@@ -273,21 +290,39 @@ export default function App() {
   };
 
   const getPlaceType = (place) => {
-    if (place.tags?.amenity === 'hospital' || place.tags?.healthcare === 'hospital') {
-      return place.tags?.emergency === 'yes' ? '🏥 Hospital (Emergência)' : '🏥 Hospital';
+    if (
+      place.tags?.amenity === "hospital" ||
+      place.tags?.healthcare === "hospital"
+    ) {
+      return place.tags?.emergency === "yes"
+        ? "🏥 Hospital (Emergência)"
+        : "🏥 Hospital";
     }
-    if (place.tags?.amenity === 'clinic' || place.tags?.healthcare === 'clinic') return '🩺 Clínica';
-    if (place.tags?.amenity === 'doctors' || place.tags?.healthcare === 'doctor') return '👨‍⚕️ Consultório';
-    return '🏥 Local de Saúde';
+    if (place.tags?.amenity === "clinic" || place.tags?.healthcare === "clinic")
+      return "🩺 Clínica";
+    if (
+      place.tags?.amenity === "doctors" ||
+      place.tags?.healthcare === "doctor"
+    )
+      return "👨‍⚕️ Consultório";
+    return "🏥 Local de Saúde";
   };
 
   const getPlaceTypeIcon = (place) => {
-    if (place.tags?.amenity === 'hospital' || place.tags?.healthcare === 'hospital') {
-      return place.tags?.emergency === 'yes' ? '🚑' : '🏥';
+    if (
+      place.tags?.amenity === "hospital" ||
+      place.tags?.healthcare === "hospital"
+    ) {
+      return place.tags?.emergency === "yes" ? "🚑" : "🏥";
     }
-    if (place.tags?.amenity === 'clinic' || place.tags?.healthcare === 'clinic') return '🩺';
-    if (place.tags?.amenity === 'doctors' || place.tags?.healthcare === 'doctor') return '👨‍⚕️';
-    return '🏥';
+    if (place.tags?.amenity === "clinic" || place.tags?.healthcare === "clinic")
+      return "🩺";
+    if (
+      place.tags?.amenity === "doctors" ||
+      place.tags?.healthcare === "doctor"
+    )
+      return "👨‍⚕️";
+    return "🏥";
   };
 
   const retrySearch = async () => {
@@ -307,7 +342,10 @@ export default function App() {
         "Por favor, habilite os serviços de localização nas configurações do seu dispositivo.",
         [
           { text: "Cancelar", style: "cancel" },
-          { text: "Abrir Configurações", onPress: () => Location.getProviderStatusAsync() }
+          {
+            text: "Abrir Configurações",
+            onPress: () => Location.getProviderStatusAsync(),
+          },
         ]
       );
     }
@@ -325,12 +363,16 @@ export default function App() {
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
           }}
-          region={selectedPlace ? {
-            latitude: selectedPlace.displayLat,
-            longitude: selectedPlace.displayLon,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
-          } : undefined}
+          region={
+            selectedPlace
+              ? {
+                  latitude: selectedPlace.displayLat,
+                  longitude: selectedPlace.displayLon,
+                  latitudeDelta: 0.02,
+                  longitudeDelta: 0.02,
+                }
+              : undefined
+          }
           mapType="standard"
           showsUserLocation={!usingFallbackLocation}
           showsMyLocationButton={true}
@@ -346,15 +388,23 @@ export default function App() {
               latitude: location.latitude,
               longitude: location.longitude,
             }}
-            title={usingFallbackLocation ? "Localização Padrão" : "Sua Localização"}
-            description={usingFallbackLocation ? "Localização aproximada" : "Você está aqui"}
+            title={
+              usingFallbackLocation ? "Localização Padrão" : "Sua Localização"
+            }
+            description={
+              usingFallbackLocation
+                ? "Localização aproximada"
+                : "Você está aqui"
+            }
           >
             <View style={style.userMarker}>
               <View style={style.userPulse} />
-              <View style={[
-                style.userMarkerIcon,
-                usingFallbackLocation && style.fallbackMarker
-              ]}>
+              <View
+                style={[
+                  style.userMarkerIcon,
+                  usingFallbackLocation && style.fallbackMarker,
+                ]}
+              >
                 <Text style={style.userMarkerText}>
                   {usingFallbackLocation ? "📍" : "📍"}
                 </Text>
@@ -372,13 +422,13 @@ export default function App() {
               }}
               onPress={() => setSelectedPlace(place)}
             >
-              <View style={[
-                style.placeMarker,
-                selectedPlace?.id === place.id && style.selectedMarker
-              ]}>
-                <Text style={style.markerIcon}>
-                  {getPlaceTypeIcon(place)}
-                </Text>
+              <View
+                style={[
+                  style.placeMarker,
+                  selectedPlace?.id === place.id && style.selectedMarker,
+                ]}
+              >
+                <Text style={style.markerIcon}>{getPlaceTypeIcon(place)}</Text>
               </View>
               <Callout tooltip onPress={() => setSelectedPlace(place)}>
                 <View style={style.callout}>
@@ -389,7 +439,9 @@ export default function App() {
                     {getPlaceType(place)}
                   </Text>
                   {place.tags?.phone && (
-                    <Text style={style.calloutPhone}>📞 {place.tags.phone}</Text>
+                    <Text style={style.calloutPhone}>
+                      📞 {place.tags.phone}
+                    </Text>
                   )}
                   {usingFallbackLocation && (
                     <Text style={style.fallbackNote}>📍 Local de exemplo</Text>
@@ -410,7 +462,7 @@ export default function App() {
               <Text style={style.backIconText}>←</Text>
             </View>
           </Pressable>
-          
+
           <View style={style.searchContainer}>
             <TextInput
               style={style.searchInput}
@@ -425,7 +477,7 @@ export default function App() {
             </View>
           </View>
 
-          <Pressable 
+          <Pressable
             style={style.listButton}
             onPress={() => setShowList(!showList)}
           >
@@ -440,7 +492,8 @@ export default function App() {
           <View style={style.resultsList}>
             <View style={style.resultsHeader}>
               <Text style={style.resultsTitle}>
-                {filteredPlaces.length} locais {usingFallbackLocation ? 'de exemplo' : 'encontrados'}
+                {filteredPlaces.length} locais{" "}
+                {usingFallbackLocation ? "de exemplo" : "encontrados"}
               </Text>
               <Pressable onPress={() => setShowList(false)}>
                 <Text style={style.closeList}>✕</Text>
@@ -453,7 +506,7 @@ export default function App() {
                     key={place.id || index}
                     style={[
                       style.placeItem,
-                      selectedPlace?.id === place.id && style.selectedPlaceItem
+                      selectedPlace?.id === place.id && style.selectedPlaceItem,
                     ]}
                     onPress={() => focusOnPlace(place)}
                   >
@@ -466,11 +519,11 @@ export default function App() {
                       <Text style={style.placeName} numberOfLines={2}>
                         {place.tags?.name}
                       </Text>
-                      <Text style={style.placeType}>
-                        {getPlaceType(place)}
-                      </Text>
+                      <Text style={style.placeType}>{getPlaceType(place)}</Text>
                       {place.tags?.phone && (
-                        <Text style={style.placePhone}>📞 {place.tags.phone}</Text>
+                        <Text style={style.placePhone}>
+                          📞 {place.tags.phone}
+                        </Text>
                       )}
                       {usingFallbackLocation && (
                         <Text style={style.fallbackBadge}>Exemplo</Text>
@@ -493,10 +546,7 @@ export default function App() {
         )}
 
         {/* Botão de centralizar */}
-        <Pressable 
-          style={style.centerButton}
-          onPress={retrySearch}
-        >
+        <Pressable style={style.centerButton} onPress={retrySearch}>
           <View style={style.centerIcon}>
             <Text style={style.centerIconText}>🎯</Text>
           </View>
@@ -504,22 +554,26 @@ export default function App() {
 
         {/* Banner de informação */}
         {(errorMsg || usingFallbackLocation) && (
-          <View style={[
-            style.infoBanner,
-            usingFallbackLocation ? style.fallbackBanner : style.errorBanner
-          ]}>
+          <View
+            style={[
+              style.infoBanner,
+              usingFallbackLocation ? style.fallbackBanner : style.errorBanner,
+            ]}
+          >
             <Text style={style.infoText}>
-              {usingFallbackLocation 
+              {usingFallbackLocation
                 ? "📍 Usando localização padrão. Ative a localização para ver hospitais próximos."
-                : errorMsg
-              }
+                : errorMsg}
             </Text>
             <View style={style.bannerButtons}>
               <Pressable style={style.retryButton} onPress={retrySearch}>
                 <Text style={style.retryButtonText}>Tentar Novamente</Text>
               </Pressable>
               {usingFallbackLocation && (
-                <Pressable style={style.settingsButton} onPress={openLocationSettings}>
+                <Pressable
+                  style={style.settingsButton}
+                  onPress={openLocationSettings}
+                >
                   <Text style={style.settingsButtonText}>Ativar GPS</Text>
                 </Pressable>
               )}
@@ -534,10 +588,9 @@ export default function App() {
             <ActivityIndicator size="large" color="#FF6B6B" />
             <Text style={style.loadingText}>Buscando locais de saúde...</Text>
             <Text style={style.loadingSubtext}>
-              {usingFallbackLocation 
-                ? "Usando localização padrão" 
-                : "Procurando hospitais e clínicas próximos"
-              }
+              {usingFallbackLocation
+                ? "Usando localização padrão"
+                : "Procurando hospitais e clínicas próximos"}
             </Text>
           </View>
         </View>

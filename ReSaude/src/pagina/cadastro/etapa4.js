@@ -11,6 +11,7 @@ import {
 import { useState, useEffect } from "react";
 import styles from "./style";
 import InputScale from "./inputAnima";
+import api from "../api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function etapa4({ data, onChange, onNext, onBack }) {
@@ -46,7 +47,7 @@ export default function etapa4({ data, onChange, onNext, onBack }) {
 
     try {
       const response = await fetch(
-        `http://10.0.2.2:8000/api/cadastra-etapa4/${user.usuario["id"]}`,
+        `${api}/cadastra-etapa4/${user.usuario["id"]}`,
         {
           method: "POST",
           body: usuario,

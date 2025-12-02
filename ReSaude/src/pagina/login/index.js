@@ -6,7 +6,7 @@ import {
   Pressable,
   Image,
   ActivityIndicator,
-  Modal
+  Modal,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
@@ -23,10 +23,37 @@ export default function App() {
 
   const [loading, setLoading] = useState(false);
 
-  const login = () => {
+  const login = async () => {
     setLoading(true);
 
-    api
+    try {
+      const response = await fetch(`${api}/login`, {
+        method: "POST",
+        body: JSON.stringify({
+          loginEmail: email,
+          LoginSenha: senha,
+      }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+    })
+      const resData = await response.json();
+
+      if (!response.ok) {
+        setLoading(false);
+        throw new Error("Erro ao fazer login");
+      }
+
+      console.log("logado", resData);
+      AsyncStorage.setItem("usuario", JSON.stringify(resData));
+      navigation.navigate("Dashboard");
+    } catch (error) {
+      console.log("Erro ao fazer login:", error.message);
+    } finally {
+      setLoading(false);
+    }
+
+    /* api
       .post("/login", {
         loginEmail: email,
         LoginSenha: senha,
@@ -43,7 +70,7 @@ export default function App() {
           "nao foi possivel fzee login",
           error.response?.data || error.message
         );
-      });
+      }); */
   };
 
   return (
@@ -73,7 +100,7 @@ export default function App() {
               value={senha}
               placeholder="Digite sua senha"
               onChangeText={setSenha}
-              secureTextEntry={true}  
+              secureTextEntry={true}
             />
 
             <Pressable style={styles.botao} onPress={() => login()}>

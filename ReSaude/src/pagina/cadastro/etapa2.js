@@ -13,6 +13,7 @@ import styles from "./style";
 import InputScale from "./inputAnima";
 import SelectScan from "./select";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../api";
 
 export default function etapa2({ data, onChange, onNext, onBack }) {
   const [loading, setLoading] = useState(false);
@@ -131,7 +132,7 @@ export default function etapa2({ data, onChange, onNext, onBack }) {
 
     try {
       const response = await fetch(
-        `http://10.0.2.2:8000/api/cadastra-etapa2/${user.usuario["id"]}`,
+        `${api}/cadastra-etapa2/${user.usuario["id"]}`,
         {
           method: "POST",
           body: usuario,
