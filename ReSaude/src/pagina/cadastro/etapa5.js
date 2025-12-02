@@ -70,21 +70,22 @@ export default function etapa5({ data, onChange, onFinish, onBack }) {
         <View style={styles.titulo}></View>
         <View style={styles.campoInputs}>
           <View style={styles.parte3}>
-            <InputScale
-              label="confirma senha"
-              keyboardType="numeric"
-              value={senhaC}
-              onChangeText={setSenhaC}
-              containerStyle={{ width: 370, height: 100 }}
-              inputStyle={{ height: "100%", fontSize: 32 }}
-              labelEstilo={40}
-              position={23}
-            />
+          
             <InputScale
               label={senha}
               keyboardType="numeric"
               value={data.senha}
               onChangeText={(text) => onChange("senha", text)}
+              containerStyle={{ width: 370, height: 100 }}
+              inputStyle={{ height: "100%", fontSize: 32 }}
+              labelEstilo={40}
+              position={23}
+            />
+              <InputScale
+              label="confirma senha"
+              keyboardType="numeric"
+              value={senhaC}
+              onChangeText={setSenhaC}
               containerStyle={{ width: 370, height: 100 }}
               inputStyle={{ height: "100%", fontSize: 32 }}
               labelEstilo={40}

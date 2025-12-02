@@ -18,7 +18,6 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import * as ImagePicker from "expo-image-picker";
 
-
 export default function App() {
   const navigation = useNavigation();
 
@@ -74,6 +73,32 @@ export default function App() {
     senhaC: "",
   });
 
+  const formatacaoData = (text) => {
+    let cleaded = text.replace(/\D/g, "");
+
+    if (cleaded.length > 8) cleaded = cleaded.slice(0, 8);
+
+    if (cleaded.length > 4) {
+      cleaded = cleaded.replace(/(\d{2})(\d{2})(\d{1,4})/, "$1/$2/$3");
+    } else if (cleaded.length > 4) {
+      cleaded = cleaded.replace(/(\d{2})(\d{1,2})/, "$1/$2");
+    }
+
+    onChange("nasci", cleaded);
+  };
+
+  const formataCep = (text) => {
+    let cleaded = text.replace(/\D/g, "");
+
+    if (cleaded.length > 8) cleaded = cleaded.slice(0, 8);
+
+    if (cleaded.length > 5) {
+      cleaded = cleaded.replace(/(\d{5})(\d{1,3})/, "$1-$2");
+    }
+
+    onChange("cep", cleaded);
+  };
+
   const solicitarPermissao = async () => {
     const camera = await ImagePicker.requestCameraPermissionsAsync();
     const galeria = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -100,7 +125,35 @@ export default function App() {
     });
 
     if (!resultado.canceled) {
+      const uri = resultado.assets[0].uri;
       setImagem(resultado.assets[0].uri);
+
+      var usuario = new FormData();
+
+      usuario.append("imgAdm", {
+        uri: uri,
+        name: "image.png",
+        type: "image/png",
+      });
+
+      console.log("ID para upload de imagem:", id);
+      try {
+        const response = await fetch(`${api}/update-img/${id}`, {
+          method: "POST",
+          body: usuario,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        console.log("funfo");
+        const resData = await response.json();
+        console.log("resData imagem:", resData);
+      } catch (erro) {
+        console.log("erro ao tirar foto:", erro.message);
+      } finally {
+        setModalFoto(false);
+      }
     }
   };
 
@@ -121,6 +174,31 @@ export default function App() {
     if (!resultado.canceled) {
       setImagem(resultado.assets[0].uri);
       onChange("foto", resultado.assets[0].uri);
+    }
+
+    var usuario = new FormData();
+
+    if (imagem) {
+      usuario.append("foto", {
+        uri: imagem,
+        name: "image.jpeg",
+        type: "image/jpg",
+      });
+    }
+    console.log("ID para upload de imagem:", id);
+    try {
+      const response = await fetch(`${api}/update-img/${id}`, {
+        method: "POST",
+        body: usuario,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const resData = await response.json();
+      console.log("resData imagem:", resData);
+    } catch (erro) {
+      console.log("erro ao escolher imagem:", erro.message);
     }
   };
 
@@ -171,9 +249,7 @@ export default function App() {
 
       try {
         setLoading(true);
-        const res = await fetch(
-          `${api}/chamar-usuario/${userId}`
-        );
+        const res = await fetch(`${api}/chamar-usuario/${userId}`);
 
         if (!res.ok) {
           throw new Error("Erro na resposta da rede");
@@ -205,11 +281,15 @@ export default function App() {
         setDoencas(doencasUsuarios);
         setImagem(data.user.img);
 
+        const [ano, mes, dia] = data.user.nascimento.split("-");
+        const dataFormatada = `${dia}/${mes}/${ano}`;
+
+        const cepFormatado = data.user.cep.replace(/(\d{5})(\d{1,3})/, "$1-$2");
         setData({
           nome: data.user.nome,
-          nasci: data.user.nascimento,
+          nasci: dataFormatada,
           email: data.user.email,
-          cep: data.user.cep,
+          cep: cepFormatado,
           num: data.user.numero,
           bairro: data.user.bairro,
           uf: data.user.uf,
@@ -255,6 +335,12 @@ export default function App() {
       return;
     }
 
+    const [dia, mes, ano] = data.nasci.split("/");
+
+    const nascimento = `${ano}-${mes}-${dia}`;
+
+    const cep = data.cep.replace(/\-/g, "");
+
     try {
       const array = await AsyncStorage.getItem("usuario");
       const user = JSON.parse(array);
@@ -262,8 +348,8 @@ export default function App() {
       const usuario = new FormData();
       usuario.append("nome", data.nome);
       usuario.append("email", data.email);
-      usuario.append("nascimento", data.nasci);
-      usuario.append("cep", data.cep);
+      usuario.append("nascimento", nascimento);
+      usuario.append("cep", cep);
       usuario.append("logra", data.logradouro);
       usuario.append("numero", data.num);
       usuario.append("bairro", data.bairro);
@@ -283,13 +369,10 @@ export default function App() {
         usuario.append("senhaN", data.senhaN);
       }
 
-      const response = await fetch(
-        `${api}/updatePerfil/${user.user["id"]}`,
-        {
-          method: "POST",
-          body: usuario,
-        }
-      );
+      const response = await fetch(`${api}/updatePerfil/${user.user["id"]}`, {
+        method: "POST",
+        body: usuario,
+      });
 
       const resData = await response.json();
 
@@ -329,21 +412,17 @@ export default function App() {
 
         <View style={styles.profileHeader}>
           <View style={styles.avatarContainer}>
-            <Image
-              style={styles.avatar}
-              source={
-                imagem
-                  ? { uri: `http://10.0.2.2:8000${imagem}` }
-                  : require("../../../assets/perfilPng.png")
-              }
-              onError={(e) => {
-                console.log("Erro ao carregar imagem:", e.nativeEvent.error);
-              }}
-              resizeMode="cover"
-            />
+            {imagem == "" ? (
+              <Image
+                style={styles.avatar}
+                source={require("../../../assets/perfilPng.png")}
+              ></Image>
+            ) : (
+              <Image style={styles.avatar} source={{ uri: imagem }}></Image>
+            )}
             <View style={styles.editBadge}>
-              <Pressable onPress={()=> setModalFoto(true)}>
-              <Text style={styles.editBadgeText}>✏️</Text>
+              <Pressable onPress={() => setModalFoto(true)}>
+                <Text style={styles.editBadgeText}>✏️</Text>
               </Pressable>
             </View>
           </View>
@@ -427,7 +506,7 @@ export default function App() {
                       label={labels.nasci}
                       keyboardType="numeric"
                       value={data.nasci}
-                      onChangeText={(text) => onChange("nasci", text)}
+                      onChangeText={(text) => formatacaoData(text)}
                       containerStyle={styles.inputField}
                     />
                   </View>
@@ -443,7 +522,7 @@ export default function App() {
                     <InputScale
                       label={labels.cep}
                       value={data.cep}
-                      onChangeText={(text) => onChange("cep", text)}
+                      onChangeText={(text) => formataCep(text)}
                       containerStyle={styles.inputField}
                     />
                     <InputScale

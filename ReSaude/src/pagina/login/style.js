@@ -8,6 +8,20 @@ export default StyleSheet.create({
     backgroundColor: "#F7F9F8",
   },
 
+ loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F0F8FF",
+  },
+
+  loadingText: {
+    marginTop: 20,
+    fontSize: 16,
+    color: "#666",
+    fontFamily: 'System',
+  },
+
   containerLogin: {
     flex: 1,
     borderWidth: 1,

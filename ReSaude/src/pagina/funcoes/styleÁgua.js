@@ -11,29 +11,31 @@ export default StyleSheet.create({
     flex: 1,
   },
 
-  nav: {
+    nav: {
     flexDirection: "row",
     width: "100%",
     height: height * 0.12,
     alignItems: "flex-end",
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 15,
     backgroundColor: "#FFFFFF",
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 3.84,
+    shadowRadius: 8,
     elevation: 5,
   },
 
   backButton: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 8,
   },
 
+  backIcon: {
+    width: 24,
+    height: 24,
+    tintColor: "#2C3E50",
+  },
 
 
     imgPerfil: {

@@ -196,8 +196,8 @@ export default function etapa1({ data, onChange, onNext }) {
     if (imagem) {
       usuario.append("foto", {
         uri: imagem,
-        name: "image.png",
-        type: "image/png",
+        name: "image.jpeg",
+        type: "image/jpg",
       });
     }
 

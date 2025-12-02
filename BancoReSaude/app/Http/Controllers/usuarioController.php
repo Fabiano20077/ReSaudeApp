@@ -242,9 +242,29 @@ class usuarioController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    public function fotoUsuario(Request $request, string $id)
+    {
+        $usuario = User::find($id);
+
+        if ($request->hasFile('imgAdm')) {
+            $file = $request->file('imgAdm');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('img'), $filename);
+            $usuario->img = $filename;
+        }
+
+        $usuario->save();
+
+        return response()->json(
+            [
+                'mensagem' => 'imagem enviada com sucesso',
+                'admin' => $usuario
+            ],
+            200
+        );
+    }
+
+
     public function edit(string $id)
     {
         //

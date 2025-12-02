@@ -71,6 +71,16 @@ export default function App() {
           error.response?.data || error.message
         );
       }); */
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#FF6B6B" />
+        <Text style={styles.loadingText}>Carregando seu tipo sanguíneo...</Text>
+      </View>
+    );
+  }
+
   };
 
   return (
@@ -123,12 +133,6 @@ export default function App() {
       </View>
       <StatusBar style="auto" />
 
-      <Modal transparent={loading} visible={loading}>
-        <View style={styles.containerModal}>
-          <ActivityIndicator size="large" color="blue" />
-          <Text style={{ color: "white", fontSize: 20 }}>Carregando...</Text>
-        </View>
-      </Modal>
     </View>
   );
 }

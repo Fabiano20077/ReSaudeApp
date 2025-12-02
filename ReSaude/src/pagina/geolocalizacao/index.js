@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -459,7 +460,12 @@ export default function App() {
             onPress={() => navigation.navigate("Dashboard")}
           >
             <View style={style.backIcon}>
-              <Text style={style.backIconText}>←</Text>
+              <Text style={style.backIconText}>
+                <Image
+                  style={style.imgPerfil}
+                  source={require("../../../assets/seta-esquerda.png")}
+                />
+              </Text>
             </View>
           </Pressable>
 
